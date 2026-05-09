@@ -1,0 +1,1 @@
+{"dependencies":{"i18next":"^23.11.5","react-i18next":"^14.1.2"},"devDependencies":{"typescript":"^5.4.5"},"main":"./src/index.ts","name":"@smart-erp/i18n","private":true,"type":"module","types":"./src/index.ts","version":"0.0.0"}
