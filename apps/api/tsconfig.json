@@ -1,0 +1,1 @@
+{"compilerOptions":{"emitDecoratorMetadata":true,"experimentalDecorators":true,"outDir":"./dist","rootDir":"./src"},"exclude":["node_modules","dist"],"extends":"@smart-erp/tsconfig/node.json","include":["src/**/*"]}
