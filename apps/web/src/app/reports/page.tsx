@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '@/lib/api-client';
-import { LayoutDashboard, BarChart3, TrendingUp, Building2 } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, Building2, Download } from 'lucide-react';
 import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from 'recharts';
@@ -53,6 +53,22 @@ export default function ReportsPage() {
     }
   };
 
+  const exportToCSV = () => {
+    // Export tenant stats to CSV
+    const csvRows = [['Name', 'Slug', 'Users', 'Created']];
+    tenantStats.forEach(t => {
+      csvRows.push([t.name, t.slug, t.userCount.toString(), new Date(t.createdAt).toLocaleDateString()]);
+    });
+    const csvContent = csvRows.map(row => row.join(',')).join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `tenant-report-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -98,9 +114,18 @@ export default function ReportsPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Reports & Analytics</h2>
-          <p className="text-gray-500 dark:text-gray-400">User registrations and tenant insights</p>
+        <div className="mb-8 flex justify-between items-center">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Reports & Analytics</h2>
+            <p className="text-gray-500 dark:text-gray-400">User registrations and tenant insights</p>
+          </div>
+          <button
+            onClick={exportToCSV}
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition"
+          >
+            <Download className="w-4 h-4" />
+            Export CSV
+          </button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
