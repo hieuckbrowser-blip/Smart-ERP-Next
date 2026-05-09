@@ -27,7 +27,8 @@ export class OfflineDB extends Dexie {
     super('SmartERPOffline');
     this.version(1).stores({
       users: 'id, tenantId, syncedAt',
-      syncQueue: '++id, entity, entityId, createdAt'
+      syncQueue: '++id, entity, entityId, createdAt',
+      entities: 'id, version, lastSyncedAt'
     });
   }
 }
