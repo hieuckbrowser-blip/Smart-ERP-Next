@@ -340,7 +340,10 @@
     "loginSuccess": "Login successful",
     "loginFailed": "Invalid email or password",
     "logoutSuccess": "Logged out",
-    "sessionExpired": "Session expired"
+    "sessionExpired": "Session expired",
+    "validation": {
+      "required": "Please enter email and password"
+    }
   },
 
   "users": {

@@ -28,7 +28,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
-      setError("Vui lòng nhập email và mật khẩu");
+      setError(t('auth.validation.required'));
       return;
     }
     setError("");
@@ -42,7 +42,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.message ?? "Đăng nhập thất bại");
+        throw new Error(data.message ?? t('auth.loginFailed'));
       }
 
       const { access_token, user } = await res.json();
@@ -56,7 +56,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
 
       onLoginSuccess(user);
     } catch (err: any) {
-      setError(err.message ?? "Đăng nhập thất bại");
+      setError(err.message ?? t('auth.loginFailed'));
     } finally {
       setLoading(false);
     }
@@ -78,7 +78,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
             <Text style={styles.logoText}>ERP</Text>
           </View>
           <Text style={styles.appName}>Smart ERP Next</Text>
-          <Text style={styles.tagline}>Quản trị doanh nghiệp thông minh</Text>
+          <Text style={styles.tagline}>{t('tagline')}</Text>
         </View>
 
         {/* Form */}
@@ -137,7 +137,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
             {loading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text style={styles.loginBtnText}>Đăng nhập</Text>
+              <Text style={styles.loginBtnText}>{t('auth.login')}</Text>
             )}
           </TouchableOpacity>
 
