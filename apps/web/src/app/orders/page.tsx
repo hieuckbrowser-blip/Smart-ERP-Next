@@ -8,20 +8,20 @@ import AuthGuard from '@/components/layout/AuthGuard';
 import { ShoppingBag, Search, Plus, Eye, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
 
 const STATUS_OPTIONS = [
-  { value: '', label: 'Tất cả' },
-  { value: 'draft', label: 'Nháp' },
-  { value: 'confirmed', label: 'Đã xác nhận' },
-  { value: 'processing', label: 'Đang xử lý' },
-  { value: 'shipped', label: 'Đã giao vận' },
-  { value: 'delivered', label: 'Đã giao hàng' },
-  { value: 'cancelled', label: 'Đã hủy' },
+  { value: '', label: t('orders.statusAll') },
+  { value: 'draft', label: t('orders.status.draft') },
+  { value: 'confirmed', label: t('orders.status.confirmed') },
+  { value: 'processing', label: t('orders.status.processing') },
+  { value: 'shipped', label: t('orders.status.shipped') },
+  { value: 'delivered', label: t('orders.status.delivered') },
+  { value: 'cancelled', label: t('orders.status.cancelled') },
 ];
 
 const PAYMENT_STATUS_OPTIONS = [
-  { value: '', label: 'Tất cả' },
-  { value: 'unpaid', label: 'Chưa thanh toán' },
-  { value: 'partial', label: 'Thanh toán một phần' },
-  { value: 'paid', label: 'Đã thanh toán' },
+  { value: '', label: t('orders.statusAll') },
+  { value: 'unpaid', label: t('payment.status.unpaid') },
+  { value: 'partial', label: t('payment.status.partial') },
+  { value: 'paid', label: t('payment.status.paid') },
 ];
 
 const statusColors: Record<string, string> = {
@@ -41,10 +41,10 @@ const paymentStatusColors: Record<string, string> = {
 };
 
 const channelLabels: Record<string, string> = {
-  pos: 'Tại quầy',
-  online: 'Online',
-  phone: 'Điện thoại',
-  wholesale: 'Bán sỉ',
+  pos: t('orders.channels.pos'),
+  online: t('orders.channels.online'),
+  phone: t('orders.channels.phone'),
+  wholesale: t('orders.channels.wholesale'),
 };
 
 const formatVND = (v: string | null) =>
@@ -108,7 +108,7 @@ export default function OrdersPage() {
               <h1 className="text-xl font-bold text-gray-900 dark:text-white">
                 {t('orders.title')}
               </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{total} đơn hàng</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{total} {t('common.orders')}</p>
             </div>
           </div>
           <button
@@ -116,7 +116,7 @@ export default function OrdersPage() {
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium"
           >
             <Plus className="w-4 h-4" />
-            Tạo đơn (POS)
+            {t('orders.createOrder')}
           </button>
         </div>
 
@@ -129,18 +129,18 @@ export default function OrdersPage() {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Tìm theo mã đơn, khách hàng..."
+                placeholder={t('orders.searchPlaceholder')}
                 className="w-full pl-9 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
               />
             </div>
             <button type="submit" className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition text-sm">
-              Tìm
+              {t('actions.search')}
             </button>
           </form>
           <div className="flex flex-wrap gap-2">
             <div className="flex items-center gap-1.5">
               <Filter className="w-4 h-4 text-gray-400" />
-              <span className="text-xs text-gray-500">Trạng thái:</span>
+              <span className="text-xs text-gray-500">{t('orders.status')}:</span>
             </div>
             {STATUS_OPTIONS.map((opt) => (
               <button
@@ -159,7 +159,7 @@ export default function OrdersPage() {
           <div className="flex flex-wrap gap-2">
             <div className="flex items-center gap-1.5">
               <Filter className="w-4 h-4 text-gray-400" />
-              <span className="text-xs text-gray-500">Thanh toán:</span>
+              <span className="text-xs text-gray-500">{t('payment.status.label')}:</span>
             </div>
             {PAYMENT_STATUS_OPTIONS.map((opt) => (
               <button
@@ -193,21 +193,21 @@ export default function OrdersPage() {
                 <table className="w-full text-sm">
                   <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Mã đơn</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Kênh</th>
-                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Tổng tiền</th>
-                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Còn nợ</th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Trạng thái</th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Thanh toán</th>
-                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Thời gian</th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Thao tác</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('orders.code')}</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('orders.channel')}</th>
+                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('orders.total')}</th>
+                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('orders.debt')}</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('orders.status')}</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('orders.paymentStatus')}</th>
+                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('orders.date')}</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('common.actions')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                     {orders.length === 0 ? (
                       <tr>
                         <td colSpan={8} className="px-4 py-12 text-center text-gray-400">
-                          Không có đơn hàng nào
+                          {t('common.noData')}
                         </td>
                       </tr>
                     ) : (
@@ -244,7 +244,7 @@ export default function OrdersPage() {
                             <button
                               onClick={() => router.push(`/orders/${order.id}`)}
                               className="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition"
-                              title="Xem chi tiết"
+                              title={t('common.viewDetails')}
                             >
                               <Eye className="w-4 h-4" />
                             </button>
@@ -260,7 +260,7 @@ export default function OrdersPage() {
             {totalPages > 1 && (
               <div className="flex items-center justify-between">
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Hiển thị {(page - 1) * limit + 1}–{Math.min(page * limit, total)} trong {total}
+                  {t('common.showing')} {(page - 1) * limit + 1}–{Math.min(page * limit, total)} {t('common.of')} {total}
                 </p>
                 <div className="flex gap-1">
                   <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
