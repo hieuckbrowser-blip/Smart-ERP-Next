@@ -12,6 +12,7 @@ const getClientId = (): string => {
 
 export class SyncService {
   private clientId = getClientId();
+  private debounceTimer: number | null = null;
 
   async pull(): Promise<void> {
     const lastSync = await db.syncLog.orderBy('lastSyncAt').last();
@@ -33,6 +34,11 @@ export class SyncService {
       vectorClock: newClock,
     });
   }
+
+  private debouncedPush = () => {
+    if (this.debounceTimer) clearTimeout(this.debounceTimer);
+    this.debounceTimer = setTimeout(() => this.push(), 5000);
+  };
 
   async push(): Promise<void> {
     const lastSync = await db.syncLog.orderBy('lastSyncAt').last();
@@ -56,6 +62,11 @@ export class SyncService {
   async sync(): Promise<void> {
     await this.push();
     await this.pull();
+  }
+
+  // Call this on any local mutation
+  queueSync() {
+    this.debouncedPush();
   }
 }
 

@@ -33,18 +33,32 @@ export class SyncService {
   }
 
   async pull(tenantId: string, clientId: string, sinceVector: Record<string, number>) {
-    // For now, return empty changes. Full CRDT merge coming soon.
-    // Will aggregate changes from all tables where updated_at > sinceVector[table]
-    const changes = {
-      products: [],
-      orders: [],
-      customers: [],
-      suppliers: [],
-      inventory_transactions: [],
-    };
-    // Update last sync time
-    await this.updateMetadata(tenantId, clientId, {});
-    return { changes, vectorClock: {} };
+    // Delta sync: fetch only entities changed after the timestamp for each table
+    const changes: any = {};
+    const tableNames = ['products', 'orders', 'customers', 'suppliers', 'inventory_transactions'];
+    for (const table of tableNames) {
+      const since = sinceVector[table] || 0;
+      if (since === 0) {
+        // No local data yet – return full snapshot
+        const rows = await this.db.select().from(sql`${sql.raw(table)}`).where(eq(sql`${sql.raw(table)}.tenant_id`, tenantId));
+        changes[table] = rows;
+      } else {
+        const rows = await this.db.select().from(sql`${sql.raw(table)}`).where(
+          and(
+            eq(sql`${sql.raw(table)}.tenant_id`, tenantId),
+            sql`${sql.raw(table)}.updated_at > ${new Date(since)}`
+          )
+        );
+        changes[table] = rows;
+      }
+    }
+    // Return a simple vector clock (last sync timestamp per table)
+    const newClock: Record<string, number> = {};
+    for (const table of tableNames) {
+      newClock[table] = Date.now();
+    }
+    await this.updateMetadata(tenantId, clientId, newClock);
+    return { changes, vectorClock: newClock };
   }
 
   async push(tenantId: string, clientId: string, changes: any) {
