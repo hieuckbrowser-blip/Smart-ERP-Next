@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { db } from '@smart-erp/database';
-import { sql } from 'drizzle-orm';
+import { sql } from '@smart-erp/database/drizzle';
 
 @Controller()
 export class AppController {

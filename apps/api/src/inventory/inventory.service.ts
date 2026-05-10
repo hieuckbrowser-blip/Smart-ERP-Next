@@ -1,7 +1,7 @@
 import { Injectable, ConflictException } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { products, inventoryTransactions } from '@smart-erp/database/schema';
-import { eq, and, sql, desc, lte } from 'drizzle-orm';
+import { eq, and, sql, desc, lte } from '@smart-erp/database/drizzle';
 
 @Injectable()
 export class InventoryService {

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { warehouses } from '@smart-erp/database/schema';
-import { eq, and, sql } from 'drizzle-orm';
+import { eq, and, sql } from '@smart-erp/database/drizzle';
 
 export interface CreateWarehouseDto {
   code: string;

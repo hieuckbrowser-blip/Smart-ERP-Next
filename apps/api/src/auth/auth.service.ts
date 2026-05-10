@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { db } from '@smart-erp/database';
 import { users } from '@smart-erp/database/schema';
-import { eq } from 'drizzle-orm';
+import { eq } from '@smart-erp/database/drizzle';
 import { UsersService } from '../users/users.service';
 import { NotificationsGateway } from '../notifications/notifications.gateway';
 

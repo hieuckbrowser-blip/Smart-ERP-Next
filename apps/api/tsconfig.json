@@ -1,1 +1,18 @@
-{"compilerOptions":{"emitDecoratorMetadata":true,"experimentalDecorators":true,"outDir":"./dist","rootDir":"./src"},"exclude":["node_modules","dist"],"extends":"@smart-erp/tsconfig/node.json","include":["src/**/*"]}
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "outDir": "./dist",
+    "paths": {
+      "@smart-erp/database": ["../../packages/database/src/index.ts"],
+      "@smart-erp/database/drizzle": ["../../packages/database/src/drizzle.ts"],
+      "@smart-erp/database/schema": [
+        "../../packages/database/src/schema/index.ts"
+      ]
+    },
+    "rootDirs": ["./src", "../../packages/database/src"]
+  },
+  "exclude": ["node_modules", "dist"],
+  "extends": "../../packages/config-typescript/node.json",
+  "include": ["src/**/*"]
+}

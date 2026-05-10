@@ -3,7 +3,7 @@ import {
 } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { users } from '@smart-erp/database/schema';
-import { eq, and, ilike, or, sql } from 'drizzle-orm';
+import { eq, and, ilike, or, sql } from '@smart-erp/database/drizzle';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 

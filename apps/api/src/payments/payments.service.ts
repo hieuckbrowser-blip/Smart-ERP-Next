@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { payments } from '@smart-erp/database/schema';
-import { eq, and, ilike, sql, desc, gte, lte } from 'drizzle-orm';
+import { eq, and, ilike, sql, desc, gte, lte } from '@smart-erp/database/drizzle';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 
 @Injectable()

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { orders, orderItems, products, customers } from '@smart-erp/database/schema';
-import { eq, and, gte, lte, sql, desc } from 'drizzle-orm';
+import { eq, and, gte, lte, sql, desc } from '@smart-erp/database/drizzle';
 
 @Injectable()
 export class ReportsService {

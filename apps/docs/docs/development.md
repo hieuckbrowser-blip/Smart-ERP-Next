@@ -152,6 +152,12 @@ pnpm --filter @smart-erp/docs start     # Docs: http://localhost:3002
 - Vietnam-specific defaults must be modeled through `LOCALIZATION_PROFILES` before being consumed by web/mobile/desktop.
 - A change that claims competitive advantage must map to one `DIFFERENTIATION_PILLARS` entry or add a new pillar with engineering implications.
 
+## Database Import Rules
+
+- API services import schema from `@smart-erp/database/schema`.
+- API services import Drizzle helpers from `@smart-erp/database/drizzle`, not directly from `drizzle-orm`.
+- This keeps schema columns, SQL helpers, and query builders on one Drizzle type instance across the workspace.
+
 ## Commit Convention
 
 ```

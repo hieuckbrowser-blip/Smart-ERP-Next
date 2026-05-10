@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { tenants } from '@smart-erp/database/schema';
-import { eq } from 'drizzle-orm';
+import { eq } from '@smart-erp/database/drizzle';
 import { CreateTenantDto } from './dto/create-tenant.dto';
 import { UpdateTenantDto } from './dto/update-tenant.dto';
 

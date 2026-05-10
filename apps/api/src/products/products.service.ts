@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { products, inventoryTransactions } from '@smart-erp/database/schema';
-import { eq, and, ilike, or, gte, lte, sql, desc } from 'drizzle-orm';
+import { eq, and, ilike, or, gte, lte, sql, desc } from '@smart-erp/database/drizzle';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { QueryProductDto } from './dto/query-product.dto';

@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { orders, orderItems, products } from '@smart-erp/database/schema';
-import { eq, and, ilike, sql, desc } from 'drizzle-orm';
+import { eq, and, ilike, sql, desc } from '@smart-erp/database/drizzle';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { NotificationsGateway } from '../notifications/notifications.gateway';
 

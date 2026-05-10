@@ -21,6 +21,7 @@
   "version": "0.0.0",
   "exports": {
     ".": "./src/index.ts",
+    "./drizzle": "./src/drizzle.ts",
     "./schema": "./src/schema/index.ts"
   }
 }

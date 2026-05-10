@@ -5,7 +5,7 @@ import { db } from '@smart-erp/database';
 import {
   purchaseOrders, purchaseOrderItems, products, inventoryTransactions,
 } from '@smart-erp/database/schema';
-import { eq, and, ilike, sql, desc } from 'drizzle-orm';
+import { eq, and, ilike, sql, desc } from '@smart-erp/database/drizzle';
 import { CreatePurchaseOrderDto } from './dto/create-purchase-order.dto';
 
 @Injectable()
