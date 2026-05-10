@@ -76,10 +76,10 @@ export default function InventoryScreen() {
       {/* Tab selector */}
       <View style={styles.tabRow}>
         {[
-          { key: "summary" as const, label: "Tổng quan" },
+          { key: "summary" as const, label: t('inventory.summary') },
           {
             key: "lowstock" as const,
-            label: `Sắp hết (${lowStockItems.length})`,
+            label: `${t('inventory.lowStock')} (${lowStockItems.length})`,
           },
         ].map((tab) => (
           <TouchableOpacity
@@ -103,28 +103,28 @@ export default function InventoryScreen() {
         <FlatList
           data={[
             {
-              label: "Tổng sản phẩm",
+              label: t('inventory.totalProducts'),
               value: summary.totalProducts.toLocaleString("vi-VN"),
               color: "#3b82f6",
             },
             {
-              label: "Tổng đơn vị",
+              label: t('inventory.totalUnits'),
               value: summary.totalUnits.toLocaleString("vi-VN"),
               color: "#10b981",
             },
             {
-              label: "Giá trị tồn kho",
+              label: t('inventory.stockValue'),
               value: formatVND(summary.totalValue),
               color: "#8b5cf6",
             },
             {
-              label: "Sắp hết hàng",
+              label: t('inventory.lowStock'),
               value: summary.lowStock.toString(),
               color: summary.lowStock > 0 ? "#f59e0b" : "#10b981",
               danger: summary.lowStock > 0,
             },
             {
-              label: "Hết hàng",
+              label: t('inventory.outOfStock'),
               value: summary.outOfStock.toString(),
               color: summary.outOfStock > 0 ? "#ef4444" : "#10b981",
               danger: summary.outOfStock > 0,
@@ -170,7 +170,7 @@ export default function InventoryScreen() {
           ListEmptyComponent={
             <View style={styles.center}>
               <Text style={styles.emptyIcon}>✅</Text>
-              <Text style={styles.emptyText}>Tất cả sản phẩm đều đủ hàng</Text>
+              <Text style={styles.emptyText}>{t('inventory.allStockOK')}</Text>
             </View>
           }
           renderItem={({ item }) => {
@@ -198,7 +198,7 @@ export default function InventoryScreen() {
                         { color: isOut ? "#dc2626" : "#d97706" },
                       ]}
                     >
-                      {isOut ? "Hết hàng" : `Còn ${item.stock}`}
+                      {isOut ? t('inventory.outOfStock') : `${t('inventory.stock', 'Còn')} ${item.stock}`}
                     </Text>
                   </View>
                   <Text style={styles.minStock}>
