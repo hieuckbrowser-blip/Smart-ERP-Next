@@ -2,6 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use tauri::Manager;
+use tauri_plugin_sql::Builder as SqlBuilder;
 use serde::{Serialize, Deserialize};
 use std::sync::Mutex;
 use reqwest;
@@ -27,6 +28,7 @@ fn main() {
             api_base: Mutex::new("".to_string()),
             token: Mutex::new("".to_string()),
         })
+        .plugin(SqlBuilder::default().build())
         .setup(|app| {
             let window = app.get_webview_window("main").unwrap();
             // Set minimum window size
