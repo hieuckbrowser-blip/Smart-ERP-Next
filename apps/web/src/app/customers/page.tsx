@@ -65,7 +65,7 @@ export default function CustomersPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Bạn có chắc muốn xóa khách hàng này?')) return;
+    if (!confirm(t('common.confirmDeleteMessage'))) return;
     try {
       await customersApi.delete(id);
       fetchCustomers();
@@ -94,7 +94,7 @@ export default function CustomersPage() {
               <h1 className="text-xl font-bold text-gray-900 dark:text-white">
                 {t('customers.title')}
               </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{total} khách hàng</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{total} {t('common.customers')}</p>
             </div>
           </div>
           <button
@@ -135,7 +135,7 @@ export default function CustomersPage() {
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
-            Đang tải...
+            {t('common.loading')}
           </div>
         ) : (
           <>
@@ -144,13 +144,13 @@ export default function CustomersPage() {
                 <table className="w-full text-sm">
                   <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Mã KH</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Tên khách hàng</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Liên hệ</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Nhóm</th>
-                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Công nợ</th>
-                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Tổng mua</th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Thao tác</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('customers.code')}</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('customers.name')}</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('customers.contact')}</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('customers.group')}</th>
+                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('customers.currentDebt')}</th>
+                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('customers.totalPurchased')}</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('common.actions')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
@@ -232,7 +232,7 @@ export default function CustomersPage() {
             {totalPages > 1 && (
               <div className="flex items-center justify-between">
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Hiển thị {(page - 1) * limit + 1}–{Math.min(page * limit, total)} trong {total}
+                  {t('common.showing')} {(page - 1) * limit + 1}–{Math.min(page * limit, total)} {t('common.of')} {total}
                 </p>
                 <div className="flex gap-1">
                   <button
