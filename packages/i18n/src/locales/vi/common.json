@@ -371,6 +371,11 @@
   "common": {
     "loading": "Đang tải...",
     "saving": "Đang lưu...",
+    "products": "sản phẩm",
+    "actions": "Thao tác",
+    "view": "Xem",
+    "edit": "Sửa",
+    "delete": "Xóa",
     "deleting": "Đang xóa...",
     "processing": "Đang xử lý...",
     "noData": "Không có dữ liệu",

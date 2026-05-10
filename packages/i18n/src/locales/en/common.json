@@ -371,6 +371,11 @@
   "common": {
     "loading": "Loading...",
     "saving": "Saving...",
+    "products": "products",
+    "actions": "Actions",
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
     "deleting": "Deleting...",
     "processing": "Processing...",
     "noData": "No data",
