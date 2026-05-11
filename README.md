@@ -227,6 +227,7 @@ pnpm --filter @smart-erp/docs start     # Docs: http://localhost:3002
 
 - Composite index on `orders(tenant_id, status)` for faster tenant‑scoped order listing
 - Composite index on `payments(tenant_id, paid_at)` for faster financial reporting
+- Composite index on `inventory_transactions(tenant_id, created_at)` for faster daily and monthly inventory reports
 - `.gitattributes` enforces LF line endings across all text files (no CRLF formatting errors)
 
 ## Commit Convention
