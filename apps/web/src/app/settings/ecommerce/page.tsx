@@ -10,6 +10,7 @@ export default function EcommerceSettingsPage() {
   const [activeTab, setActiveTab] = useState('woocommerce');
   const [shopeeConfig, setShopeeConfig] = useState({ partnerId: '', partnerKey: '', shopId: '' });
   const [tiktokConfig, setTiktokConfig] = useState({ appKey: '', appSecret: '', shopId: '' });
+  const [amazonConfig, setAmazonConfig] = useState({ clientId: '', clientSecret: '', refreshToken: '', sellerId: '', region: 'na' });
 
   const saveTikTok = async () => {
     try {
@@ -28,6 +29,7 @@ export default function EcommerceSettingsPage() {
         <Tab value="shopify" label="Shopify" />
         <Tab value="shopee" label="Shopee" />
         <Tab value="tiktokshop" label="TikTok Shop" />
+        <Tab value="amazon" label="Amazon" />
       </Tabs>
 
       {activeTab === 'tiktokshop' && (
@@ -37,6 +39,26 @@ export default function EcommerceSettingsPage() {
             <Input label={t('ecommerce.tiktokAppSecret')} type="password" value={tiktokConfig.appSecret} onChange={e => setTiktokConfig({ ...tiktokConfig, appSecret: e.target.value })} />
             <Input label={t('ecommerce.tiktokShopId')} value={tiktokConfig.shopId} onChange={e => setTiktokConfig({ ...tiktokConfig, shopId: e.target.value })} />
             <Button onClick={saveTikTok}>{t('actions.save')}</Button>
+          </div>
+        </Card>
+      )}
+
+      {activeTab === 'amazon' && (
+        <Card className="mt-4 p-4">
+          <div className="space-y-4">
+            <Input label={t('ecommerce.amazonClientId')} value={amazonConfig.clientId} onChange={e => setAmazonConfig({ ...amazonConfig, clientId: e.target.value })} />
+            <Input label={t('ecommerce.amazonClientSecret')} type="password" value={amazonConfig.clientSecret} onChange={e => setAmazonConfig({ ...amazonConfig, clientSecret: e.target.value })} />
+            <Input label={t('ecommerce.amazonRefreshToken')} type="password" value={amazonConfig.refreshToken} onChange={e => setAmazonConfig({ ...amazonConfig, refreshToken: e.target.value })} />
+            <Input label={t('ecommerce.amazonSellerId')} value={amazonConfig.sellerId} onChange={e => setAmazonConfig({ ...amazonConfig, sellerId: e.target.value })} />
+            <Select label={t('ecommerce.amazonRegion')} value={amazonConfig.region} onChange={v => setAmazonConfig({ ...amazonConfig, region: v })} options={[
+              { value: 'na', label: 'North America' },
+              { value: 'eu', label: 'Europe' },
+              { value: 'fe', label: 'Far East' },
+            ]} />
+            <Button onClick={async () => {
+              await apiClient.post('/ecommerce/stores', { platform: 'amazon', name: 'Amazon Store', configJson: JSON.stringify(amazonConfig) });
+              toast.success(t('ecommerce.amazonSaved'));
+            }}>{t('actions.save')}</Button>
           </div>
         </Card>
       )}

@@ -16,4 +16,11 @@ export class EcommerceController {
     await this.ecommerceService.syncTikTokShopOrders(storeId);
     return { message: 'TikTok Shop sync completed' };
   }
+
+  @Post('stores/:storeId/sync/amazon')
+  async syncAmazon(@Param('storeId') storeId: string, @CurrentUser() user: any) {
+    await this.ecommerceService.syncAmazonProducts(storeId);
+    await this.ecommerceService.syncAmazonOrders(storeId);
+    return { message: 'Amazon sync completed' };
+  }
 }

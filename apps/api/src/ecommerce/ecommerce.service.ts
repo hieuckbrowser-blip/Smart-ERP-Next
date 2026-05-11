@@ -3,6 +3,7 @@ import { db } from '@smart-erp/database';
 import { eq, and, sql } from '@smart-erp/database/drizzle';
 import { ecommerceStores } from '@smart-erp/database/schema';
 import { TikTokShopClient, TikTokShopConfig } from './tiktokshop.client';
+import { AmazonClient, AmazonConfig } from './amazon.client';
 
 @Injectable()
 export class EcommerceService {
