@@ -324,6 +324,24 @@
     "searchPlaceholder": "Tìm theo tên, mã kho..."
   },
 
+  "analytics": {
+    "forecast": {
+      "title": "Dự báo nhu cầu",
+      "subtitle": "Dự báo nhu cầu sản phẩm trong 30 ngày tới",
+      "productId": "Mã sản phẩm",
+      "table": {
+        "date": "Ngày",
+        "predicted": "Dự báo",
+        "lower": "Cận dưới",
+        "upper": "Cận trên"
+      },
+      "metrics": {
+        "mape": "MAPE",
+        "reorder": "Gợi ý đặt hàng",
+        "confidence": "Độ tin cậy"
+      }
+    }
+  },
   "reports": {
     "cashflow": {
       "title": "Dự báo dòng tiền",

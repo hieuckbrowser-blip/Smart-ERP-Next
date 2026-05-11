@@ -324,6 +324,24 @@
     "searchPlaceholder": "Search by name, code..."
   },
 
+  "analytics": {
+    "forecast": {
+      "title": "Demand Forecast",
+      "subtitle": "Product demand forecast for the next 30 days",
+      "productId": "Product ID",
+      "table": {
+        "date": "Date",
+        "predicted": "Forecast",
+        "lower": "Lower bound",
+        "upper": "Upper bound"
+      },
+      "metrics": {
+        "mape": "MAPE",
+        "reorder": "Suggested order",
+        "confidence": "Confidence"
+      }
+    }
+  },
   "reports": {
     "cashflow": {
       "title": "Cashflow Forecast",
