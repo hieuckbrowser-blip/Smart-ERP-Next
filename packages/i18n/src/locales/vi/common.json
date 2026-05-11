@@ -536,5 +536,19 @@
       "rejected": "Chứng từ bị từ chối",
       "needApproval": "Cần phê duyệt của bạn"
     }
+  },
+  "advanced_reports": {
+    "title": "Báo cáo nâng cao",
+    "templates": "Mẫu báo cáo",
+    "create_template": "Tạo mẫu",
+    "template_name": "Tên mẫu",
+    "sql_query": "Câu lệnh SQL",
+    "parameters": "Tham số",
+    "run_report": "Chạy báo cáo",
+    "schedule": "Lên lịch",
+    "monthly_revenue": "Doanh thu theo tháng",
+    "order_count": "Số đơn hàng",
+    "total_revenue": "Tổng doanh thu",
+    "avg_order_value": "Giá trị đơn hàng TB"
   }
 }

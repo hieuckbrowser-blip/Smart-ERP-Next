@@ -536,5 +536,19 @@
       "rejected": "Document rejected",
       "needApproval": "Your approval is needed"
     }
+  },
+  "advanced_reports": {
+    "title": "Advanced Reports",
+    "templates": "Report Templates",
+    "create_template": "Create Template",
+    "template_name": "Template name",
+    "sql_query": "SQL query",
+    "parameters": "Parameters",
+    "run_report": "Run report",
+    "schedule": "Schedule",
+    "monthly_revenue": "Monthly Revenue",
+    "order_count": "Order count",
+    "total_revenue": "Total revenue",
+    "avg_order_value": "Avg order value"
   }
 }
