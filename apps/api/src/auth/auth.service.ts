@@ -6,6 +6,7 @@ import { users } from "@smart-erp/database/schema";
 import { eq } from "@smart-erp/database/drizzle";
 import { UsersService } from "../users/users.service";
 import { NotificationsGateway } from "../notifications/notifications.gateway";
+import { I18nService } from "../i18n/i18n.service";
 
 @Injectable()
 export class AuthService {
@@ -13,6 +14,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private notificationsGateway: NotificationsGateway,
+    private i18n: I18nService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
@@ -52,7 +54,7 @@ export class AuthService {
     tenantId?: string,
   ) {
     if (!tenantId) {
-      throw new BadRequestException("tenantId is required");
+      throw new BadRequestException(this.i18n.t('validation.required', undefined, { field: 'tenantId' }));
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);

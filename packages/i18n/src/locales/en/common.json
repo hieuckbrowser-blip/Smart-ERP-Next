@@ -436,7 +436,7 @@
   },
 
   "validation": {
-    "required": "This field is required",
+    "required": "{{field}} is required",
     "email": "Invalid email address",
     "minLength": "Minimum {{min}} characters",
     "maxLength": "Maximum {{max}} characters",

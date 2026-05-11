@@ -436,7 +436,7 @@
   },
 
   "validation": {
-    "required": "Trường này là bắt buộc",
+    "required": "Trường {{field}} là bắt buộc",
     "email": "Email không hợp lệ",
     "minLength": "Tối thiểu {{min}} ký tự",
     "maxLength": "Tối đa {{max}} ký tự",
