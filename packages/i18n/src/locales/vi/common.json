@@ -466,6 +466,11 @@
     "keepLocal": "Giữ bản cục bộ",
     "keepRemote": "Giữ bản máy chủ"
   },
+  "chat": {
+    "users": "Người dùng",
+    "typeMessage": "Nhập tin nhắn...",
+    "selectUser": "Chọn người dùng để bắt đầu trò chuyện"
+  },
   "common": {
     "noNotifications": "Không có thông báo nào",
     "loading": "Đang tải...",

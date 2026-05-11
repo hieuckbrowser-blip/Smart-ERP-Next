@@ -466,6 +466,11 @@
     "keepLocal": "Keep local",
     "keepRemote": "Keep server"
   },
+  "chat": {
+    "users": "Users",
+    "typeMessage": "Type a message...",
+    "selectUser": "Select a user to start chatting"
+  },
   "common": {
     "noNotifications": "No notifications",
     "loading": "Loading...",
