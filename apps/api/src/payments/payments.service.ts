@@ -98,7 +98,7 @@ export class PaymentsService {
       .select()
       .from(payments)
       .where(and(eq(payments.tenantId, tenantId), eq(payments.id, id)));
-    if (!payment) throw new NotFoundException("Không tìm thấy phiếu thu/chi");
+    if (!payment) throw new NotFoundException("Payment record not found");
     return payment;
   }
 
