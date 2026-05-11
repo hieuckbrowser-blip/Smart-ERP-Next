@@ -288,6 +288,9 @@
     "searchPlaceholder": "Tìm theo mã đơn, nhà cung cấp..."
   },
 
+  "pos": {
+    "createOrderFailed": "Tạo đơn hàng thất bại. Vui lòng thử lại."
+  },
   "payments": {
     "title": "Thu chi",
     "receipt": "Phiếu thu",

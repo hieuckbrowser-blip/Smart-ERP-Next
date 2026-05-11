@@ -208,7 +208,7 @@ export default function POSPage() {
       setCashReceived(0);
     } catch (err) {
       console.error('Failed to create order:', err);
-      alert('Tạo đơn hàng thất bại. Vui lòng thử lại.');
+      alert(t('pos.createOrderFailed'));
     } finally {
       setSubmitting(false);
     }

@@ -288,6 +288,9 @@
     "searchPlaceholder": "Search by PO code, supplier..."
   },
 
+  "pos": {
+    "createOrderFailed": "Create order failed. Please try again."
+  },
   "payments": {
     "title": "Payments",
     "receipt": "Receipt",
