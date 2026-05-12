@@ -568,6 +568,8 @@
     "requestedBy": "Requested by",
     "noPending": "No pending approvals",
     "requestedBy": "Requested by",
+    "noPending": "No pending approvals",
+    "requestedBy": "Requested by",
     "title": "Approvals",
     "rules": "Approval Rules",
     "ruleName": "Rule name",

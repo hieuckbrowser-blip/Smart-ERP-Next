@@ -25,11 +25,13 @@
 
 ## Offline‑First & Real‑Time
 - **Real‑time activity notifications** via WebSockets (tenant‑scoped)
+- **Real‑time approval requests** – approvers get instant notifications and can approve/reject directly from the web UI
 - **Sync status indicator** with pending changes count and manual/auto retry
 - **Conflict resolution** UI for offline edits (powered by Dexie + background sync)
 
 ## Offline‑First & Real‑Time
 - **Real‑time activity notifications** via WebSockets (tenant‑scoped)
+- **Real‑time approval requests** – approvers get instant notifications and can approve/reject directly from the web UI
 - **Sync status indicator** with pending changes count and manual/auto retry
 - **Conflict resolution** UI for offline edits (powered by Dexie + background sync)
 

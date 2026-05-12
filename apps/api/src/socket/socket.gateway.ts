@@ -47,6 +47,9 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
       client.data.user = { sub: payload.sub, tenantId: payload.tenantId };
       // Join a room identified by tenantId to receive tenant-specific broadcasts
       client.join(`tenant:${payload.tenantId}`);
+      client.join(`user:${payload.sub}`);
+      client.join(`user:${payload.sub}`);
+      client.join(`user:${payload.sub}`);
       this.logger.log(`Client connected: ${client.id}, tenant: ${payload.tenantId}`);
     } catch (err) {
       this.logger.error(`Connection refused: ${err.message}`);
@@ -68,6 +71,18 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
    */
   emitActivity(tenantId: string, payload: ActivityPayload) {
     this.server.to(`tenant:${tenantId}`).emit('activity', payload);
+  }
+
+  emitNotification(userId: string, notification: { type: string; title: string; body: string; data?: any }) {
+    this.server.to(`user:${userId}`).emit('notification', notification);
+  }
+
+  emitNotification(userId: string, notification: { type: string; title: string; body: string; data?: any }) {
+    this.server.to(`user:${userId}`).emit('notification', notification);
+  }
+
+  emitNotification(userId: string, notification: { type: string; title: string; body: string; data?: any }) {
+    this.server.to(`user:${userId}`).emit('notification', notification);
   }
 
   private extractTokenFromHandshake(client: Socket): string | null {
