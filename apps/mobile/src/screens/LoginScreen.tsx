@@ -9,9 +9,9 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  Alert,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
+import { useTranslation } from "@smart-erp/i18n";
 
 const API_BASE = process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:3000";
 
@@ -20,6 +20,7 @@ interface LoginScreenProps {
 }
 
 export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -28,7 +29,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
-      setError("Vui lòng nhập email và mật khẩu");
+      setError(t('auth.validation.required'));
       return;
     }
     setError("");
@@ -42,7 +43,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.message ?? "Đăng nhập thất bại");
+        throw new Error(data.message ?? t('auth.loginFailed'));
       }
 
       const { access_token, user } = await res.json();
@@ -55,7 +56,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
 
       onLoginSuccess(user);
     } catch (err: any) {
-      setError(err.message ?? "Đăng nhập thất bại");
+      setError(err.message ?? t('auth.loginFailed'));
     } finally {
       setLoading(false);
     }
@@ -76,11 +77,11 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
             <Text style={styles.logoText}>ERP</Text>
           </View>
           <Text style={styles.appName}>Smart ERP Next</Text>
-          <Text style={styles.tagline}>Hệ thống quản trị doanh nghiệp thông minh</Text>
+          <Text style={styles.tagline}>{t('tagline')}</Text>
         </View>
 
         <View style={styles.form}>
-          <Text style={styles.title}>Đăng nhập</Text>
+          <Text style={styles.title}>{t('auth.login')}</Text>
 
           {error ? (
             <View style={styles.errorBox}>
@@ -89,7 +90,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
           ) : null}
 
           <View style={styles.field}>
-            <Text style={styles.label}>Email</Text>
+            <Text style={styles.label}>{t('auth.email')}</Text>
             <TextInput
               style={styles.input}
               value={email}
@@ -104,7 +105,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
           </View>
 
           <View style={styles.field}>
-            <Text style={styles.label}>Mật khẩu</Text>
+            <Text style={styles.label}>{t('auth.password')}</Text>
             <View style={styles.passwordRow}>
               <TextInput
                 style={[styles.input, styles.passwordInput]}
@@ -134,7 +135,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
             {loading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text style={styles.loginBtnText}>Đăng nhập</Text>
+              <Text style={styles.loginBtnText}>{t('auth.login')}</Text>
             )}
           </TouchableOpacity>
 
@@ -145,7 +146,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
               setPassword("demo123456");
             }}
           >
-            <Text style={styles.demoBtnText}>Dùng tài khoản demo</Text>
+            <Text style={styles.demoBtnText}>{t('auth.demo')}</Text>
           </TouchableOpacity>
         </View>
 

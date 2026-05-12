@@ -3,6 +3,7 @@ import {
   View, Text, ScrollView, StyleSheet,
   ActivityIndicator, RefreshControl,
 } from 'react-native';
+import { useTranslation } from '@smart-erp/i18n';
 import { api } from '../lib/api';
 import { formatVND } from '@smart-erp/utils';
 import { ActivityList } from '../components/ActivityList';
@@ -30,16 +31,12 @@ const STATUS_COLORS: Record<string, string> = {
   cancelled: '#dc2626', draft: '#6b7280', shipped: '#7c3aed',
 };
 
-const STATUS_LABELS: Record<string, string> = {
-  confirmed: 'Xác nhận', processing: 'Xử lý', delivered: 'Đã giao',
-  cancelled: 'Đã hủy', draft: 'Nháp', shipped: 'Giao vận',
-};
-
 interface DashboardScreenProps {
   user: any;
 }
 
 export default function DashboardScreen({ user }: DashboardScreenProps) {
+  const { t } = useTranslation();
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -76,7 +73,7 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
     return (
       <View style={styles.center}>
         <ActivityIndicator size="large" color="#3b82f6" />
-        <Text style={styles.loadingText}>Đang tải...</Text>
+        <Text style={styles.loadingText}>{t('common.loading')}</Text>
       </View>
     );
   }
@@ -99,19 +96,19 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
           </Text>
         </View>
         <View>
-          <Text style={styles.welcomeText}>Chào mừng</Text>
+          <Text style={styles.welcomeText}>{t('dashboard.welcome')}</Text>
           <Text style={styles.userName} numberOfLines={1}>{user?.name ?? user?.email}</Text>
         </View>
       </View>
 
-      <Text style={styles.sectionTitle}>Tổng quan hôm nay</Text>
+      <Text style={styles.sectionTitle}>{t('dashboard.sectionTitle')}</Text>
 
       <View style={styles.statsGrid}>
         {[
-          { label: 'Doanh thu', value: formatVND(stats.todayRevenue), color: '#3b82f6' },
-          { label: 'Đơn hàng', value: stats.todayOrders.toString(), color: '#10b981' },
-          { label: 'Chờ duyệt', value: stats.pendingApprovals.toString(), color: '#f59e0b', danger: stats.pendingApprovals > 0 },
-          { label: 'Sắp hết hàng', value: stats.lowStockCount.toString(), color: stats.lowStockCount > 0 ? '#ef4444' : '#10b981', danger: stats.lowStockCount > 0 },
+          { label: t('dashboard.todayRevenue'), value: formatVND(stats.todayRevenue), color: '#3b82f6' },
+          { label: t('dashboard.todayOrders'), value: stats.todayOrders.toString(), color: '#10b981' },
+          { label: t('dashboard.pendingApprovals'), value: stats.pendingApprovals.toString(), color: '#f59e0b', danger: stats.pendingApprovals > 0 },
+          { label: t('dashboard.lowStock'), value: stats.lowStockCount.toString(), color: stats.lowStockCount > 0 ? '#ef4444' : '#10b981', danger: stats.lowStockCount > 0 },
         ].map((card) => (
           <View key={card.label} style={[styles.statCard, { borderLeftColor: card.color }]}>
             <Text style={styles.statLabel}>{card.label}</Text>
@@ -122,7 +119,7 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
 
       {stats.insights.length > 0 && (
         <>
-          <Text style={styles.sectionTitle}>Gợi ý</Text>
+          <Text style={styles.sectionTitle}>{t('dashboard.insights')}</Text>
           <View style={styles.insightsContainer}>
             {stats.insights.map((insight, i) => (
               <View key={i} style={[
@@ -139,7 +136,7 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
 
       {stats.recentOrders.length > 0 && (
         <>
-          <Text style={styles.sectionTitle}>Đơn hàng gần đây</Text>
+          <Text style={styles.sectionTitle}>{t('dashboard.recentOrders')}</Text>
           <View style={styles.ordersContainer}>
             {stats.recentOrders.map((order) => (
               <View key={order.id} style={styles.orderRow}>
@@ -155,7 +152,7 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
                   <Text style={styles.orderTotal}>{formatVND(order.total)}</Text>
                   <View style={[styles.statusBadge, { backgroundColor: `${STATUS_COLORS[order.status] ?? '#6b7280'}20` }]}>
                     <Text style={[styles.statusText, { color: STATUS_COLORS[order.status] ?? '#6b7280' }]}>
-                      {STATUS_LABELS[order.status] ?? order.status}
+                      {t(`orders.status.${order.status}`, { defaultValue: order.status })}
                     </Text>
                   </View>
                 </View>
@@ -171,7 +168,7 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
       {lastSync && (
         <View style={styles.lastSyncContainer}>
           <Text style={styles.lastSyncText}>
-            Đồng bộ lúc: {lastSync.toLocaleString('vi-VN')}
+            {t('sync.lastSync')}: {lastSync.toLocaleString('vi-VN')}
           </Text>
         </View>
       )}

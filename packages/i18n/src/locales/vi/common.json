@@ -181,9 +181,6 @@
     "comments": "Nhận xét",
     "noComments": "Chưa có nhận xét nào",
     "commentPlaceholder": "Viết nhận xét...",
-    "comments": "Nhận xét",
-    "noComments": "Chưa có nhận xét nào",
-    "commentPlaceholder": "Viết nhận xét...",
     "customer": "Khách hàng",
     "date": "Ngày tạo",
     "total": "Tổng tiền",
@@ -209,6 +206,14 @@
       "online": "Online",
       "phone": "Điện thoại",
       "wholesale": "Bán sỉ"
+    },
+    "status": {
+      "draft": "Nháp",
+      "confirmed": "Xác nhận",
+      "processing": "Xử lý",
+      "shipped": "Giao vận",
+      "delivered": "Đã giao",
+      "cancelled": "Đã hủy"
     }
   },
 
@@ -289,11 +294,17 @@
     "adjustFailed": "Điều chỉnh thất bại",
     "noTransactions": "Chưa có giao dịch",
     "allInStock": "Tất cả sản phẩm đều đủ hàng ✓",
-    "demandForecast": "Dự báo nhu cầu (30 ngày)",
-    "avgDailyDemand": "Trung bình ngày",
-    "total30d": "Tổng 30 ngày tới",
-    "reorderSuggestion": "Gợi ý đặt hàng",
-    "insufficientData": "Chưa đủ dữ liệu bán hàng"
+    "allStockOK": "Tất cả kho đều ổn",
+    "outOfStock": "Hết hàng",
+    "totalProducts": "Tổng sản phẩm",
+    "totalUnits": "Tổng đơn vị",
+    "summary": "Tổng quan",
+    "stock": "Tồn kho",
+    "minStock": "Tối thiểu",
+    "reorderPoints": "Điểm đặt hàng lại",
+    "reorderQuantity": "SL đặt lại",
+    "noReorderSuggestions": "Không có gợi ý đặt hàng",
+    "fetchSuggestionsError": "Không thể tải gợi ý"
   },
 
   "purchasing": {

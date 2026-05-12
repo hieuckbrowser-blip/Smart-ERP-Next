@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
+import { useTranslation } from '@smart-erp/i18n';
 import { api } from '../lib/api';
 
 interface ReorderSuggestion {
@@ -21,6 +22,7 @@ interface ReorderSuggestion {
 }
 
 export default function ReorderPointsScreen() {
+  const { t } = useTranslation();
   const [suggestions, setSuggestions] = useState<ReorderSuggestion[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
@@ -31,7 +33,7 @@ export default function ReorderPointsScreen() {
       const res = await api.get('/inventory/reorder-suggestions');
       setSuggestions(res.data || []);
     } catch (err: any) {
-      Alert.alert('Lỗi', err.response?.data?.message || 'Không thể tải gợi ý');
+      Alert.alert(t('common.error'), err.response?.data?.message || t('inventory.fetchSuggestionsError'));
     } finally {
       setLoading(false);
     }
@@ -46,7 +48,7 @@ export default function ReorderPointsScreen() {
       });
       await fetchSuggestions();
     } catch (err: any) {
-      Alert.alert('Lỗi', err.response?.data?.message || 'Cập nhật thất bại');
+      Alert.alert(t('common.error'), err.response?.data?.message || t('inventory.updateFailed'));
     } finally {
       setUpdating(null);
     }
@@ -60,17 +62,17 @@ export default function ReorderPointsScreen() {
     return (
       <View style={styles.center}>
         <ActivityIndicator size="large" />
-        <Text style={styles.loadingText}>Đang tải...</Text>
+        <Text style={styles.loadingText}>{t('common.loading')}</Text>
       </View>
     );
   }
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>Điểm đặt hàng lại</Text>
+      <Text style={styles.title}>{t('inventory.reorderPoints')}</Text>
       {suggestions.length === 0 ? (
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>Không có gợi ý đặt hàng</Text>
+          <Text style={styles.emptyText}>{t('inventory.noReorderSuggestions')}</Text>
         </View>
       ) : (
         suggestions.map((item) => (
@@ -80,11 +82,11 @@ export default function ReorderPointsScreen() {
               <Text style={styles.sku}>{item.sku}</Text>
             </View>
             <View style={styles.row}>
-              <Text style={styles.label}>Tồn kho:</Text>
+              <Text style={styles.label}>{t('products.stock')}:</Text>
               <Text style={styles.value}>{item.stock}</Text>
             </View>
             <View style={styles.row}>
-              <Text style={styles.label}>Tối thiểu:</Text>
+              <Text style={styles.label}>{t('inventory.minStock')}:</Text>
               <TextInput
                 style={styles.input}
                 keyboardType="numeric"
@@ -97,7 +99,7 @@ export default function ReorderPointsScreen() {
               />
             </View>
             <View style={styles.row}>
-              <Text style={styles.label}>SL đặt lại:</Text>
+              <Text style={styles.label}>{t('inventory.reorderQuantity')}:</Text>
               <TextInput
                 style={styles.input}
                 keyboardType="numeric"
@@ -110,7 +112,7 @@ export default function ReorderPointsScreen() {
               />
             </View>
             <View style={styles.row}>
-              <Text style={styles.label}>Gợi ý:</Text>
+              <Text style={styles.label}>{t('inventory.suggestedOrder')}:</Text>
               <Text style={[styles.value, styles.suggested]}>
                 {item.suggestedOrderQuantity > 0 ? item.suggestedOrderQuantity : '—'}
               </Text>

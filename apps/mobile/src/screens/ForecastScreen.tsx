@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
+import { useTranslation } from '@smart-erp/i18n';
 import { api } from '../lib/api';
 
 interface Product {
@@ -27,6 +28,7 @@ interface Forecast {
 }
 
 export default function ForecastScreen() {
+  const { t } = useTranslation();
   const [products, setProducts] = useState<Product[]>([]);
   const [forecasts, setForecasts] = useState<Record<string, Forecast>>({});
   const [loading, setLoading] = useState(true);
@@ -43,7 +45,7 @@ export default function ForecastScreen() {
       setProducts(res.data.items || []);
     } catch (err) {
       console.error(err);
-      Alert.alert('Lỗi', 'Không thể tải danh sách sản phẩm');
+      Alert.alert(t('common.error'), t('inventory.fetchProductsError'));
     } finally {
       setLoading(false);
     }
@@ -63,23 +65,23 @@ export default function ForecastScreen() {
       }));
     } catch (err) {
       console.error(err);
-      Alert.alert('Lỗi', 'Không thể dự báo');
+      Alert.alert(t('common.error'), t('inventory.forecastError'));
     } finally {
       setForecasting(null);
     }
   };
 
   const getStatus = (stock: number, minStock: number) => {
-    if (stock <= 0) return { label: 'Hết hàng', color: '#dc2626' };
-    if (stock <= minStock) return { label: 'Sắp hết', color: '#f59e0b' };
-    return { label: 'Bình thường', color: '#10b981' };
+    if (stock <= 0) return { label: t('inventory.outOfStock'), color: '#dc2626' };
+    if (stock <= minStock) return { label: t('inventory.lowStock'), color: '#f59e0b' };
+    return { label: t('inventory.normal'), color: '#10b981' };
   };
 
   if (loading) {
     return (
       <View style={styles.center}>
         <ActivityIndicator size="large" color="#3b82f6" />
-        <Text style={styles.loadingText}>Đang tải...</Text>
+        <Text style={styles.loadingText}>{t('common.loading')}</Text>
       </View>
     );
   }
@@ -112,11 +114,11 @@ export default function ForecastScreen() {
                 </View>
               </View>
               <View style={styles.productFooter}>
-                <Text style={styles.stockText}>Tồn: {product.stock}</Text>
+                <Text style={styles.stockText}>{t('products.stock')}: {product.stock}</Text>
                 {isForecasting && <ActivityIndicator size="small" color="#3b82f6" />}
                 {hasForecast && !isForecasting && (
                   <Text style={styles.suggestedText}>
-                    Gợi ý: {forecasts[product.id].suggested_order_quantity}
+                    {t('inventory.suggestedOrder')}: {forecasts[product.id].suggested_order_quantity}
                   </Text>
                 )}
               </View>
@@ -132,17 +134,17 @@ export default function ForecastScreen() {
               {products.find(p => p.id === selectedProduct)?.name}
             </Text>
             <Text style={styles.suggestedOrder}>
-              Gợi ý đặt hàng: {forecasts[selectedProduct].suggested_order_quantity}
+              {t('inventory.suggestedOrder')}: {forecasts[selectedProduct].suggested_order_quantity}
             </Text>
           </View>
 
-          <Text style={styles.sectionTitle}>Dự báo 7 ngày tới</Text>
+          <Text style={styles.sectionTitle}>{t('analytics.forecast.title')}</Text>
           <View style={styles.table}>
             <View style={styles.tableHeader}>
-              <Text style={[styles.tableHeaderCell, { flex: 0.8 }]}>Ngày</Text>
-              <Text style={styles.tableHeaderCell}>Dự báo</Text>
-              <Text style={[styles.tableHeaderCell, { flex: 0.6 }]}>Thấp</Text>
-              <Text style={[styles.tableHeaderCell, { flex: 0.6 }]}>Cao</Text>
+              <Text style={[styles.tableHeaderCell, { flex: 0.8 }]}>{t('analytics.forecast.table.date')}</Text>
+              <Text style={styles.tableHeaderCell}>{t('analytics.forecast.table.predicted')}</Text>
+              <Text style={[styles.tableHeaderCell, { flex: 0.6 }]}>Lower</Text>
+              <Text style={[styles.tableHeaderCell, { flex: 0.6 }]}>Upper</Text>
             </View>
             {forecasts[selectedProduct].predicted_daily_demand.slice(0, 7).map((day, idx) => (
               <View key={idx} style={styles.tableRow}>

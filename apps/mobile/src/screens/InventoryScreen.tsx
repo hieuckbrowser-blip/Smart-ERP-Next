@@ -8,6 +8,7 @@ import {
   RefreshControl,
   TouchableOpacity,
 } from "react-native";
+import { useTranslation } from "@smart-erp/i18n";
 import { api } from "../lib/api";
 import { formatVND } from "@smart-erp/utils";
 
@@ -30,6 +31,7 @@ interface InventorySummary {
 }
 
 export default function InventoryScreen() {
+  const { t } = useTranslation();
   const [summary, setSummary] = useState<InventorySummary | null>(null);
   const [lowStockItems, setLowStockItems] = useState<LowStockItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -65,7 +67,7 @@ export default function InventoryScreen() {
     return (
       <View style={styles.center}>
         <ActivityIndicator size="large" color="#3b82f6" />
-        <Text style={styles.loadingText}>Đang tải...</Text>
+        <Text style={styles.loadingText}>{t('common.loading')}</Text>
       </View>
     );
   }
@@ -78,7 +80,7 @@ export default function InventoryScreen() {
           style={[styles.tab, activeTab === "summary" && styles.tabActive]}
         >
           <Text style={[styles.tabText, activeTab === "summary" && styles.tabTextActive]}>
-            Tổng quan
+            {t('inventory.summary')}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -86,7 +88,7 @@ export default function InventoryScreen() {
           style={[styles.tab, activeTab === "lowstock" && styles.tabActive]}
         >
           <Text style={[styles.tabText, activeTab === "lowstock" && styles.tabTextActive]}>
-            Sắp hết ({lowStockItems.length})
+            {t('inventory.lowStock')} ({lowStockItems.length})
           </Text>
         </TouchableOpacity>
       </View>
@@ -94,11 +96,11 @@ export default function InventoryScreen() {
       {activeTab === "summary" && summary && (
         <FlatList
           data={[
-            { label: "Tổng sản phẩm", value: summary.totalProducts.toLocaleString("vi-VN"), color: "#3b82f6" },
-            { label: "Tổng đơn vị", value: summary.totalUnits.toLocaleString("vi-VN"), color: "#10b981" },
-            { label: "Giá trị tồn kho", value: formatVND(summary.totalValue), color: "#8b5cf6" },
-            { label: "Sắp hết hàng", value: summary.lowStock.toString(), color: summary.lowStock > 0 ? "#f59e0b" : "#10b981", danger: summary.lowStock > 0 },
-            { label: "Hết hàng", value: summary.outOfStock.toString(), color: summary.outOfStock > 0 ? "#ef4444" : "#10b981", danger: summary.outOfStock > 0 },
+            { label: t('inventory.totalProducts'), value: summary.totalProducts.toLocaleString("vi-VN"), color: "#3b82f6" },
+            { label: t('inventory.totalUnits'), value: summary.totalUnits.toLocaleString("vi-VN"), color: "#10b981" },
+            { label: t('inventory.stockValue'), value: formatVND(summary.totalValue), color: "#8b5cf6" },
+            { label: t('inventory.lowStock'), value: summary.lowStock.toString(), color: summary.lowStock > 0 ? "#f59e0b" : "#10b981", danger: summary.lowStock > 0 },
+            { label: t('inventory.outOfStock'), value: summary.outOfStock.toString(), color: summary.outOfStock > 0 ? "#ef4444" : "#10b981", danger: summary.outOfStock > 0 },
           ]}
           keyExtractor={(item) => item.label}
           contentContainerStyle={styles.list}
@@ -123,7 +125,7 @@ export default function InventoryScreen() {
           ListEmptyComponent={
             <View style={styles.center}>
               <Text style={styles.emptyIcon}>✅</Text>
-              <Text style={styles.emptyText}>Tất cả kho đều ổn</Text>
+              <Text style={styles.emptyText}>{t('inventory.allStockOK')}</Text>
             </View>
           }
           renderItem={({ item }) => {
@@ -137,10 +139,10 @@ export default function InventoryScreen() {
                 <View style={styles.lowStockRight}>
                   <View style={[styles.stockBadge, { backgroundColor: isOut ? "#fee2e2" : "#fef3c7" }]}>
                     <Text style={[styles.stockText, { color: isOut ? "#dc2626" : "#d97706" }]}>
-                      {isOut ? "Hết hàng" : `Còn ${item.stock}`}
+                      {isOut ? t('inventory.outOfStock') : `${t('inventory.stock')}: ${item.stock}`}
                     </Text>
                   </View>
-                  <Text style={styles.minStock}>Tối thiểu: {item.minStock ?? 0}</Text>
+                  <Text style={styles.minStock}>{t('inventory.minStock')}: {item.minStock ?? 0}</Text>
                 </View>
               </View>
             );

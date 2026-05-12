@@ -3,6 +3,7 @@ import {
   View, Text, FlatList, TextInput, TouchableOpacity,
   StyleSheet, ActivityIndicator, RefreshControl,
 } from 'react-native';
+import { useTranslation } from '@smart-erp/i18n';
 import { api, type PaginatedResponse } from '../lib/api';
 import { formatVND } from '@smart-erp/utils';
 
@@ -18,19 +19,20 @@ interface Customer {
   loyaltyPoints: string | null;
 }
 
-const GROUP_LABELS: Record<string, { label: string; color: string }> = {
-  retail:    { label: 'Bán lẻ', color: '#6b7280' },
-  wholesale: { label: 'Bán sỉ', color: '#2563eb' },
-  vip:       { label: 'VIP', color: '#d97706' },
-};
-
 export default function CustomersScreen() {
+  const { t } = useTranslation();
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+
+  const GROUP_LABELS: Record<string, { label: string; color: string }> = {
+    retail:    { label: t('customers.groups.retail'), color: '#6b7280' },
+    wholesale: { label: t('customers.groups.wholesale'), color: '#2563eb' },
+    vip:       { label: t('customers.groups.vip'), color: '#d97706' },
+  };
 
   const fetchCustomers = useCallback(async (p = 1, s = search, append = false) => {
     try {
@@ -80,16 +82,16 @@ export default function CustomersScreen() {
         {item.phone && <Text style={styles.contact}>📞 {item.phone}</Text>}
         <View style={styles.stats}>
           <View style={styles.stat}>
-            <Text style={styles.statLabel}>Tổng mua</Text>
+            <Text style={styles.statLabel}>{t('customers.totalPurchased')}</Text>
             <Text style={styles.statValue}>{formatVND(item.totalPurchased)}</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statLabel}>Công nợ</Text>
+            <Text style={styles.statLabel}>{t('customers.currentDebt')}</Text>
             <Text style={[styles.statValue, hasDebt && styles.debtValue]}>{formatVND(item.currentDebt)}</Text>
           </View>
           {item.loyaltyPoints && parseFloat(item.loyaltyPoints) > 0 && (
             <View style={styles.stat}>
-              <Text style={styles.statLabel}>Điểm tích lũy</Text>
+              <Text style={styles.statLabel}>{t('customers.loyaltyPoints')}</Text>
               <Text style={[styles.statValue, { color: '#d97706' }]}>
                 {parseFloat(item.loyaltyPoints).toLocaleString('vi-VN')}
               </Text>
@@ -107,20 +109,20 @@ export default function CustomersScreen() {
           style={styles.searchInput}
           value={search}
           onChangeText={setSearch}
-          placeholder="Tìm khách hàng..."
+          placeholder={t('customers.searchPlaceholder')}
           placeholderTextColor="#9ca3af"
           returnKeyType="search"
           onSubmitEditing={handleSearch}
         />
         <TouchableOpacity style={styles.searchBtn} onPress={handleSearch}>
-          <Text style={styles.searchBtnText}>Tìm</Text>
+          <Text style={styles.searchBtnText}>{t('actions.search')}</Text>
         </TouchableOpacity>
       </View>
 
       {loading && !refreshing ? (
         <View style={styles.center}>
           <ActivityIndicator size="large" color="#3b82f6" />
-          <Text style={styles.loadingText}>Đang tải...</Text>
+          <Text style={styles.loadingText}>{t('common.loading')}</Text>
         </View>
       ) : (
         <FlatList
@@ -131,7 +133,7 @@ export default function CustomersScreen() {
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor="#3b82f6" />}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.3}
-          ListEmptyComponent={<View style={styles.center}><Text style={styles.emptyText}>Không có khách hàng</Text></View>}
+          ListEmptyComponent={<View style={styles.center}><Text style={styles.emptyText}>{t('common.noData')}</Text></View>}
           ListFooterComponent={hasMore ? <ActivityIndicator style={{ marginVertical: 16 }} color="#3b82f6" /> : null}
         />
       )}
