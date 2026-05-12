@@ -21,12 +21,27 @@ interface Product {
 
 export default function ProductsScreen() {
   const { t } = useTranslation('common');
+  const { socket } = useSocket();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+
+  // Real‑time stock updates
+  useEffect(() => {
+    if (!socket) return;
+    const handleStockUpdate = (data: { productId: string; newStock: number }) => {
+      setProducts(prev =>
+        prev.map(p => (p.id === data.productId ? { ...p, stock: data.newStock } : p))
+      );
+    };
+    socket.on('stock-updated', handleStockUpdate);
+    return () => {
+      socket.off('stock-updated', handleStockUpdate);
+    };
+  }, [socket]);
   const [isOffline, setIsOffline] = useState(false);
 
   const fetchProducts = async (p = 1, s = search, append = false) => {
