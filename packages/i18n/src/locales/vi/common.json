@@ -562,6 +562,12 @@
     "cannotDeleteBase": "Không thể xóa tiền tệ cơ sở của tổ chức"
   },
   "approvals": {
+    "noPending": "Không có phê duyệt đang chờ",
+    "requestedBy": "Yêu cầu bởi",
+    "noPending": "Không có phê duyệt đang chờ",
+    "requestedBy": "Yêu cầu bởi",
+    "noPending": "Không có phê duyệt đang chờ",
+    "requestedBy": "Yêu cầu bởi",
     "title": "Phê duyệt",
     "rules": "Quy tắc phê duyệt",
     "ruleName": "Tên quy tắc",

@@ -562,6 +562,12 @@
     "cannotDeleteBase": "Cannot delete the base currency of the tenant"
   },
   "approvals": {
+    "noPending": "No pending approvals",
+    "requestedBy": "Requested by",
+    "noPending": "No pending approvals",
+    "requestedBy": "Requested by",
+    "noPending": "No pending approvals",
+    "requestedBy": "Requested by",
     "title": "Approvals",
     "rules": "Approval Rules",
     "ruleName": "Rule name",
