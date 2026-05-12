@@ -7,10 +7,8 @@ import {
   TextInput,
   ActivityIndicator,
   Alert,
-  TouchableOpacity,
 } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import { apiClient } from '../lib/api';
+import { api } from '../lib/api';
 
 interface ReorderSuggestion {
   id: string;
@@ -23,7 +21,6 @@ interface ReorderSuggestion {
 }
 
 export default function ReorderPointsScreen() {
-  const { t } = useTranslation('common');
   const [suggestions, setSuggestions] = useState<ReorderSuggestion[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
@@ -31,10 +28,10 @@ export default function ReorderPointsScreen() {
   const fetchSuggestions = async () => {
     try {
       setLoading(true);
-      const res = await apiClient.get('/inventory/reorder-suggestions');
-      setSuggestions(res.data);
+      const res = await api.get('/inventory/reorder-suggestions');
+      setSuggestions(res.data || []);
     } catch (err: any) {
-      Alert.alert(t('common.error'), err.response?.data?.message || t('inventory.fetchSuggestionsError'));
+      Alert.alert('Lỗi', err.response?.data?.message || 'Không thể tải gợi ý');
     } finally {
       setLoading(false);
     }
@@ -43,13 +40,13 @@ export default function ReorderPointsScreen() {
   const updateReorderPoints = async (productId: string, minStock?: number, reorderQuantity?: number) => {
     setUpdating(productId);
     try {
-      await apiClient.patch(`/products/${productId}/reorder-points`, {
+      await api.patch(`/products/${productId}/reorder-points`, {
         minStock,
         reorderQuantity,
       });
-      await fetchSuggestions(); // refresh list
+      await fetchSuggestions();
     } catch (err: any) {
-      Alert.alert(t('common.error'), err.response?.data?.message || t('inventory.updateFailed'));
+      Alert.alert('Lỗi', err.response?.data?.message || 'Cập nhật thất bại');
     } finally {
       setUpdating(null);
     }
@@ -63,17 +60,17 @@ export default function ReorderPointsScreen() {
     return (
       <View style={styles.center}>
         <ActivityIndicator size="large" />
-        <Text style={styles.loadingText}>{t('common.loading')}</Text>
+        <Text style={styles.loadingText}>Đang tải...</Text>
       </View>
     );
   }
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>{t('inventory.reorderPoints')}</Text>
+      <Text style={styles.title}>Điểm đặt hàng lại</Text>
       {suggestions.length === 0 ? (
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>{t('inventory.noReorderSuggestions')}</Text>
+          <Text style={styles.emptyText}>Không có gợi ý đặt hàng</Text>
         </View>
       ) : (
         suggestions.map((item) => (
@@ -83,11 +80,11 @@ export default function ReorderPointsScreen() {
               <Text style={styles.sku}>{item.sku}</Text>
             </View>
             <View style={styles.row}>
-              <Text style={styles.label}>{t('inventory.stock')}:</Text>
+              <Text style={styles.label}>Tồn kho:</Text>
               <Text style={styles.value}>{item.stock}</Text>
             </View>
             <View style={styles.row}>
-              <Text style={styles.label}>{t('inventory.reorderPoint')}:</Text>
+              <Text style={styles.label}>Tối thiểu:</Text>
               <TextInput
                 style={styles.input}
                 keyboardType="numeric"
@@ -100,7 +97,7 @@ export default function ReorderPointsScreen() {
               />
             </View>
             <View style={styles.row}>
-              <Text style={styles.label}>{t('inventory.reorderQuantity')}:</Text>
+              <Text style={styles.label}>SL đặt lại:</Text>
               <TextInput
                 style={styles.input}
                 keyboardType="numeric"
@@ -113,7 +110,7 @@ export default function ReorderPointsScreen() {
               />
             </View>
             <View style={styles.row}>
-              <Text style={styles.label}>{t('inventory.suggestedOrder')}:</Text>
+              <Text style={styles.label}>Gợi ý:</Text>
               <Text style={[styles.value, styles.suggested]}>
                 {item.suggestedOrderQuantity > 0 ? item.suggestedOrderQuantity : '—'}
               </Text>
@@ -129,94 +126,26 @@ export default function ReorderPointsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-    paddingHorizontal: 16,
-    paddingTop: 16,
-  },
-  center: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: 12,
-    color: '#666',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    color: '#1e293b',
-  },
-  emptyContainer: {
-    padding: 40,
-    alignItems: 'center',
-  },
-  emptyText: {
-    fontSize: 16,
-    color: '#94a3b8',
-  },
+  container: { flex: 1, backgroundColor: '#f5f5f5', paddingHorizontal: 16, paddingTop: 16 },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  loadingText: { marginTop: 12, color: '#666' },
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 16, color: '#1e293b' },
+  emptyContainer: { padding: 40, alignItems: 'center' },
+  emptyText: { fontSize: 16, color: '#94a3b8' },
   card: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1,
+    backgroundColor: '#fff', borderRadius: 12, padding: 16, marginBottom: 12,
+    shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 2, elevation: 1,
   },
-  cardHeader: {
-    marginBottom: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e2e8f0',
-    paddingBottom: 8,
-  },
-  productName: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#0f172a',
-  },
-  sku: {
-    fontSize: 12,
-    color: '#64748b',
-    marginTop: 2,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 12,
-  },
-  label: {
-    fontSize: 14,
-    color: '#475569',
-    fontWeight: '500',
-  },
-  value: {
-    fontSize: 14,
-    color: '#1e293b',
-    fontWeight: '500',
-  },
-  suggested: {
-    color: '#3b82f6',
-    fontWeight: 'bold',
-  },
+  cardHeader: { marginBottom: 12, borderBottomWidth: 1, borderBottomColor: '#e2e8f0', paddingBottom: 8 },
+  productName: { fontSize: 18, fontWeight: '600', color: '#0f172a' },
+  sku: { fontSize: 12, color: '#64748b', marginTop: 2 },
+  row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 12 },
+  label: { fontSize: 14, color: '#475569', fontWeight: '500' },
+  value: { fontSize: 14, color: '#1e293b', fontWeight: '500' },
+  suggested: { color: '#3b82f6', fontWeight: 'bold' },
   input: {
-    borderWidth: 1,
-    borderColor: '#cbd5e1',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    width: 100,
-    textAlign: 'right',
-    fontSize: 14,
-    color: '#0f172a',
+    borderWidth: 1, borderColor: '#cbd5e1', borderRadius: 8, paddingHorizontal: 12,
+    paddingVertical: 6, width: 100, textAlign: 'right', fontSize: 14, color: '#0f172a',
   },
-  inlineLoader: {
-    marginTop: 12,
-  },
+  inlineLoader: { marginTop: 12 },
 });
