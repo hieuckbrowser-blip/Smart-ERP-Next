@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { api } from '../lib/api';
 import { formatVND } from '@smart-erp/utils';
+import { syncService } from '../lib/sync-service';
 import { ActivityList } from '../components/ActivityList';
 import { QuickActions } from '../components/QuickActions';
 
@@ -41,11 +42,18 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [lastSync, setLastSync] = useState<Date | null>(null);
+
+  const fetchLastSync = async () => {
+    const ts = await syncService.getLastSyncTime();
+    if (ts) setLastSync(new Date(ts));
+  };
 
   const fetchDashboard = useCallback(async () => {
     try {
       const json = await api.get<DashboardData>('/insights/dashboard');
       setData(json);
+      await fetchLastSync();
     } catch (err) {
       console.error('Dashboard fetch error:', err);
     } finally {
@@ -161,6 +169,14 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
 
       <ActivityList />
 
+      {lastSync && (
+        <View style={styles.lastSyncContainer}>
+          <Text style={styles.lastSyncText}>
+            {t('dashboard.lastSync')}: {lastSync.toLocaleString()}
+          </Text>
+        </View>
+      )}
+
       <View style={{ height: 24 }} />
     </ScrollView>
   );
@@ -193,4 +209,13 @@ const styles = StyleSheet.create({
   orderTotal: { fontSize: 14, fontWeight: '700', color: '#111827' },
   statusBadge: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 10 },
   statusText: { fontSize: 10, fontWeight: '600' },
+  lastSyncContainer: {
+    marginTop: 12,
+    paddingHorizontal: 16,
+    alignItems: 'flex-end',
+  },
+  lastSyncText: {
+    fontSize: 11,
+    color: '#9ca3af',
+  },
 });
