@@ -67,6 +67,6 @@ export class OrdersController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() body: { status: string; cancelReason?: string },
   ) {
-    return this.ordersService.updateStatus(req.user.tenantId, id, body.status, body.cancelReason);
+    return this.ordersService.updateStatus(req.user.tenantId, req.user.sub, id, body.status, body.cancelReason);
   }
 }

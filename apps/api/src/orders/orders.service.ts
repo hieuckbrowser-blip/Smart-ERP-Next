@@ -8,10 +8,14 @@ import { orders, orderItems, products } from '@smart-erp/database/schema';
 import { eq, and, ilike, sql, desc } from '@smart-erp/database/drizzle';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { NotificationsGateway } from '../notifications/notifications.gateway';
+import { ActivityService } from '../modules/activity/activity.service';
 
 @Injectable()
 export class OrdersService {
-  constructor(private readonly notifications: NotificationsGateway) {}
+  constructor(
+    private readonly notifications: NotificationsGateway,
+    private readonly activityService: ActivityService,
+  ) {}
 
   private async generateCode(tenantId: string): Promise<string> {
     const [{ count }] = await db
@@ -95,6 +99,15 @@ export class OrdersService {
     await db.insert(orderItems).values(
       itemsData.map((item) => ({ ...item, orderId: order.id }))
     );
+
+    // Activity log
+    await this.activityService.log(tenantId, userId, 'created', 'order', order.id, {
+      code: order.code,
+      total: order.total,
+      channel: order.channel,
+      paymentMethod: order.paymentMethod,
+      paymentStatus: order.paymentStatus,
+    });
 
     // Real-time notification
     this.notifications.broadcastToTenant(tenantId, 'order.created', {
@@ -205,7 +218,7 @@ export class OrdersService {
     return xml;
   }
 
-  async updateStatus(tenantId: string, id: string, status: string, cancelReason?: string) {
+  async updateStatus(tenantId: string, userId: string, id: string, status: string, cancelReason?: string) {
     const validTransitions: Record<string, string[]> = {
       draft: ['confirmed', 'cancelled'],
       confirmed: ['processing', 'cancelled'],
@@ -241,6 +254,13 @@ export class OrdersService {
       .set(updateData)
       .where(and(eq(orders.tenantId, tenantId), eq(orders.id, id)))
       .returning();
+
+    await this.activityService.log(tenantId, userId, 'updated', 'order', updated.id, {
+      code: updated.code,
+      fromStatus: order.status,
+      toStatus: updated.status,
+      cancelReason: status === 'cancelled' ? cancelReason : undefined,
+    });
 
     this.notifications.broadcastToTenant(tenantId, 'order.status_changed', {
       id: updated.id,
