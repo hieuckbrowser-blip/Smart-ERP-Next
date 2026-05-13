@@ -101,6 +101,8 @@ export default function InventoryPage() {
   const [suppliers, setSuppliers] = useState<any[]>([]);
   const [selectedSupplier, setSelectedSupplier] = useState<any | null>(null);
   const [creatingReorderPo, setCreatingReorderPo] = useState(false);
+  const [selectedWarehouseId, setSelectedWarehouseId] = useState<string>('');
+  const [expectedDate, setExpectedDate] = useState<string>('');
 
   const fetchData = async () => {
     setLoading(true);
@@ -230,8 +232,11 @@ export default function InventoryPage() {
     setSelectedSupplier(null);
     setSupplierSearch('');
     setShowCreatePoModal(true);
+    const defaultWh = warehouses.find((w: any) => w.isDefault);
+    setSelectedWarehouseId(defaultWh?.id ?? '');
+    setExpectedDate('');
     try {
-      const res = await apiClient.get('/suppliers', { params: { limit: 20, search: supplierSearch || undefined } });
+      const res = await apiClient.get('/suppliers', { params: { limit: 20 } });
       setSuppliers(res.data.items ?? []);
     } catch {
       setSuppliers([]);
@@ -244,6 +249,8 @@ export default function InventoryPage() {
     try {
       await apiClient.post('/purchasing/from-reorder-suggestions', {
         supplierId: selectedSupplier.id,
+        warehouseId: selectedWarehouseId || undefined,
+        expectedDate: expectedDate || undefined,
         items: reorderSuggestions
           .filter((s: any) => s.suggestedOrderQuantity > 0)
           .map((s: any) => ({ productId: s.id, quantity: s.suggestedOrderQuantity })),
@@ -794,6 +801,22 @@ export default function InventoryPage() {
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md p-6">
             <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">{t('purchasing.supplier')}</h2>
             <div className="space-y-3">
+              <select
+                value={selectedWarehouseId}
+                onChange={(e) => setSelectedWarehouseId(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm dark:bg-gray-700 dark:text-white"
+              >
+                <option value="">{t('purchasing.selectWarehouseOptional')}</option>
+                {warehouses.map((wh: any) => (
+                  <option key={wh.id} value={wh.id}>{wh.name}</option>
+                ))}
+              </select>
+              <input
+                type="date"
+                value={expectedDate}
+                onChange={(e) => setExpectedDate(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm dark:bg-gray-700 dark:text-white"
+              />
               <input
                 type="text"
                 value={supplierSearch}

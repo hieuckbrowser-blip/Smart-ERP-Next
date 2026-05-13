@@ -405,7 +405,9 @@
     "orders": "purchase orders",
     "empty": "No purchase orders yet",
     "searchPlaceholder": "Search by PO code, supplier...",
-    "confirmDeleteMessage": "Are you sure you want to cancel this purchase order?"
+    "confirmDeleteMessage": "Are you sure you want to cancel this purchase order?",
+    "selectWarehouseOptional": "Select warehouse (optional)",
+    "expectedDatePlaceholder": "Expected date (YYYY-MM-DD)"
   },
   "pos": {
     "createOrderFailed": "Create order failed. Please try again.",

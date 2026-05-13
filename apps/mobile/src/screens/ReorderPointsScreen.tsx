@@ -29,6 +29,12 @@ interface Supplier {
   name: string;
 }
 
+interface Warehouse {
+  id: string;
+  name: string;
+  isDefault?: boolean;
+}
+
 export default function ReorderPointsScreen() {
   const { t } = useTranslation();
   const [suggestions, setSuggestions] = useState<ReorderSuggestion[]>([]);
@@ -40,6 +46,10 @@ export default function ReorderPointsScreen() {
   const [supplierSearch, setSupplierSearch] = useState('');
   const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
   const [creatingPo, setCreatingPo] = useState(false);
+
+  const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
+  const [selectedWarehouseId, setSelectedWarehouseId] = useState('');
+  const [expectedDate, setExpectedDate] = useState('');
 
   const fetchSuggestions = async () => {
     try {
@@ -77,11 +87,24 @@ export default function ReorderPointsScreen() {
     }
   };
 
+  const fetchWarehouses = async () => {
+    try {
+      const res = await api.get<{ items?: Warehouse[] } | Warehouse[]>('/warehouses');
+      const list = Array.isArray(res) ? res : (res.items ?? []);
+      setWarehouses(list);
+      const def = list.find((w) => w.isDefault);
+      setSelectedWarehouseId(def?.id ?? '');
+    } catch {
+      setWarehouses([]);
+    }
+  };
+
   const handleOpenCreatePo = async () => {
     setSelectedSupplier(null);
     setSupplierSearch('');
+    setExpectedDate('');
     setShowCreatePo(true);
-    await fetchSuppliers();
+    await Promise.all([fetchSuppliers(), fetchWarehouses()]);
   };
 
   const handleCreatePo = async () => {
@@ -90,6 +113,8 @@ export default function ReorderPointsScreen() {
     try {
       await api.post('/purchasing/from-reorder-suggestions', {
         supplierId: selectedSupplier.id,
+        warehouseId: selectedWarehouseId || undefined,
+        expectedDate: expectedDate || undefined,
         items: suggestions
           .filter((s) => s.suggestedOrderQuantity > 0)
           .map((s) => ({ productId: s.id, quantity: s.suggestedOrderQuantity })),
@@ -186,6 +211,27 @@ export default function ReorderPointsScreen() {
         <View style={styles.modalOverlay}>
           <View style={styles.modalCard}>
             <Text style={styles.modalTitle}>{t('purchasing.selectSupplierAndItems')}</Text>
+
+            <Text style={styles.modalLabel}>{t('purchasing.selectWarehouseOptional')}</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 10 }}>
+              {warehouses.map((w) => (
+                <TouchableOpacity
+                  key={w.id}
+                  style={[styles.whPill, selectedWarehouseId === w.id && styles.whPillActive]}
+                  onPress={() => setSelectedWarehouseId(w.id)}
+                >
+                  <Text style={[styles.whPillText, selectedWarehouseId === w.id && styles.whPillTextActive]}>{w.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+
+            <TextInput
+              style={styles.searchInput}
+              placeholder={t('purchasing.expectedDate')}
+              value={expectedDate}
+              onChangeText={setExpectedDate}
+              placeholderTextColor="#9ca3af"
+            />
 
             <TextInput
               style={styles.searchInput}
@@ -292,6 +338,33 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#0f172a',
     marginBottom: 12,
+  },
+  modalLabel: {
+    fontSize: 12,
+    color: '#334155',
+    fontWeight: '600',
+    marginBottom: 6,
+  },
+  whPill: {
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+    backgroundColor: '#fff',
+    marginRight: 8,
+  },
+  whPillActive: {
+    borderColor: '#2563eb',
+    backgroundColor: '#eff6ff',
+  },
+  whPillText: {
+    fontSize: 12,
+    color: '#334155',
+    fontWeight: '600',
+  },
+  whPillTextActive: {
+    color: '#2563eb',
   },
   searchInput: {
     borderWidth: 1,
