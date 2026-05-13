@@ -488,6 +488,15 @@
     }
   },
   "reports": {
+    "totalRevenue": "Tổng doanh thu",
+    "orderCount": "Số đơn hàng",
+    "avgOrderValue": "Giá trị TB đơn",
+    "topProducts": "Sản phẩm bán chạy",
+    "topCustomers": "Khách hàng mua nhiều",
+    "inventoryValue": "Giá trị tồn kho",
+    "stockLevel": "Mức tồn kho",
+    "lowStockItems": "Sản phẩm sắp hết",
+    "noData": "Không có dữ liệu báo cáo",
     "cashflow": {
       "title": "Dự báo dòng tiền",
       "inflow": "Dòng tiền vào",

@@ -488,6 +488,15 @@
     }
   },
   "reports": {
+    "totalRevenue": "Total Revenue",
+    "orderCount": "Order Count",
+    "avgOrderValue": "Avg Order Value",
+    "topProducts": "Top Products",
+    "topCustomers": "Top Customers",
+    "inventoryValue": "Inventory Value",
+    "stockLevel": "Stock Level",
+    "lowStockItems": "Low Stock Items",
+    "noData": "No report data",
     "cashflow": {
       "title": "Cashflow Forecast",
       "inflow": "Inflow",
