@@ -1,7 +1,6 @@
 {
   "appName": "Smart ERP Next",
   "tagline": "Intelligent Business Management System",
-
   "actions": {
     "add": "Add",
     "edit": "Edit",
@@ -37,7 +36,6 @@
     "process": "Process",
     "syncNow": "Sync Now"
   },
-
   "status": {
     "active": "Active",
     "inactive": "Inactive",
@@ -53,7 +51,6 @@
     "failed": "Failed",
     "refunded": "Refunded"
   },
-
   "payment": {
     "status": {
       "label": "Payment",
@@ -71,7 +68,6 @@
       "credit": "Credit"
     }
   },
-
   "nav": {
     "dashboard": "Dashboard",
     "pos": "Point of Sale",
@@ -133,7 +129,6 @@
     "users": "Users",
     "tenants": "Tenants"
   },
-
   "dashboard": {
     "title": "Dashboard",
     "todayRevenue": "Today's Revenue",
@@ -168,7 +163,6 @@
     "avgDailyInflow": "Avg daily inflow",
     "avgDailyOutflow": "Avg daily outflow"
   },
-
   "products": {
     "title": "Products",
     "add": "Add Product",
@@ -196,9 +190,6 @@
     "createSuccess": "Product created",
     "updateSuccess": "Product updated",
     "translations": "Translations",
-    "translations": "Translations",
-    "translations": "Translations",
-    "translations": "Translations",
     "units": {
       "piece": "Piece",
       "kg": "Kg",
@@ -214,7 +205,6 @@
       "set": "Set"
     }
   },
-
   "orders": {
     "title": "Orders",
     "add": "Create Order",
@@ -228,7 +218,14 @@
     "total": "Total",
     "paid": "Paid",
     "debt": "Debt",
-    "status": "Status",
+    "status": {
+      "draft": "Draft",
+      "confirmed": "Confirmed",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
     "statusAll": "All",
     "paymentStatus": "Payment",
     "channel": "Channel",
@@ -248,17 +245,8 @@
       "online": "Online",
       "phone": "Phone",
       "wholesale": "Wholesale"
-    },
-    "status": {
-      "draft": "Draft",
-      "confirmed": "Confirmed",
-      "processing": "Processing",
-      "shipped": "Shipped",
-      "delivered": "Delivered",
-      "cancelled": "Cancelled"
     }
   },
-
   "customers": {
     "title": "Customers",
     "add": "Add Customer",
@@ -286,7 +274,6 @@
       "vip": "VIP"
     }
   },
-
   "suppliers": {
     "title": "Suppliers",
     "add": "Add Supplier",
@@ -307,7 +294,6 @@
     "notes": "Notes",
     "searchPlaceholder": "Search by name, phone, code..."
   },
-
   "inventory": {
     "fetchProductsError": "Failed to load products",
     "forecastError": "Failed to run AI forecast",
@@ -348,7 +334,6 @@
     "noReorderSuggestions": "No reorder suggestions",
     "fetchSuggestionsError": "Failed to load suggestions"
   },
-
   "purchasing": {
     "title": "Purchasing",
     "add": "Create Purchase Order",
@@ -364,9 +349,39 @@
     "createdAt": "Created At",
     "searchPlaceholder": "Search by PO code, supplier..."
   },
-
   "pos": {
-    "createOrderFailed": "Create order failed. Please try again."
+    "createOrderFailed": "Create order failed. Please try again.",
+    "title": "Point of Sale",
+    "searchPlaceholder": "Search products...",
+    "cart": "Cart",
+    "cartEmpty": "Cart is empty",
+    "subtotal": "Subtotal",
+    "tax": "VAT (10%)",
+    "total": "Total",
+    "checkout": "Checkout",
+    "cashReceived": "Cash received",
+    "change": "Change",
+    "confirmPayment": "Confirm payment",
+    "customerName": "Customer name",
+    "customerPhone": "Phone number",
+    "customerOptional": "Customer (optional)",
+    "paymentMethod": "Payment method",
+    "success": "Success",
+    "orderCreated": "Order {{code}} has been created",
+    "cartEmptyError": "Cart is empty",
+    "addProduct": "Please add products",
+    "insufficientCash": "Insufficient cash",
+    "enterCashAmount": "Please enter cash received",
+    "back": "Back",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "qty": "Qty",
+    "price": "Price",
+    "actions": "Actions",
+    "remove": "Remove",
+    "inStock": "In stock: {{stock}}",
+    "product": "Product",
+    "discount": "Discount"
   },
   "payments": {
     "title": "Payments",
@@ -387,7 +402,6 @@
     "searchPlaceholder": "Search by code, party...",
     "partySearchPlaceholder": "Customer / supplier name..."
   },
-
   "warehouses": {
     "title": "Warehouses",
     "add": "Add Warehouse",
@@ -398,7 +412,6 @@
     "isDefault": "Default Warehouse",
     "searchPlaceholder": "Search by name, code..."
   },
-
   "analytics": {
     "forecast": {
       "title": "Demand Forecast",
@@ -446,7 +459,6 @@
     "exportPdf": "Export PDF",
     "exportExcel": "Export Excel"
   },
-
   "accounting": {
     "title": "Accounting",
     "chartOfAccounts": "Chart of Accounts",
@@ -520,9 +532,14 @@
       "exchangeRate": "Exchange Rate",
       "baseCurrency": "Base Currency",
       "convertedAmount": "Converted Amount"
-    }
+    },
+    "financeOverview": "Financial Overview",
+    "totalRevenue": "Total Revenue",
+    "totalExpense": "Total Expense",
+    "netIncome": "Net Income",
+    "cashBalance": "Cash Balance",
+    "bankBalance": "Bank Balance"
   },
-
   "auth": {
     "login": "Login",
     "logout": "Logout",
@@ -544,7 +561,6 @@
       "required": "Please enter email and password"
     }
   },
-
   "users": {
     "title": "Users",
     "add": "Add User",
@@ -560,7 +576,6 @@
       "sales": "Sales Staff"
     }
   },
-
   "settings": {
     "title": "Settings",
     "general": "General",
@@ -580,7 +595,6 @@
     "integrations": "Integrations",
     "billing": "Billing & Plans"
   },
-
   "profile": {
     "title": "Profile",
     "name": "Full name",
@@ -592,7 +606,6 @@
     "themeSystem": "System",
     "language": "Language"
   },
-
   "sync": {
     "conflictTitle": "Sync Conflict Detected",
     "localVersion": "Local version",
@@ -648,17 +661,17 @@
     "online": "Online",
     "offline": "Offline",
     "sync": {
-    "status": {
-      "idle": "Up to date",
-      "syncing": "Syncing...",
-      "error": "Sync error",
-      "offline": "Offline"
+      "status": {
+        "idle": "Up to date",
+        "syncing": "Syncing...",
+        "error": "Sync error",
+        "offline": "Offline"
+      },
+      "lastSync": "Last sync",
+      "pendingChanges": "{{count}} pending change",
+      "pendingChanges_plural": "{{count}} pending changes",
+      "syncNow": "Sync now"
     },
-    "lastSync": "Last sync",
-    "pendingChanges": "{{count}} pending change",
-    "pendingChanges_plural": "{{count}} pending changes",
-    "syncNow": "Sync now"
-  },
     "lastSync": "Last Sync",
     "pendingChanges": "Pending Changes",
     "conflictResolved": "Conflict Resolved",
@@ -666,7 +679,6 @@
     "profile": "Profile",
     "version": "Version"
   },
-
   "validation": {
     "required": "{{field}} is required",
     "email": "Invalid email address",
@@ -696,12 +708,6 @@
     "cannotDeleteBase": "Cannot delete the base currency of the tenant"
   },
   "approvals": {
-    "noPending": "No pending approvals",
-    "requestedBy": "Requested by",
-    "noPending": "No pending approvals",
-    "requestedBy": "Requested by",
-    "noPending": "No pending approvals",
-    "requestedBy": "Requested by",
     "noPending": "No pending approvals",
     "requestedBy": "Requested by",
     "title": "Approvals",
@@ -759,20 +765,5 @@
     "order_count": "Order count",
     "total_revenue": "Total revenue",
     "avg_order_value": "Avg order value"
-  },
-  "activity": {
-    "created": "created",
-    "updated": "updated",
-    "deleted": "deleted",
-    "approved": "approved",
-    "rejected": "rejected",
-    "stock_adjusted": "adjusted stock",
-    "entityTypes": {
-      "order": "order",
-      "product": "product",
-      "customer": "customer",
-      "supplier": "supplier",
-      "inventory": "inventory"
-    }
   }
 }

@@ -1,7 +1,6 @@
 {
   "appName": "Smart ERP Next",
   "tagline": "Hệ thống quản trị doanh nghiệp thông minh",
-
   "actions": {
     "add": "Thêm",
     "edit": "Sửa",
@@ -37,7 +36,6 @@
     "process": "Xử lý",
     "syncNow": "Đồng bộ ngay"
   },
-
   "status": {
     "active": "Hoạt động",
     "inactive": "Ngừng hoạt động",
@@ -53,7 +51,6 @@
     "failed": "Thất bại",
     "refunded": "Đã hoàn tiền"
   },
-
   "payment": {
     "status": {
       "label": "Thanh toán",
@@ -71,7 +68,6 @@
       "credit": "Công nợ"
     }
   },
-
   "nav": {
     "dashboard": "Bảng điều khiển",
     "pos": "Bán hàng (POS)",
@@ -130,11 +126,6 @@
       "journalEntry": "Bút toán"
     }
   },
-    "settings": "Cài đặt",
-    "users": "Người dùng",
-    "tenants": "Đơn vị"
-  },
-
   "dashboard": {
     "title": "Bảng điều khiển",
     "todayRevenue": "Doanh thu hôm nay",
@@ -169,7 +160,6 @@
     "avgDailyInflow": "TB thu mỗi ngày",
     "avgDailyOutflow": "TB chi mỗi ngày"
   },
-
   "products": {
     "title": "Sản phẩm",
     "add": "Thêm sản phẩm",
@@ -197,9 +187,6 @@
     "createSuccess": "Đã tạo sản phẩm",
     "updateSuccess": "Đã cập nhật sản phẩm",
     "translations": "Bản dịch",
-    "translations": "Bản dịch",
-    "translations": "Bản dịch",
-    "translations": "Bản dịch",
     "units": {
       "piece": "Cái",
       "kg": "Kg",
@@ -215,7 +202,6 @@
       "set": "Bộ"
     }
   },
-
   "orders": {
     "title": "Đơn hàng",
     "add": "Tạo đơn hàng",
@@ -229,7 +215,14 @@
     "total": "Tổng tiền",
     "paid": "Đã trả",
     "debt": "Còn nợ",
-    "status": "Trạng thái",
+    "status": {
+      "draft": "Nháp",
+      "confirmed": "Xác nhận",
+      "processing": "Xử lý",
+      "shipped": "Giao vận",
+      "delivered": "Đã giao",
+      "cancelled": "Đã hủy"
+    },
     "statusAll": "Tất cả",
     "paymentStatus": "Thanh toán",
     "channel": "Kênh bán",
@@ -249,17 +242,8 @@
       "online": "Online",
       "phone": "Điện thoại",
       "wholesale": "Bán sỉ"
-    },
-    "status": {
-      "draft": "Nháp",
-      "confirmed": "Xác nhận",
-      "processing": "Xử lý",
-      "shipped": "Giao vận",
-      "delivered": "Đã giao",
-      "cancelled": "Đã hủy"
     }
   },
-
   "customers": {
     "title": "Khách hàng",
     "add": "Thêm khách hàng",
@@ -287,7 +271,6 @@
       "vip": "VIP"
     }
   },
-
   "suppliers": {
     "title": "Nhà cung cấp",
     "add": "Thêm nhà cung cấp",
@@ -308,7 +291,6 @@
     "notes": "Ghi chú",
     "searchPlaceholder": "Tìm theo tên, SĐT, mã NCC..."
   },
-
   "inventory": {
     "fetchProductsError": "Không thể tải danh sách sản phẩm",
     "forecastError": "Không thể chạy dự báo AI",
@@ -349,7 +331,6 @@
     "noReorderSuggestions": "Không có gợi ý đặt hàng",
     "fetchSuggestionsError": "Không thể tải gợi ý"
   },
-
   "purchasing": {
     "title": "Mua hàng",
     "add": "Tạo đơn nhập",
@@ -365,7 +346,6 @@
     "createdAt": "Ngày tạo",
     "searchPlaceholder": "Tìm theo mã đơn, nhà cung cấp..."
   },
-
   "pos": {
     "title": "Bán hàng (POS)",
     "searchPlaceholder": "Tìm sản phẩm...",
@@ -419,7 +399,6 @@
     "searchPlaceholder": "Tìm theo mã phiếu, đối tượng...",
     "partySearchPlaceholder": "Tên khách hàng / nhà cung cấp..."
   },
-
   "warehouses": {
     "title": "Quản lý kho",
     "add": "Thêm kho",
@@ -430,7 +409,6 @@
     "isDefault": "Kho mặc định",
     "searchPlaceholder": "Tìm theo tên, mã kho..."
   },
-
   "analytics": {
     "forecast": {
       "title": "Dự báo nhu cầu",
@@ -478,7 +456,6 @@
     "exportPdf": "Xuất PDF",
     "exportExcel": "Xuất Excel"
   },
-
   "accounting": {
     "title": "Kế toán",
     "chartOfAccounts": "Danh mục tài khoản",
@@ -554,7 +531,6 @@
       "convertedAmount": "Số tiền quy đổi"
     }
   },
-
   "auth": {
     "login": "Đăng nhập",
     "logout": "Đăng xuất",
@@ -576,7 +552,6 @@
       "required": "Vui lòng nhập email và mật khẩu"
     }
   },
-
   "users": {
     "title": "Người dùng",
     "add": "Thêm người dùng",
@@ -592,7 +567,6 @@
       "sales": "Nhân viên bán hàng"
     }
   },
-
   "settings": {
     "title": "Cài đặt",
     "general": "Chung",
@@ -612,7 +586,6 @@
     "integrations": "Tích hợp",
     "billing": "Thanh toán & Gói dịch vụ"
   },
-
   "profile": {
     "title": "Hồ sơ",
     "name": "Họ tên",
@@ -624,185 +597,9 @@
     "themeSystem": "Theo hệ thống",
     "language": "Ngôn ngữ"
   },
-    "conflictTitle": "Phát hiện xung đột đồng bộ",
-    "localVersion": "Bản cục bộ",
-    "remoteVersion": "Bản máy chủ",
-    "keepLocal": "Giữ bản cục bộ",
-    "keepRemote": "Giữ bản máy chủ"
-  },
-  "chat": {
-    "users": "Người dùng",
-    "typeMessage": "Nhập tin nhắn...",
-    "selectUser": "Chọn người dùng để bắt đầu trò chuyện"
-  },
-  "common": {
-    "noNotifications": "Không có thông báo nào",
-    "loading": "Đang tải...",
-    "saving": "Đang lưu...",
-    "products": "sản phẩm",
-    "orders": "đơn hàng",
-    "suppliers": "nhà cung cấp",
-    "customers": "khách hàng",
-    "purchaseOrders": "đơn nhập hàng",
-    "actions": "Thao tác",
-    "viewDetails": "Xem chi tiết",
-    "view": "Xem",
-    "edit": "Sửa",
-    "delete": "Xóa",
-    "deleting": "Đang xóa...",
-    "processing": "Đang xử lý...",
-    "noData": "Không có dữ liệu",
-    "noResults": "Không tìm thấy kết quả",
-    "error": "Đã xảy ra lỗi",
-    "success": "Thành công",
-    "warning": "Cảnh báo",
-    "info": "Thông tin",
-    "confirm": "Xác nhận",
-    "confirmDeleteTitle": "Xác nhận xóa",
-    "confirmDeleteMessage": "Hành động này không thể hoàn tác. Bạn có chắc chắn muốn xóa?",
-    "yes": "Có",
-    "no": "Không",
-    "ok": "OK",
-    "showing": "Hiển thị",
-    "of": "trong",
-    "total": "Tổng",
-    "page": "Trang",
-    "perPage": "mỗi trang",
-    "required": "Bắt buộc",
-    "optional": "Tùy chọn",
-    "all": "Tất cả",
-    "none": "Không có",
-    "other": "Khác",
-    "unknown": "Không xác định",
-    "na": "N/A",
-    "online": "Trực tuyến",
-    "offline": "Ngoại tuyến",
-    "sync": {
-    "status": {
-      "idle": "Đã đồng bộ",
-      "syncing": "Đang đồng bộ...",
-      "error": "Lỗi đồng bộ",
-      "offline": "Ngoại tuyến"
-    },
-    "lastSync": "Đồng bộ lúc",
-    "pendingChanges": "{{count}} thay đổi đang chờ",
-    "pendingChanges_plural": "{{count}} thay đổi đang chờ",
-    "syncNow": "Đồng bộ ngay"
-  },
-    "lastSync": "Đồng bộ lần cuối",
-    "pendingChanges": "Thay đổi đang chờ",
-    "conflictResolved": "Xung đột đã được giải quyết",
-    "welcome": "Chào mừng đến với Smart ERP Next",
-    "profile": "Hồ sơ",
-    "version": "Phiên bản"
-  },
-
-  "validation": {
-    "required": "Trường {{field}} là bắt buộc",
-    "email": "Email không hợp lệ",
-    "minLength": "Tối thiểu {{min}} ký tự",
-    "maxLength": "Tối đa {{max}} ký tự",
-    "min": "Giá trị tối thiểu là {{min}}",
-    "max": "Giá trị tối đa là {{max}}",
-    "positive": "Phải là số dương",
-    "integer": "Phải là số nguyên",
-    "invalidFormat": "Định dạng không hợp lệ",
-    "passwordMismatch": "Mật khẩu không khớp",
-    "duplicateSku": "Mã SKU đã tồn tại",
-    "duplicateEmail": "Email đã được sử dụng",
-    "duplicateCode": "Mã đã tồn tại"
-  },
-  "currencies": {
-    "title": "Tiền tệ",
-    "code": "Mã",
-    "name": "Tên",
-    "symbol": "Ký hiệu",
-    "decimalPlaces": "Số thập phân",
-    "isBaseCurrency": "Tiền tệ cơ sở",
-    "createSuccess": "Tạo tiền tệ thành công",
-    "updateSuccess": "Cập nhật tiền tệ thành công",
-    "deleteSuccess": "Xóa tiền tệ thành công",
-    "confirmDelete": "Bạn có chắc chắn muốn xóa tiền tệ này?",
-    "cannotDeleteBase": "Không thể xóa tiền tệ cơ sở của tổ chức"
-  },
-  "approvals": {
-    "noPending": "Không có phê duyệt đang chờ",
-    "requestedBy": "Yêu cầu bởi",
-    "noPending": "Không có phê duyệt đang chờ",
-    "requestedBy": "Yêu cầu bởi",
-    "noPending": "Không có phê duyệt đang chờ",
-    "requestedBy": "Yêu cầu bởi",
-    "noPending": "Không có phê duyệt đang chờ",
-    "requestedBy": "Yêu cầu bởi",
-    "title": "Phê duyệt",
-    "rules": "Quy tắc phê duyệt",
-    "ruleName": "Tên quy tắc",
-    "documentType": "Loại chứng từ",
-    "minAmount": "Số tiền tối thiểu",
-    "maxAmount": "Số tiền tối đa",
-    "priority": "Ưu tiên",
-    "createRule": "Tạo quy tắc",
-    "editRule": "Sửa quy tắc",
-    "deleteRule": "Xóa quy tắc",
-    "submitForApproval": "Gửi phê duyệt",
-    "approve": "Phê duyệt",
-    "reject": "Từ chối",
-    "comments": "Nhận xét",
-    "status": {
-      "pending": "Chờ phê duyệt",
-      "approved": "Đã phê duyệt",
-      "rejected": "Bị từ chối",
-      "not_required": "Không cần phê duyệt"
-    },
-    "notifications": {
-      "submitted": "Chứng từ đã được gửi phê duyệt",
-      "approved": "Chứng từ đã được phê duyệt",
-      "rejected": "Chứng từ bị từ chối",
-      "needApproval": "Cần phê duyệt của bạn"
-    }
-  },
-  "activity": {
-    "created": "đã tạo",
-    "updated": "đã cập nhật",
-    "deleted": "đã xóa",
-    "approved": "đã duyệt",
-    "rejected": "đã từ chối",
-    "stock_adjusted": "đã điều chỉnh tồn kho",
-    "entityTypes": {
-      "order": "đơn hàng",
-      "product": "sản phẩm",
-      "customer": "khách hàng",
-      "supplier": "nhà cung cấp",
-      "inventory": "kho hàng"
-    }
-  },
-  "advanced_reports": {
-    "title": "Báo cáo nâng cao",
-    "templates": "Mẫu báo cáo",
-    "create_template": "Tạo mẫu",
-    "template_name": "Tên mẫu",
-    "sql_query": "Câu lệnh SQL",
-    "parameters": "Tham số",
-    "run_report": "Chạy báo cáo",
-    "schedule": "Lên lịch",
-    "monthly_revenue": "Doanh thu theo tháng",
-    "order_count": "Số đơn hàng",
-    "total_revenue": "Tổng doanh thu",
-    "avg_order_value": "Giá trị đơn hàng TB"
-  },
-  "activity": {
-    "created": "đã tạo",
-    "updated": "đã cập nhật",
-    "deleted": "đã xóa",
-    "approved": "đã duyệt",
-    "rejected": "đã từ chối",
-    "stock_adjusted": "đã điều chỉnh tồn kho",
-    "entityTypes": {
-      "order": "đơn hàng",
-      "product": "sản phẩm",
-      "customer": "khách hàng",
-      "supplier": "nhà cung cấp",
-      "inventory": "kho hàng"
-    }
-  }
+  "conflictTitle": "Phát hiện xung đột đồng bộ",
+  "localVersion": "Bản cục bộ",
+  "remoteVersion": "Bản máy chủ",
+  "keepLocal": "Giữ bản cục bộ",
+  "keepRemote": "Giữ bản máy chủ"
 }

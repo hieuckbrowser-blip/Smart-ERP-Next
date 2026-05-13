@@ -22,10 +22,10 @@ interface CartItem {
 }
 
 const PAYMENT_METHODS = [
-  { key: 'cash', label: 'Tiền mặt', icon: '💵' },
-  { key: 'bank_transfer', label: 'CK ngân hàng', icon: '💳' },
-  { key: 'momo', label: 'MoMo', icon: '📱' },
-  { key: 'vnpay', label: 'VNPay', icon: '🏦' },
+  { key: 'cash', labelKey: 'payment.method.cash', icon: '💵' },
+  { key: 'bank_transfer', labelKey: 'payment.method.bank_transfer', icon: '💳' },
+  { key: 'momo', labelKey: 'payment.method.momo', icon: '📱' },
+  { key: 'vnpay', labelKey: 'payment.method.vnpay', icon: '🏦' },
 ];
 
 const formatVND = (n: number) =>
@@ -97,11 +97,11 @@ export default function POSScreen() {
 
   const handleCheckout = async () => {
     if (cart.length === 0) {
-      Alert.alert('Giỏ hàng trống', 'Vui lòng thêm sản phẩm');
+      Alert.alert(t('pos.cartEmptyError'), t('pos.addProduct'));
       return;
     }
     if (selectedPayment === 'cash' && parseFloat(cashReceived || '0') < total) {
-      Alert.alert('Số tiền không đủ', 'Vui lòng nhập số tiền khách đưa');
+      Alert.alert(t('pos.insufficientCash'), t('pos.enterCashAmount'));
       return;
     }
 
@@ -122,13 +122,13 @@ export default function POSScreen() {
       });
 
       Alert.alert(
-        'Thành công',
-        `Đơn hàng ${res.code} đã được tạo`,
+        t('pos.success'),
+        t('pos.orderCreated', { code: res.code }),
         [{ text: 'OK', onPress: () => setCart([]) }]
       );
     } catch (err) {
       console.error('Checkout failed:', err);
-      Alert.alert('Lỗi', 'Không thể tạo đơn hàng');
+      Alert.alert(t('common.error', 'Lỗi'), t('pos.createOrderFailed'));
     }
   };
 
@@ -146,7 +146,7 @@ export default function POSScreen() {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>{t('nav.pos')}</Text>
-        <Text style={styles.cartCount}>{cart.length} sản phẩm</Text>
+        <Text style={styles.cartCount}>{cart.length} {t('common.products', 'sản phẩm')}</Text>
       </View>
 
       {!checkoutMode ? (
@@ -155,7 +155,7 @@ export default function POSScreen() {
           <View style={styles.searchContainer}>
             <TextInput
               style={styles.searchInput}
-              placeholder="Tìm sản phẩm..."
+              placeholder={t('pos.searchPlaceholder')}
               value={search}
               onChangeText={setSearch}
               placeholderTextColor="#9ca3af"
@@ -176,7 +176,7 @@ export default function POSScreen() {
                   </Text>
                   <Text style={styles.productPrice}>{formatVND(product.price)}</Text>
                   <Text style={styles.productStock}>
-                    Còn {product.stock}
+                    {t('pos.inStock', { stock: product.stock })}
                   </Text>
                 </TouchableOpacity>
               ))}
@@ -188,13 +188,13 @@ export default function POSScreen() {
             <View style={styles.cartSummary}>
               <View style={styles.cartInfo}>
                 <Text style={styles.cartTotal}>{formatVND(total)}</Text>
-                <Text style={styles.cartItems}>{cart.length} sản phẩm</Text>
+                <Text style={styles.cartItems}>{cart.length} {t('common.products')}</Text>
               </View>
               <TouchableOpacity
                 style={styles.checkoutButton}
                 onPress={() => setCheckoutMode(true)}
               >
-                <Text style={styles.checkoutButtonText}>Thanh toán</Text>
+                <Text style={styles.checkoutButtonText}>{t('pos.checkout')}</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -204,7 +204,7 @@ export default function POSScreen() {
         <ScrollView style={styles.checkoutContainer}>
           {/* Cart Items */}
           <View style={styles.cartItems}>
-            <Text style={styles.sectionTitle}>Giỏ hàng</Text>
+            <Text style={styles.sectionTitle}>{t('pos.cart')}</Text>
             {cart.map((item) => (
               <View key={item.product.id} style={styles.cartItem}>
                 <View style={styles.cartItemInfo}>
@@ -240,16 +240,16 @@ export default function POSScreen() {
 
           {/* Customer Info */}
           <View style={styles.customerSection}>
-            <Text style={styles.sectionTitle}>Khách hàng (tùy chọn)</Text>
+            <Text style={styles.sectionTitle}>{t('pos.customerOptional')}</Text>
             <TextInput
               style={styles.input}
-              placeholder="Tên khách hàng"
+              placeholder={t('pos.customerName')}
               value={customerName}
               onChangeText={setCustomerName}
             />
             <TextInput
               style={styles.input}
-              placeholder="Số điện thoại"
+              placeholder={t('pos.customerPhone')}
               keyboardType="phone-pad"
               value={customerPhone}
               onChangeText={setCustomerPhone}
@@ -258,7 +258,7 @@ export default function POSScreen() {
 
           {/* Payment Methods */}
           <View style={styles.paymentSection}>
-            <Text style={styles.sectionTitle}>Phương thức thanh toán</Text>
+            <Text style={styles.sectionTitle}>{t('pos.paymentMethod')}</Text>
             <View style={styles.paymentMethods}>
               {PAYMENT_METHODS.map((method) => (
                 <TouchableOpacity
@@ -270,7 +270,7 @@ export default function POSScreen() {
                   onPress={() => setSelectedPayment(method.key)}
                 >
                   <Text style={styles.paymentIcon}>{method.icon}</Text>
-                  <Text style={styles.paymentLabel}>{method.label}</Text>
+                  <Text style={styles.paymentLabel}>{t(method.labelKey as any)}</Text>
                 </TouchableOpacity>
               ))}
             </View>
@@ -279,7 +279,7 @@ export default function POSScreen() {
           {/* Cash Input */}
           {selectedPayment === 'cash' && (
             <View style={styles.cashSection}>
-              <Text style={styles.sectionTitle}>Tiền khách đưa</Text>
+              <Text style={styles.sectionTitle}>{t('pos.cashReceived')}</Text>
               <TextInput
                 style={styles.input}
                 placeholder="0"
@@ -289,7 +289,7 @@ export default function POSScreen() {
               />
               {change > 0 && (
                 <Text style={styles.changeText}>
-                  Tiền thừa: {formatVND(change)}
+                  {t('pos.change')}: {formatVND(change)}
                 </Text>
               )}
             </View>
@@ -298,15 +298,15 @@ export default function POSScreen() {
           {/* Total */}
           <View style={styles.totalSection}>
             <View style={styles.totalRow}>
-              <Text>Tạm tính:</Text>
+              <Text>{t('pos.subtotal')}:</Text>
               <Text>{formatVND(subtotal)}</Text>
             </View>
             <View style={styles.totalRow}>
-              <Text>VAT (10%):</Text>
+              <Text>{t('pos.tax')}:</Text>
               <Text>{formatVND(tax)}</Text>
             </View>
             <View style={[styles.totalRow, styles.grandTotal]}>
-              <Text style={styles.grandTotalText}>Tổng cộng:</Text>
+              <Text style={styles.grandTotalText}>{t('pos.total')}:</Text>
               <Text style={styles.grandTotalValue}>{formatVND(total)}</Text>
             </View>
           </View>
@@ -317,13 +317,13 @@ export default function POSScreen() {
               style={styles.backButton}
               onPress={() => setCheckoutMode(false)}
             >
-              <Text style={styles.backButtonText}> Quay lại</Text>
+              <Text style={styles.backButtonText}>{t('pos.back')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.confirmButton}
               onPress={handleCheckout}
             >
-              <Text style={styles.confirmButtonText}>Xác nhận thanh toán</Text>
+              <Text style={styles.confirmButtonText}>{t('pos.confirmPayment')}</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
