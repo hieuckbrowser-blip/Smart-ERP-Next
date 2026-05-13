@@ -4,3 +4,5 @@ export * from './pagination';
 export * from './product';
 export * from './customer';
 export * from './order';
+export * from './lead';
+export * from './lead';

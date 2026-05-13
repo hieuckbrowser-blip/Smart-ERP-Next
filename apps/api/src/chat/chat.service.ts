@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { messages } from '@smart-erp/database/schema';
-import { eq, and, or, desc } from '@smart-erp/database/drizzle';
+import { eq, and, or, desc, sql } from '@smart-erp/database/drizzle';
 import { NotificationsGateway } from '../notifications/notifications.gateway';
 
 @Injectable()
@@ -57,7 +57,11 @@ export class ChatService {
   async getUnreadCount(tenantId: string, userId: string) {
     const result = await db.select({ count: sql<number>`count(*)::int` })
       .from(messages)
-      .where(and(eq(messages.tenantId, tenantId), eq(messages.toUserId, userId), eq(messages.isRead, 'false')));
+      .where(and(
+        eq(messages.tenantId, tenantId),
+        eq(messages.toUserId, userId),
+        eq(messages.isRead, 'false')
+      ));
     return result[0]?.count || 0;
   }
 }
