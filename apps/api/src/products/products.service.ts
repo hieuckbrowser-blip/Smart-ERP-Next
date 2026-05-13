@@ -213,6 +213,17 @@ export class ProductsService {
       createdBy: createdBy ?? null,
     });
 
+    if (createdBy) {
+      await this.activityService.log(tenantId, createdBy, 'stock_adjusted', 'product', id, {
+        type,
+        quantity,
+        previousStock,
+        newStock,
+        reference,
+        notes,
+      });
+    }
+
     return updated;
   }
 
