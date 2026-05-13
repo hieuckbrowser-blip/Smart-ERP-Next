@@ -124,6 +124,11 @@
       "won": "Won",
       "lost": "Lost"
     },
+    "totalLeads": "Total Leads",
+    "confirmDelete": "Are you sure you want to delete this lead?",
+    "noNBA": "No suggestions",
+    "selectLead": "Select a lead to view suggestions",
+    "editLead": "Edit Lead",
     "hrm": "HR Management",
     "settings": "Settings",
     "users": "Users",

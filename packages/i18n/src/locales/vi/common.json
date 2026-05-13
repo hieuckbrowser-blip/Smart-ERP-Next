@@ -124,6 +124,11 @@
       "won": "Thành công",
       "lost": "Thất bại"
     },
+    "totalLeads": "Tổng Lead",
+    "confirmDelete": "Bạn có chắc muốn xóa lead này?",
+    "noNBA": "Không có gợi ý",
+    "selectLead": "Chọn lead để xem gợi ý",
+    "editLead": "Sửa Lead",
     "hrm": "Nhân sự",
     "settings": "Cài đặt",
     "users": "Người dùng",

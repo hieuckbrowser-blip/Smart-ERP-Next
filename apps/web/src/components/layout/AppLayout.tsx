@@ -79,20 +79,6 @@ export default function AppLayout({
       setSyncing(false);
     }
   };
-  const [syncing, setSyncing] = useState(false);
-
-  const handleSync = async () => {
-    setSyncing(true);
-    try {
-      await syncService.sync();
-      // Show toast or update UI
-      console.log("Sync completed");
-    } catch (err) {
-      console.error("Sync failed", err);
-    } finally {
-      setSyncing(false);
-    }
-  };
 
   useEffect(() => {
     const stored = localStorage.getItem("theme");
@@ -177,6 +163,18 @@ export default function AppLayout({
       label: t("nav.reports"),
       icon: <BarChart3 className="w-5 h-5" />,
       href: "/reports",
+    },
+    {
+      key: "crm",
+      label: t("nav.crm"),
+      icon: <TrendingUp className="w-5 h-5" />,
+      href: "/crm",
+    },
+    {
+      key: "crm",
+      label: t("nav.crm"),
+      icon: <TrendingUp className="w-5 h-5" />,
+      href: "/crm",
     },
     {
       key: "forecast",

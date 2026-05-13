@@ -1,20 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '@/lib/api-client';
-import AuthGuard from '@/components/layout/AuthGuard';
 import {
   Target,
   Phone,
   Mail,
   Clock,
   TrendingUp,
-  CheckCircle,
-  XCircle,
-  AlertCircle,
   RefreshCw,
+  Plus,
+  Pencil,
+  Trash2,
+  X,
 } from 'lucide-react';
+import LeadForm from '@/components/crm/LeadForm';
 
 interface Lead {
   id: string;
@@ -28,15 +29,10 @@ interface Lead {
   leadScore: number;
   createdAt: string;
   industry?: string;
+  description?: string;
 }
 
 interface NextBestAction {
-  action: string;
-  priority: number;
-  reason: string;
-}
-
-interface NBAResponse {
   action: string;
   priority: number;
   reason: string;
@@ -51,6 +47,7 @@ const STATUS_COLORS: Record<string, { label: string; color: string; bg: string }
 };
 
 function NBACard({ action, priority, reason }: { action: string; priority: number; reason: string }) {
+  const { t } = useTranslation();
   const actionIcons: Record<string, React.ReactNode> = {
     call: <Phone className="w-5 h-5" />,
     email: <Mail className="w-5 h-5" />,
@@ -58,13 +55,12 @@ function NBACard({ action, priority, reason }: { action: string; priority: numbe
     proposal: <TrendingUp className="w-5 h-5" />,
     follow_up: <Clock className="w-5 h-5" />,
   };
-
   const actionLabels: Record<string, string> = {
-    call: 'Gọi điện',
-    email: 'Gửi email',
-    meeting: 'Hẹn gặp',
-    proposal: 'Đề xuất',
-    follow_up: 'Theo dõi',
+    call: t('crm.actions.call', 'Gọi điện'),
+    email: t('crm.actions.email', 'Gửi email'),
+    meeting: t('crm.actions.meeting', 'Hẹn gặp'),
+    proposal: t('crm.actions.proposal', 'Đề xuất'),
+    follow_up: t('crm.actions.follow_up', 'Theo dõi'),
   };
 
   const colorClass = priority >= 70 ? 'bg-green-50 border-green-200'
@@ -75,7 +71,7 @@ function NBACard({ action, priority, reason }: { action: string; priority: numbe
     <div className={`border rounded-lg p-4 ${colorClass}`}>
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <span className="text-lg">{actionIcons[action] || <AlertCircle />}</span>
+          <span className="text-lg">{actionIcons[action] || <Target className="w-5 h-5" />}</span>
           <span className="font-semibold text-gray-900">{actionLabels[action] || action}</span>
         </div>
         <span className={`text-sm font-bold px-2 py-1 rounded ${
@@ -96,28 +92,42 @@ export default function CRMPage() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
-  const [nba, setNba] = useState<NBAResponse | null>(null);
+  const [nba, setNba] = useState<NextBestAction | null>(null);
   const [nbaLoading, setNbaLoading] = useState(false);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [showForm, setShowForm] = useState(false);
+  const [editingLead, setEditingLead] = useState<Lead | null>(null);
+  const [stats, setStats] = useState({ total: 0, byStatus: [] as { status: string; count: number }[], winRate: 0 });
 
-  const fetchLeads = async () => {
+  const fetchLeads = useCallback(async () => {
     try {
-      const params = new URLSearchParams({ search, ...(statusFilter && { status: statusFilter }) });
-      const res = await apiClient.get(`/crm/leads?${params}`);
-      setLeads(res.data.items || res.data || []);
+      const params = new URLSearchParams();
+      if (search) params.append('search', search);
+      if (statusFilter) params.append('status', statusFilter);
+      const res = await apiClient.get<{ items: Lead[] }>(`/crm/leads?${params}`);
+      setLeads(res.items || res.data?.items || []);
     } catch (err) {
       console.error('Failed to fetch leads:', err);
     } finally {
       setLoading(false);
+    }
+  }, [search, statusFilter]);
+
+  const fetchStats = async () => {
+    try {
+      const res = await apiClient.get<{ total: number; byStatus: { status: string; count: number }[]; winRate: number }>('/crm/leads/stats');
+      setStats(res);
+    } catch (err) {
+      console.error('Failed to fetch stats:', err);
     }
   };
 
   const fetchNBA = async (leadId: string) => {
     try {
       setNbaLoading(true);
-      const res = await apiClient.get<NBAResponse>(`/crm/next-best-action/lead/${leadId}`);
-      setNba(res.data);
+      const res = await apiClient.get<NextBestAction>(`/crm/next-best-action/lead/${leadId}`);
+      setNba(res.data || res);
     } catch (err) {
       console.error('Failed to fetch NBA:', err);
     } finally {
@@ -125,12 +135,36 @@ export default function CRMPage() {
     }
   };
 
-  useEffect(() => { fetchLeads(); }, []);
+  useEffect(() => { fetchLeads(); fetchStats(); }, [fetchLeads]);
 
   const handleLeadSelect = (lead: Lead) => {
     setSelectedLead(lead);
     setNba(null);
     fetchNBA(lead.id);
+  };
+
+  const handleEditLead = (lead: Lead) => {
+    setEditingLead(lead);
+    setShowForm(true);
+  };
+
+  const handleDeleteLead = async (leadId: string) => {
+    if (!confirm(t('crm.confirmDelete', 'Bạn có chắc muốn xóa lead này?'))) return;
+    try {
+      await apiClient.delete(`/crm/leads/${leadId}`);
+      fetchLeads();
+      fetchStats();
+      if (selectedLead?.id === leadId) setSelectedLead(null);
+    } catch (err) {
+      console.error('Failed to delete lead:', err);
+    }
+  };
+
+  const handleFormSuccess = () => {
+    fetchLeads();
+    fetchStats();
+    setShowForm(false);
+    setEditingLead(null);
   };
 
   const getLeadScoreColor = (score: number) => {
@@ -156,6 +190,37 @@ export default function CRMPage() {
           <h1 className="text-2xl font-bold text-gray-900">{t('crm.title', 'CRM')}</h1>
           <p className="text-sm text-gray-500">{t('crm.subtitle', 'Quản lý khách hàng tiềm năng')}</p>
         </div>
+        <button
+          onClick={() => { setEditingLead(null); setShowForm(true); }}
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          <Plus className="w-4 h-4" />
+          {t('crm.addLead', 'Thêm Lead')}
+        </button>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+          <div className="text-sm text-gray-500 mb-1">{t('crm.totalLeads', 'Tổng Lead')}</div>
+          <div className="text-2xl font-bold text-gray-900">{stats.total}</div>
+        </div>
+        <div className="bg-blue-50 rounded-xl p-6 shadow-sm border border-blue-100">
+          <div className="text-sm text-blue-600 mb-1">{t('crm.statuses.new', 'Mới')}</div>
+          <div className="text-2xl font-bold text-blue-600">
+            {stats.byStatus.find(s => s.status === 'new')?.count || 0}
+          </div>
+        </div>
+        <div className="bg-green-50 rounded-xl p-6 shadow-sm border border-green-100">
+          <div className="text-sm text-green-600 mb-1">{t('crm.statuses.qualified', 'Tiềm năng')}</div>
+          <div className="text-2xl font-bold text-green-600">
+            {stats.byStatus.find(s => s.status === 'qualified')?.count || 0}
+          </div>
+        </div>
+        <div className="bg-purple-50 rounded-xl p-6 shadow-sm border border-purple-100">
+          <div className="text-sm text-purple-600 mb-1">Win Rate</div>
+          <div className="text-2xl font-bold text-purple-600">{stats.winRate}%</div>
+        </div>
       </div>
 
       {/* Filters */}
@@ -172,124 +237,138 @@ export default function CRMPage() {
           onChange={(e) => setStatusFilter(e.target.value)}
           className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
         >
-          <option value="">{t('orders.statusAll', 'Tất cả')}</option>
-          <option value="new">Mới</option>
-          <option value="contacted">Đã liên hệ</option>
-          <option value="qualified">Tiềm năng</option>
-          <option value="won">Thành công</option>
-          <option value="lost">Thất bại</option>
+          <option value="">{t('common.all', 'Tất cả')}</option>
+          <option value="new">{t('crm.statuses.new', 'Mới')}</option>
+          <option value="contacted">{t('crm.statuses.contacted', 'Đã liên hệ')}</option>
+          <option value="qualified">{t('crm.statuses.qualified', 'Tiềm năng')}</option>
+          <option value="won">{t('crm.statuses.won', 'Thành công')}</option>
+          <option value="lost">{t('crm.statuses.lost', 'Thất bại')}</option>
         </select>
+        <button
+          onClick={() => { fetchLeads(); fetchStats(); }}
+          className="p-2 hover:bg-gray-100 rounded-lg"
+        >
+          <RefreshCw className="w-5 h-5 text-gray-500" />
+        </button>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-          <div className="text-sm text-gray-500 mb-1">Tổng lead</div>
-          <div className="text-2xl font-bold text-gray-900">{leads.length}</div>
-        </div>
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-          <div className="text-sm text-gray-500 mb-1">Mới</div>
-          <div className="text-2xl font-bold text-blue-600">
-            {leads.filter(l => l.status === 'new').length}
-          </div>
-        </div>
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-          <div className="text-sm text-gray-500 mb-1">Đã liên hệ</div>
-          <div className="text-2xl font-bold text-green-600">
-            {leads.filter(l => l.status === 'contacted').length}
-          </div>
-        </div>
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-          <div className="text-sm text-gray-500 mb-1">Win rate</div>
-          <div className="text-2xl font-bold text-purple-600">
-            {leads.length > 0 ? Math.round(leads.filter(l => l.status === 'won').length / leads.length * 100) : 0}%
-          </div>
-        </div>
-      </div>
-
-      {/* Lead List */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <table className="w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Lead</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Công ty</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nguồn</th>
-              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Trạng thái</th>
-              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Lead Score</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {leads.map((lead) => (
-              <tr
-                key={lead.id}
-                onClick={() => handleLeadSelect(lead)}
-                className={`cursor-pointer hover:bg-gray-50 transition-colors ${
-                  selectedLead?.id === lead.id ? 'bg-blue-50' : ''
-                }`}
-              >
-                <td className="px-6 py-4">
-                  <div className="font-medium text-gray-900">{lead.firstName} {lead.lastName}</div>
-                  <div className="text-sm text-gray-500">{lead.email}</div>
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-600">{lead.company}</td>
-                <td className="px-6 py-4 text-sm text-gray-600">{lead.source}</td>
-                <td className="px-6 py-4 text-center">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${
-                      STATUS_COLORS[lead.status]
-                        ? `bg-[${STATUS_COLORS[lead.status].bg}] text-[${STATUS_COLORS[lead.status].color}]`
-                        : 'bg-gray-100 text-gray-700'
-                    }`}
-                  >
-                    {STATUS_COLORS[lead.status]?.label || lead.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-center">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${
-                    getLeadScoreColor(lead.leadScore)
-                  }`}>
-                    {lead.leadScore}
-                  </span>
-                </td>
+      {/* Main Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Lead List */}
+        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <table className="w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Lead</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('crm.company', 'Công ty')}</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('crm.source', 'Nguồn')}</th>
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">{t('crm.status', 'Trạng thái')}</th>
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">{t('crm.leadScore', 'Điểm')}</th>
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {leads.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
+                    {t('common.noData', 'Chưa có dữ liệu')}
+                  </td>
+                </tr>
+              ) : leads.map((lead) => (
+                <tr
+                  key={lead.id}
+                  onClick={() => handleLeadSelect(lead)}
+                  className={`cursor-pointer hover:bg-gray-50 transition-colors ${selectedLead?.id === lead.id ? 'bg-blue-50' : ''}`}
+                >
+                  <td className="px-6 py-4">
+                    <div className="font-medium text-gray-900">{lead.firstName} {lead.lastName}</div>
+                    <div className="text-sm text-gray-500">{lead.email || '-'}</div>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-600">{lead.company || '-'}</td>
+                  <td className="px-6 py-4 text-sm text-gray-600">
+                    {t(`crm.sources.${lead.source}`, lead.source)}
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                      STATUS_COLORS[lead.status]
+                        ? `text-[${STATUS_COLORS[lead.status].color}] bg-[${STATUS_COLORS[lead.status].bg}]`
+                        : 'bg-gray-100 text-gray-700'
+                    }`}>
+                      {STATUS_COLORS[lead.status]?.label || lead.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-bold ${getLeadScoreColor(lead.leadScore)}`}>
+                      {lead.leadScore}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-center" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex justify-center gap-2">
+                      <button
+                        onClick={() => handleEditLead(lead)}
+                        className="p-1.5 hover:bg-gray-100 rounded"
+                      >
+                        <Pencil className="w-4 h-4 text-gray-500" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteLead(lead.id)}
+                        className="p-1.5 hover:bg-red-50 rounded"
+                      >
+                        <Trash2 className="w-4 h-4 text-red-500" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-      {/* NBA Panel */}
-      {selectedLead && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        {/* NBA Panel */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-fit">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900">
-              {t('crm.nextBestAction', 'Hành động tiếp theo')}: {selectedLead.firstName} {selectedLead.lastName}
+              {t('crm.nextBestAction', 'Hành động tiếp theo')}
             </h3>
-            {nbaLoading && <RefreshCw className="w-5 h-5 animate-spin text-gray-400" />}
+            {selectedLead && (
+              <button
+                onClick={() => fetchNBA(selectedLead.id)}
+                className="p-1.5 hover:bg-gray-100 rounded"
+                disabled={nbaLoading}
+              >
+                <RefreshCw className={`w-4 h-4 text-gray-500 ${nbaLoading ? 'animate-spin' : ''}`} />
+              </button>
+            )}
           </div>
 
-          {nba ? (
-            <NBACard
-              action={nba.action}
-              priority={nba.priority}
-              reason={nba.reason}
-            />
+          {selectedLead ? (
+            <>
+              <p className="text-sm text-gray-500 mb-4">
+                {selectedLead.firstName} {selectedLead.lastName}
+              </p>
+              {nba ? (
+                <NBACard action={nba.action} priority={nba.priority} reason={nba.reason} />
+              ) : (
+                <p className="text-gray-400 text-center py-8">
+                  {nbaLoading ? t('common.loading', 'Đang phân tích...') : t('crm.noNBA', 'Không có gợi ý')}
+                </p>
+              )}
+            </>
           ) : (
-            <p className="text-gray-500 text-center py-8">
-              {nbaLoading ? 'Đang phân tích...' : 'Chọn lead để xem gợi ý'}
+            <p className="text-gray-400 text-center py-8">
+              {t('crm.selectLead', 'Chọn lead để xem gợi ý')}
             </p>
           )}
-
-          <div className="mt-4 flex gap-2">
-            <button
-              onClick={() => fetchNBA(selectedLead.id)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
-            >
-              <RefreshCw className="w-4 h-4" />
-              {t('actions.refresh', 'Làm mới')}
-            </button>
-          </div>
         </div>
+      </div>
+
+      {/* Lead Form Modal */}
+      {showForm && (
+        <LeadForm
+          lead={editingLead || undefined}
+          onSuccess={handleFormSuccess}
+          onClose={() => { setShowForm(false); setEditingLead(null); }}
+        />
       )}
     </div>
   );
