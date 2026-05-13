@@ -4,9 +4,10 @@ import { Sidebar } from '@smart-erp/ui';
 import type { NavItem } from '@smart-erp/ui';
 import { Dashboard } from './components/Dashboard';
 import { CRMScreen } from './components/CRMScreen';
+import { POSScreen } from './components/POSScreen';
 import { syncService } from './lib/sync-service';
 
-type Screen = 'dashboard' | 'crm' | 'pos' | 'products' | 'orders' | 'inventory';
+type Screen = 'dashboard' | 'pos' | 'crm' | 'products' | 'orders' | 'inventory';
 
 const NAV_ITEMS: NavItem[] = [
   { key: 'dashboard', label: 'Tổng quan', href: '/dashboard' },
@@ -44,7 +45,7 @@ export default function DesktopApp() {
       case 'crm':
         return <CRMScreen />;
       case 'pos':
-        return <div className="p-8 text-gray-500">POS - Điểm bán hàng</div>;
+        return <POSScreen />;
       case 'products':
         return <div className="p-8 text-gray-500">Sản phẩm</div>;
       case 'orders':
