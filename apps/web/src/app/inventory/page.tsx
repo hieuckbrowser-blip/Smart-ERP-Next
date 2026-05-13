@@ -103,6 +103,7 @@ export default function InventoryPage() {
   const [creatingReorderPo, setCreatingReorderPo] = useState(false);
   const [selectedWarehouseId, setSelectedWarehouseId] = useState<string>('');
   const [expectedDate, setExpectedDate] = useState<string>('');
+  const [reorderPoNotes, setReorderPoNotes] = useState<string>('');
 
   const fetchData = async () => {
     setLoading(true);
@@ -235,6 +236,7 @@ export default function InventoryPage() {
     const defaultWh = warehouses.find((w: any) => w.isDefault);
     setSelectedWarehouseId(defaultWh?.id ?? '');
     setExpectedDate('');
+    setReorderPoNotes('');
     try {
       const res = await apiClient.get('/suppliers', { params: { limit: 20 } });
       setSuppliers(res.data.items ?? []);
@@ -251,6 +253,7 @@ export default function InventoryPage() {
         supplierId: selectedSupplier.id,
         warehouseId: selectedWarehouseId || undefined,
         expectedDate: expectedDate || undefined,
+        notes: reorderPoNotes || undefined,
         items: reorderSuggestions
           .filter((s: any) => s.suggestedOrderQuantity > 0)
           .map((s: any) => ({ productId: s.id, quantity: s.suggestedOrderQuantity })),
@@ -817,6 +820,15 @@ export default function InventoryPage() {
                 onChange={(e) => setExpectedDate(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm dark:bg-gray-700 dark:text-white"
               />
+              <textarea
+                value={reorderPoNotes}
+                onChange={(e) => setReorderPoNotes(e.target.value)}
+                placeholder={t('purchasing.notes')}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm dark:bg-gray-700 dark:text-white"
+              />
+              <div className="text-xs text-gray-500 dark:text-gray-400">
+                {t('purchasing.preview', { items: reorderSuggestions.filter((s: any) => s.suggestedOrderQuantity > 0).length, quantity: reorderSuggestions.reduce((sum: number, s: any) => sum + (s.suggestedOrderQuantity > 0 ? s.suggestedOrderQuantity : 0), 0) })}
+              </div>
               <input
                 type="text"
                 value={supplierSearch}

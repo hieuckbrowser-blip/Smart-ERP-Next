@@ -407,7 +407,9 @@
     "searchPlaceholder": "Search by PO code, supplier...",
     "confirmDeleteMessage": "Are you sure you want to cancel this purchase order?",
     "selectWarehouseOptional": "Select warehouse (optional)",
-    "expectedDatePlaceholder": "Expected date (YYYY-MM-DD)"
+    "expectedDatePlaceholder": "Expected date (YYYY-MM-DD)",
+    "preview": "Will create {{items}} items (total qty: {{quantity}})",
+    "notes": "Notes"
   },
   "pos": {
     "createOrderFailed": "Create order failed. Please try again.",

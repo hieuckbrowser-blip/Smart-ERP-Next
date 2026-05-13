@@ -407,7 +407,9 @@
     "searchPlaceholder": "Tìm theo mã đơn, nhà cung cấp...",
     "confirmDeleteMessage": "Bạn có chắc muốn hủy đơn nhập này?",
     "selectWarehouseOptional": "Chọn kho (tùy chọn)",
-    "expectedDatePlaceholder": "Ngày dự kiến (YYYY-MM-DD)"
+    "expectedDatePlaceholder": "Ngày dự kiến (YYYY-MM-DD)",
+    "preview": "Sẽ tạo {{items}} mặt hàng (tổng SL: {{quantity}})",
+    "notes": "Ghi chú"
   },
   "pos": {
     "title": "Bán hàng (POS)",

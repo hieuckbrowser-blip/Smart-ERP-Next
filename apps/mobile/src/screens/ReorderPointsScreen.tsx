@@ -50,6 +50,7 @@ export default function ReorderPointsScreen() {
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [selectedWarehouseId, setSelectedWarehouseId] = useState('');
   const [expectedDate, setExpectedDate] = useState('');
+  const [poNotes, setPoNotes] = useState('');
 
   const fetchSuggestions = async () => {
     try {
@@ -103,6 +104,7 @@ export default function ReorderPointsScreen() {
     setSelectedSupplier(null);
     setSupplierSearch('');
     setExpectedDate('');
+    setPoNotes('');
     setShowCreatePo(true);
     await Promise.all([fetchSuppliers(), fetchWarehouses()]);
   };
@@ -115,6 +117,7 @@ export default function ReorderPointsScreen() {
         supplierId: selectedSupplier.id,
         warehouseId: selectedWarehouseId || undefined,
         expectedDate: expectedDate || undefined,
+        notes: poNotes || undefined,
         items: suggestions
           .filter((s) => s.suggestedOrderQuantity > 0)
           .map((s) => ({ productId: s.id, quantity: s.suggestedOrderQuantity })),
@@ -227,11 +230,28 @@ export default function ReorderPointsScreen() {
 
             <TextInput
               style={styles.searchInput}
-              placeholder={t('purchasing.expectedDate')}
+              placeholder={t('purchasing.expectedDatePlaceholder')}
               value={expectedDate}
               onChangeText={setExpectedDate}
               placeholderTextColor="#9ca3af"
             />
+
+            <TextInput
+              style={styles.searchInput}
+              placeholder={t('purchasing.notes')}
+              value={poNotes}
+              onChangeText={setPoNotes}
+              placeholderTextColor="#9ca3af"
+            />
+
+            <View style={styles.previewBox}>
+              <Text style={styles.previewText}>
+                {t('purchasing.preview', {
+                  items: suggestions.filter((s) => s.suggestedOrderQuantity > 0).length,
+                  quantity: suggestions.reduce((sum, s) => sum + (s.suggestedOrderQuantity > 0 ? s.suggestedOrderQuantity : 0), 0),
+                })}
+              </Text>
+            </View>
 
             <TextInput
               style={styles.searchInput}
@@ -396,6 +416,18 @@ const styles = StyleSheet.create({
     color: '#64748b',
     marginTop: 2,
   },
+  previewBox: {
+    backgroundColor: '#f1f5f9',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 10,
+  },
+  previewText: {
+    fontSize: 12,
+    color: '#334155',
+    fontWeight: '600',
+  },
+
   modalActions: {
     flexDirection: 'row',
     gap: 10,
