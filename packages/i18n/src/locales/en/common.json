@@ -403,7 +403,8 @@
     "cancelError": "Failed to cancel purchase order.",
     "orders": "purchase orders",
     "empty": "No purchase orders yet",
-    "searchPlaceholder": "Search by PO code, supplier..."
+    "searchPlaceholder": "Search by PO code, supplier...",
+    "confirmDeleteMessage": "Are you sure you want to cancel this purchase order?"
   },
   "pos": {
     "createOrderFailed": "Create order failed. Please try again.",

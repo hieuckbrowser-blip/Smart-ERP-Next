@@ -403,7 +403,8 @@
     "cancelError": "Hủy đơn nhập thất bại.",
     "orders": "đơn nhập",
     "empty": "Chưa có đơn nhập nào",
-    "searchPlaceholder": "Tìm theo mã đơn, nhà cung cấp..."
+    "searchPlaceholder": "Tìm theo mã đơn, nhà cung cấp...",
+    "confirmDeleteMessage": "Bạn có chắc muốn hủy đơn nhập này?"
   },
   "pos": {
     "title": "Bán hàng (POS)",
