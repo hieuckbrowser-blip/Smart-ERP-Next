@@ -20,6 +20,10 @@
 | Real-time WebSocket      |          ✅           | Partial  | Partial |  ❌  |   ❌    |
 | POS tích hợp             |          ✅           |    ✅    |   ✅    |  ❌  |   ✅    |
 | Monorepo shared packages |          ✅           |    ❌    |   ❌    |  ❌  |   ❌    |
+| Lot tracking + Expiry    |          ✅           |    ❌    |   ❌    |  ❌  |   ❌    |
+| Multi-warehouse transfer |          ✅           |    ❌    |   ❌    |  ❌  |   ❌    |
+| Lot tracking + Expiry    |          ✅           |    ❌    |   ❌    |  ❌  |   ❌    |
+| Multi-warehouse transfer |          ✅           |    ❌    |   ❌    |  ❌  |   ❌    |
 
 ---
 
@@ -92,7 +96,7 @@ smart-erp-next/
 | Module         | API | Web | Mobile |
 | -------------- | :-: | :-: | :----: |
 | Dashboard      | ✅  | ✅  |   ✅   |
-| POS (Bán hàng) | ✅  | ✅  |   🔜   |
+| POS (Bán hàng) | ✅  | ✅  |   ✅   |
 | Đơn hàng       | ✅  | ✅  |   ✅   |
 | Sản phẩm       | ✅  | ✅  |   ✅   |
 | Kho hàng       | ✅  | ✅  |   🔜   |
@@ -101,6 +105,8 @@ smart-erp-next/
 | Mua hàng       | ✅  | ✅  |   🔜   |
 | Thu chi        | ✅  | ✅  |   🔜   |
 | Quản lý kho    | ✅  | ✅  |   🔜   |
+| Lô hàng (Lot) | ✅  | ✅  |   🔜   |
+| Chuyển kho     | ✅  | ✅  |   🔜   |
 | Người dùng     | ✅  | ✅  |   🔜   |
 | Báo cáo        | ✅  | ✅  |   🔜   |
 | Cài đặt        |  —  | ✅  |   🔜   |
@@ -113,9 +119,12 @@ smart-erp-next/
 tenants
   ├── users (roles: admin/manager/accountant/warehouse/sales/user)
   ├── products → product_categories, inventory_transactions
+  ├── product_lots (batch tracking, expiry dates, FEFO)
+  ├── product_serials (individual item tracking, warranty)
   ├── customers
   ├── suppliers
   ├── warehouses
+  ├── warehouse_transfers (draft→approved→shipped→received)
   ├── orders → order_items
   ├── purchase_orders → purchase_order_items
   └── payments
