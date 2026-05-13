@@ -51,6 +51,7 @@ export default function ReorderPointsScreen() {
   const [selectedWarehouseId, setSelectedWarehouseId] = useState('');
   const [expectedDate, setExpectedDate] = useState('');
   const [poNotes, setPoNotes] = useState('');
+  const [poItems, setPoItems] = useState<{ productId: string; name: string; sku: string; quantity: number; included: boolean }[]>([]);
 
   const fetchSuggestions = async () => {
     try {
@@ -105,6 +106,17 @@ export default function ReorderPointsScreen() {
     setSupplierSearch('');
     setExpectedDate('');
     setPoNotes('');
+    setPoItems(
+      suggestions
+        .filter((s) => s.suggestedOrderQuantity > 0)
+        .map((s) => ({
+          productId: s.id,
+          name: s.name,
+          sku: s.sku,
+          quantity: s.suggestedOrderQuantity,
+          included: true,
+        })),
+    );
     setShowCreatePo(true);
     await Promise.all([fetchSuppliers(), fetchWarehouses()]);
   };
@@ -118,9 +130,9 @@ export default function ReorderPointsScreen() {
         warehouseId: selectedWarehouseId || undefined,
         expectedDate: expectedDate || undefined,
         notes: poNotes || undefined,
-        items: suggestions
-          .filter((s) => s.suggestedOrderQuantity > 0)
-          .map((s) => ({ productId: s.id, quantity: s.suggestedOrderQuantity })),
+        items: poItems
+          .filter((i) => i.included && i.quantity > 0)
+          .map((i) => ({ productId: i.productId, quantity: i.quantity })),
       });
       setShowCreatePo(false);
       Alert.alert(t('pos.success'), t('purchasing.createSuccess', 'Đã tạo đơn nhập'));
@@ -247,10 +259,37 @@ export default function ReorderPointsScreen() {
             <View style={styles.previewBox}>
               <Text style={styles.previewText}>
                 {t('purchasing.preview', {
-                  items: suggestions.filter((s) => s.suggestedOrderQuantity > 0).length,
-                  quantity: suggestions.reduce((sum, s) => sum + (s.suggestedOrderQuantity > 0 ? s.suggestedOrderQuantity : 0), 0),
+                  items: poItems.filter((i) => i.included && i.quantity > 0).length,
+                  quantity: poItems.reduce((sum, i) => sum + (i.included ? i.quantity : 0), 0),
                 })}
               </Text>
+            </View>
+
+            <View style={styles.itemsBox}>
+              <Text style={styles.modalLabel}>{t('purchasing.items')}</Text>
+              {poItems.map((it) => (
+                <View key={it.productId} style={styles.itemRow}>
+                  <TouchableOpacity
+                    style={[styles.itemCheck, it.included && styles.itemCheckActive]}
+                    onPress={() => setPoItems((prev) => prev.map((p) => p.productId === it.productId ? { ...p, included: !p.included } : p))}
+                  >
+                    <Text style={[styles.itemCheckText, it.included && styles.itemCheckTextActive]}>{it.included ? '✓' : ''}</Text>
+                  </TouchableOpacity>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.itemName} numberOfLines={1}>{it.name}</Text>
+                    <Text style={styles.itemSku}>{it.sku}</Text>
+                  </View>
+                  <TextInput
+                    style={styles.qtyInput}
+                    keyboardType="numeric"
+                    value={String(it.quantity)}
+                    onChangeText={(txt) => {
+                      const v = parseInt(txt) || 0;
+                      setPoItems((prev) => prev.map((p) => p.productId === it.productId ? { ...p, quantity: v } : p));
+                    }}
+                  />
+                </View>
+              ))}
             </View>
 
             <TextInput
@@ -281,9 +320,9 @@ export default function ReorderPointsScreen() {
                 <Text style={styles.modalBtnText}>{t('common.cancel')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.modalBtnPrimary, (!selectedSupplier || creatingPo) && styles.modalBtnDisabled]}
+                style={[styles.modalBtnPrimary, (!selectedSupplier || creatingPo || poItems.filter((i) => i.included && i.quantity > 0).length === 0) && styles.modalBtnDisabled]}
                 onPress={handleCreatePo}
-                disabled={!selectedSupplier || creatingPo}
+                disabled={!selectedSupplier || creatingPo || poItems.filter((i) => i.included && i.quantity > 0).length === 0}
               >
                 <Text style={styles.modalBtnPrimaryText}>
                   {creatingPo ? t('common.processing') : t('purchasing.add')}
@@ -426,6 +465,68 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#334155',
     fontWeight: '600',
+  },
+
+  itemsBox: {
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 10,
+    backgroundColor: '#fff',
+  },
+  itemRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f1f5f9',
+  },
+  itemCheck: {
+    width: 22,
+    height: 22,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#cbd5e1',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
+  itemCheckActive: {
+    borderColor: '#2563eb',
+    backgroundColor: '#2563eb',
+  },
+  itemCheckText: {
+    fontSize: 14,
+    color: '#2563eb',
+    fontWeight: '800',
+    lineHeight: 16,
+  },
+  itemCheckTextActive: {
+    color: '#fff',
+  },
+  itemName: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#0f172a',
+  },
+  itemSku: {
+    fontSize: 11,
+    color: '#64748b',
+    marginTop: 1,
+  },
+  qtyInput: {
+    width: 72,
+    borderWidth: 1,
+    borderColor: '#cbd5e1',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    textAlign: 'right',
+    color: '#0f172a',
+    fontSize: 13,
+    fontWeight: '700',
   },
 
   modalActions: {
