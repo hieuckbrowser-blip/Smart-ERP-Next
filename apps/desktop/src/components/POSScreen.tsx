@@ -20,10 +20,10 @@ interface CartItem {
 }
 
 const PAYMENT_METHODS = [
-  { key: 'cash', label: 'Tiền mặt', icon: <Banknote className="w-5 h-5" /> },
-  { key: 'bank_transfer', label: 'Chuyển khoản', icon: <CreditCard className="w-5 h-5" /> },
-  { key: 'momo', label: 'MoMo', icon: <Smartphone className="w-5 h-5" /> },
-  { key: 'vnpay', label: 'VNPay', icon: <Smartphone className="w-5 h-5" /> },
+  { key: 'cash', labelKey: 'payment.method.cash', icon: <Banknote className="w-5 h-5" /> },
+  { key: 'bank_transfer', labelKey: 'payment.method.bank_transfer', icon: <CreditCard className="w-5 h-5" /> },
+  { key: 'momo', labelKey: 'payment.method.momo', icon: <Smartphone className="w-5 h-5" /> },
+  { key: 'vnpay', labelKey: 'payment.method.vnpay', icon: <Smartphone className="w-5 h-5" /> },
 ];
 
 const formatVND = (n: number) =>
@@ -102,7 +102,7 @@ export function POSScreen() {
   const handleCheckout = async () => {
     if (cart.length === 0) return;
     if (selectedPayment === 'cash' && parseFloat(cashReceived || '0') < total) {
-      alert('Số tiền không đủ');
+      alert(t('pos.insufficientCash'));
       return;
     }
 
@@ -130,19 +130,22 @@ export function POSScreen() {
       });
       if (res.ok) {
         const data = await res.json();
-        alert(`Đơn hàng ${data.code} đã được tạo`);
+        alert(t('pos.orderCreated', { code: data.code }));
         setCart([]);
         setShowCheckout(false);
+      } else {
+        alert(t('pos.createOrderFailed'));
       }
     } catch (err) {
       console.error('Checkout failed:', err);
+      alert(t('pos.createOrderFailed'));
     }
   };
 
   const cartColumns: Column<CartItem>[] = [
     {
       key: 'name',
-      title: 'Sản phẩm',
+      title: t('pos.product'),
       render: (_, item) => (
         <div>
           <div className="font-medium">{item.product.name}</div>
@@ -152,7 +155,7 @@ export function POSScreen() {
     },
     {
       key: 'quantity',
-      title: 'Số lượng',
+      title: t('pos.qty'),
       align: 'center',
       render: (_, item) => (
         <div className="flex items-center justify-center gap-2">
@@ -174,7 +177,7 @@ export function POSScreen() {
     },
     {
       key: 'total',
-      title: 'Tổng',
+      title: t('pos.total'),
       align: 'right',
       render: (_, item) => formatVND(item.product.price * item.quantity - item.discount),
     },
@@ -202,7 +205,7 @@ export function POSScreen() {
           <h2 className="text-xl font-bold">{t('nav.pos')}</h2>
           <input
             type="text"
-            placeholder="Tìm sản phẩm..."
+            placeholder={t('pos.searchPlaceholder')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="px-4 py-2 border rounded-lg w-64"
@@ -219,7 +222,7 @@ export function POSScreen() {
               >
                 <p className="font-medium text-sm truncate">{product.name}</p>
                 <p className="text-green-600 font-bold mt-1">{formatVND(product.price)}</p>
-                <p className="text-xs text-gray-400 mt-1">Còn {product.stock}</p>
+                <p className="text-xs text-gray-400 mt-1">{t('pos.inStock', { stock: product.stock })}</p>
               </Card>
             ))}
           </div>
@@ -231,42 +234,42 @@ export function POSScreen() {
         <div className="p-4 border-b flex items-center justify-between">
           <div className="flex items-center gap-2">
             <ShoppingCart className="w-5 h-5" />
-            <span className="font-semibold">Giỏ hàng ({cart.length})</span>
+            <span className="font-semibold">{t('pos.cart')} ({cart.length})</span>
           </div>
           {cart.length > 0 && (
             <button
               onClick={() => setShowCheckout(true)}
               className="text-blue-600 text-sm font-medium hover:underline"
             >
-              Thanh toán
+              {t('pos.checkout')}
             </button>
           )}
         </div>
 
         <div className="flex-1 overflow-auto p-4">
           {cart.length === 0 ? (
-            <p className="text-center text-gray-400 py-8">Giỏ hàng trống</p>
+            <p className="text-center text-gray-400 py-8">{t('pos.cartEmpty')}</p>
           ) : (
             <DataTable
               columns={cartColumns}
               data={cart}
               rowKey={(item) => item.product.id}
-              emptyText="Không có sản phẩm"
+              emptyText={t('pos.cartEmpty')}
             />
           )}
         </div>
 
         <div className="p-4 border-t bg-gray-50">
           <div className="flex justify-between mb-2">
-            <span>Tạm tính:</span>
+            <span>{t('pos.subtotal')}:</span>
             <span>{formatVND(subtotal)}</span>
           </div>
           <div className="flex justify-between mb-2">
-            <span>VAT (10%):</span>
+            <span>{t('pos.tax')}:</span>
             <span>{formatVND(tax)}</span>
           </div>
           <div className="flex justify-between text-lg font-bold border-t pt-2">
-            <span>Tổng cộng:</span>
+            <span>{t('pos.total')}:</span>
             <span className="text-green-600">{formatVND(total)}</span>
           </div>
         </div>
@@ -277,7 +280,7 @@ export function POSScreen() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-6 w-full max-w-lg">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-semibold">Thanh toán</h3>
+              <h3 className="text-lg font-semibold">{t('pos.checkout')}</h3>
               <button onClick={() => setShowCheckout(false)} className="p-2 hover:bg-gray-100 rounded">
                 <X className="w-5 h-5" />
               </button>
@@ -285,17 +288,17 @@ export function POSScreen() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Khách hàng (tùy chọn)</label>
+                <label className="block text-sm font-medium mb-1">{t('pos.customerOptional')}</label>
                 <input
                   type="text"
-                  placeholder="Tên khách hàng"
+                  placeholder={t('pos.customerName')}
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
                   className="w-full px-3 py-2 border rounded-lg"
                 />
                 <input
                   type="tel"
-                  placeholder="Số điện thoại"
+                  placeholder={t('pos.customerPhone')}
                   value={customerPhone}
                   onChange={(e) => setCustomerPhone(e.target.value)}
                   className="w-full px-3 py-2 border rounded-lg mt-2"
@@ -303,7 +306,7 @@ export function POSScreen() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Phương thức thanh toán</label>
+                <label className="block text-sm font-medium mb-2">{t('pos.paymentMethod')}</label>
                 <div className="grid grid-cols-2 gap-2">
                   {PAYMENT_METHODS.map((method) => (
                     <button
@@ -316,7 +319,7 @@ export function POSScreen() {
                       }`}
                     >
                       {method.icon}
-                      <span>{method.label}</span>
+                      <span>{t(method.labelKey as any)}</span>
                     </button>
                   ))}
                 </div>
@@ -324,7 +327,7 @@ export function POSScreen() {
 
               {selectedPayment === 'cash' && (
                 <div>
-                  <label className="block text-sm font-medium mb-1">Tiền khách đưa</label>
+                  <label className="block text-sm font-medium mb-1">{t('pos.cashReceived')}</label>
                   <input
                     type="number"
                     value={cashReceived}
@@ -334,7 +337,7 @@ export function POSScreen() {
                   />
                   {change > 0 && (
                     <p className="text-green-600 font-semibold mt-2">
-                      Tiền thừa: {formatVND(change)}
+                      {t('pos.change')}: {formatVND(change)}
                     </p>
                   )}
                 </div>
@@ -342,17 +345,17 @@ export function POSScreen() {
 
               <div className="border-t pt-4">
                 <div className="flex justify-between text-xl font-bold">
-                  <span>Tổng cộng:</span>
+                  <span>{t('pos.total')}:</span>
                   <span className="text-green-600">{formatVND(total)}</span>
                 </div>
               </div>
 
               <div className="flex gap-3 pt-4">
                 <Button variant="secondary" onClick={() => setShowCheckout(false)} className="flex-1">
-                  Hủy
+                  {t('pos.cancel')}
                 </Button>
                 <Button variant="primary" onClick={handleCheckout} className="flex-1">
-                  Xác nhận
+                  {t('pos.confirm')}
                 </Button>
               </div>
             </div>
