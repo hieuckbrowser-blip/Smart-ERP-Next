@@ -23,7 +23,7 @@ export class CustomersController {
 
   @Post()
   create(@Request() req: any, @Body() dto: CreateCustomerDto) {
-    return this.customersService.create(req.user.tenantId, dto);
+    return this.customersService.create(req.user.tenantId, req.user.sub, dto);
   }
 
   @Get()
@@ -55,11 +55,11 @@ export class CustomersController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateCustomerDto,
   ) {
-    return this.customersService.update(req.user.tenantId, id, dto);
+    return this.customersService.update(req.user.tenantId, req.user.sub, id, dto);
   }
 
   @Delete(':id')
   remove(@Request() req: any, @Param('id', ParseUUIDPipe) id: string) {
-    return this.customersService.remove(req.user.tenantId, id);
+    return this.customersService.remove(req.user.tenantId, req.user.sub, id);
   }
 }

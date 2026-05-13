@@ -8,10 +8,13 @@ import { customers } from "@smart-erp/database/schema";
 import { eq, and, ilike, or, sql } from "@smart-erp/database/drizzle";
 import { CreateCustomerDto } from "./dto/create-customer.dto";
 import { UpdateCustomerDto } from "./dto/update-customer.dto";
+import { ActivityService } from "../modules/activity/activity.service";
 
 @Injectable()
 export class CustomersService {
-  async create(tenantId: string, dto: CreateCustomerDto) {
+  constructor(private activityService: ActivityService) {}
+
+  async create(tenantId: string, userId: string, dto: CreateCustomerDto) {
     const existing = await db
       .select()
       .from(customers)
@@ -25,6 +28,13 @@ export class CustomersService {
       .insert(customers)
       .values({ ...dto, tenantId, debtLimit: dto.debtLimit?.toString() })
       .returning();
+
+    await this.activityService.log(tenantId, userId, 'created', 'customer', customer.id, {
+      code: customer.code,
+      name: customer.name,
+      phone: customer.phone,
+    });
+
     return customer;
   }
 
@@ -93,7 +103,7 @@ export class CustomersService {
     return customer;
   }
 
-  async update(tenantId: string, id: string, dto: UpdateCustomerDto) {
+  async update(tenantId: string, userId: string, id: string, dto: UpdateCustomerDto) {
     const values = {
       ...dto,
       debtLimit: dto.debtLimit?.toString(),
@@ -106,15 +116,27 @@ export class CustomersService {
       .where(and(eq(customers.tenantId, tenantId), eq(customers.id, id)))
       .returning();
     if (!customer) throw new NotFoundException("Customer not found");
+
+    await this.activityService.log(tenantId, userId, 'updated', 'customer', id, {
+      changes: Object.keys(dto),
+    });
+
     return customer;
   }
 
-  async remove(tenantId: string, id: string) {
+  async remove(tenantId: string, userId: string, id: string) {
     const [customer] = await db
       .delete(customers)
       .where(and(eq(customers.tenantId, tenantId), eq(customers.id, id)))
       .returning();
     if (!customer) throw new NotFoundException("Customer not found");
+
+    await this.activityService.log(tenantId, userId, 'deleted', 'customer', id, {
+      code: customer.code,
+      name: customer.name,
+      phone: customer.phone,
+    });
+
     return customer;
   }
 }
