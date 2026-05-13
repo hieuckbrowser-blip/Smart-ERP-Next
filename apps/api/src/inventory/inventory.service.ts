@@ -1,10 +1,36 @@
 import { Injectable, ConflictException } from "@nestjs/common";
 import { db } from "@smart-erp/database";
 import { products, inventoryTransactions } from "@smart-erp/database/schema";
-import { eq, and, sql, desc, lte } from "@smart-erp/database/drizzle";
+import { eq, and, sql, desc } from "@smart-erp/database/drizzle";
 
 @Injectable()
 export class InventoryService {
+  async getReorderSuggestions(tenantId: string) {
+    const rows = await db
+      .select({
+        id: products.id,
+        name: products.name,
+        sku: products.sku,
+        stock: products.stock,
+        minStock: products.minStock,
+        reorderQuantity: products.reorderQuantity,
+      })
+      .from(products)
+      .where(and(eq(products.tenantId, tenantId), eq(products.isActive, true)))
+      .orderBy(products.stock);
+
+    return rows
+      .filter((p) => (p.minStock ?? 0) > 0 && p.stock <= (p.minStock ?? 0))
+      .map((p) => ({
+        ...p,
+        suggestedOrderQuantity: Math.max(
+          (p.reorderQuantity ?? 0) || ((p.minStock ?? 0) - p.stock),
+          0,
+        ),
+      }))
+      .filter((p) => p.suggestedOrderQuantity > 0);
+  }
+
   async getTransactions(
     tenantId: string,
     query: { page?: number; limit?: number; productId?: string; type?: string },

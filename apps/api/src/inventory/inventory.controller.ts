@@ -62,4 +62,10 @@ export class InventoryController {
   getSummary(@Request() req: any) {
     return this.inventoryService.getSummary(req.user.tenantId);
   }
+
+  /** Gợi ý đặt hàng lại dựa trên minStock/reorderQuantity */
+  @Get('reorder-suggestions')
+  getReorderSuggestions(@Request() req: any) {
+    return this.inventoryService.getReorderSuggestions(req.user.tenantId);
+  }
 }

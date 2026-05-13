@@ -4,6 +4,7 @@ import {
 } from '@nestjs/common';
 import { PurchasingService } from './purchasing.service';
 import { CreatePurchaseOrderDto } from './dto/create-purchase-order.dto';
+import { CreatePoFromReorderDto } from './dto/create-po-from-reorder.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
@@ -14,6 +15,18 @@ export class PurchasingController {
   @Post()
   create(@Request() req: any, @Body() dto: CreatePurchaseOrderDto) {
     return this.purchasingService.create(req.user.tenantId, req.user.sub, dto);
+  }
+
+  @Post('from-reorder-suggestions')
+  createFromReorderSuggestions(
+    @Request() req: any,
+    @Body() dto: CreatePoFromReorderDto,
+  ) {
+    return this.purchasingService.createFromReorderSuggestions(
+      req.user.tenantId,
+      req.user.sub,
+      dto,
+    );
   }
 
   @Get()

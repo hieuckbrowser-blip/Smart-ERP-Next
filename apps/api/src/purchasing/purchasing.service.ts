@@ -7,6 +7,7 @@ import {
 } from '@smart-erp/database/schema';
 import { eq, and, ilike, sql, desc } from '@smart-erp/database/drizzle';
 import { CreatePurchaseOrderDto } from './dto/create-purchase-order.dto';
+import { CreatePoFromReorderDto } from './dto/create-po-from-reorder.dto';
 
 @Injectable()
 export class PurchasingService {
@@ -16,6 +17,43 @@ export class PurchasingService {
       .from(purchaseOrders)
       .where(eq(purchaseOrders.tenantId, tenantId));
     return `PN-${(count + 1).toString().padStart(6, '0')}`;
+  }
+
+  async createFromReorderSuggestions(
+    tenantId: string,
+    userId: string,
+    dto: CreatePoFromReorderDto,
+  ) {
+    if (!dto.items?.length) {
+      throw new BadRequestException('Purchase order must have at least 1 product');
+    }
+
+    const productIds = dto.items.map((i) => i.productId);
+    const productList = await db
+      .select()
+      .from(products)
+      .where(and(eq(products.tenantId, tenantId), sql`id = ANY(${productIds})`));
+    const productMap = new Map(productList.map((p) => [p.id, p]));
+
+    return this.create(tenantId, userId, {
+      supplierId: dto.supplierId,
+      warehouseId: dto.warehouseId,
+      expectedDate: dto.expectedDate,
+      notes: dto.notes,
+      items: dto.items.map((i) => {
+        const product = productMap.get(i.productId);
+        if (!product) {
+          throw new BadRequestException('Product not found');
+        }
+        const unitCost = parseFloat((product.cost as any) ?? '0') || 0;
+        return {
+          productId: i.productId,
+          orderedQty: i.quantity,
+          unitCost,
+          taxRate: 0,
+        };
+      }),
+    });
   }
 
   async create(tenantId: string, userId: string, dto: CreatePurchaseOrderDto) {
@@ -33,7 +71,7 @@ export class PurchasingService {
     let subtotal = 0;
     const itemsData = dto.items.map((item) => {
       const product = productMap.get(item.productId);
-      if (!product) throw new BadRequestException(`Sản phẩm ${item.productId} không tồn tại`);
+      if (!product) throw new BadRequestException(`Product ${item.productId} not found`);
       const lineTotal = item.orderedQty * item.unitCost;
       subtotal += lineTotal;
       return {
@@ -138,7 +176,7 @@ export class PurchasingService {
   ) {
     const po = await this.findOne(tenantId, id);
     if (!['confirmed', 'partial_received'].includes(po.status)) {
-      throw new BadRequestException('Chỉ có thể nhận hàng khi đơn ở trạng thái đã xác nhận');
+      throw new BadRequestException('Can only receive goods for confirmed purchase orders');
     }
 
     for (const recv of receivedItems) {
@@ -148,7 +186,7 @@ export class PurchasingService {
       const newReceivedQty = (item as any).receivedQty + recv.receivedQty;
       if (newReceivedQty > (item as any).orderedQty) {
         throw new ConflictException(
-          `Số lượng nhận vượt quá số lượng đặt cho sản phẩm ${(item as any).productName}`
+          `Received quantity exceeds ordered quantity for product ${(item as any).productName}`
         );
       }
 
@@ -179,7 +217,7 @@ export class PurchasingService {
           previousStock: product.stock,
           newStock,
           reference: po.code,
-          notes: `Nhập hàng từ đơn ${po.code}`,
+          notes: `Received goods from PO ${po.code}`,
           createdBy: userId,
         });
       }
@@ -215,7 +253,7 @@ export class PurchasingService {
       .where(and(eq(purchaseOrders.tenantId, tenantId), eq(purchaseOrders.id, id)));
     if (!po) throw new NotFoundException('Purchase order not found');
     if (po.status === 'received') {
-      throw new BadRequestException('Không thể hủy đơn đã nhận hàng');
+      throw new BadRequestException('Cannot cancel a received purchase order');
     }
     return this.updateStatus(tenantId, id, 'cancelled');
   }
