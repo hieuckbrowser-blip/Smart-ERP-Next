@@ -1,8 +1,8 @@
 import { pgTable, uuid, text, timestamp, numeric, index, boolean } from 'drizzle-orm/pg-core';
 import { tenants } from './tenants';
 import { users } from './users';
+import { customers } from './customers';
 
-// Khách hàng tiềm năng (Leads)
 export const crmLeads = pgTable(
   'crm_leads',
   {
@@ -15,8 +15,8 @@ export const crmLeads = pgTable(
     email: text('email'),
     phone: text('phone'),
     company: text('company'),
-    source: text('source').default('other'), // website, referral, trade_show, social_media, email_campaign, other
-    status: text('status').notNull().default('new'), // new, contacted, qualified, won, lost
+    source: text('source').default('other'),
+    status: text('status').notNull().default('new'),
     leadScore: numeric('lead_score', { precision: 5, scale: 2 }).default('0'),
     industry: text('industry'),
     description: text('description'),
@@ -34,8 +34,3 @@ export const crmLeads = pgTable(
     index('crm_leads_email_idx').on(table.email),
   ]
 );
-
-// Import customers table reference (for foreign key)
-const customers = pgTable('customers', {
-  id: uuid('id').defaultRandom().primaryKey(),
-});
