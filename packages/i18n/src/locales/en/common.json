@@ -128,8 +128,7 @@
       "lead": "Lead",
       "payment": "Payment",
       "journalEntry": "Journal Entry"
-    }
-  },
+    },
     "settings": "Settings",
     "users": "Users",
     "tenants": "Tenants"
@@ -593,6 +592,8 @@
     "themeSystem": "System",
     "language": "Language"
   },
+
+  "sync": {
     "conflictTitle": "Sync Conflict Detected",
     "localVersion": "Local version",
     "remoteVersion": "Server version",
