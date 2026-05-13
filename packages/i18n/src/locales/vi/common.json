@@ -619,7 +619,9 @@
       "inventory": "kho",
       "lead": "lead",
       "payment": "phiếu thu/chi",
-      "journalEntry": "bút toán"
+      "journalEntry": "bút toán",
+      "comment": "bình luận",
+      "chat": "chat"
     }
   }
 }

@@ -752,7 +752,9 @@
       "inventory": "inventory",
       "lead": "lead",
       "payment": "payment",
-      "journalEntry": "journal entry"
+      "journalEntry": "journal entry",
+      "comment": "comment",
+      "chat": "chat"
     }
   },
   "advanced_reports": {

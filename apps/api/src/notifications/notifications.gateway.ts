@@ -19,6 +19,8 @@ export type NotificationEvent =
   | 'stock.adjusted'
   | 'lead.created'
   | 'lead.converted'
+  | 'chat.message'
+  | 'comment.added'
   | 'system.alert';
 
 @WebSocketGateway({
