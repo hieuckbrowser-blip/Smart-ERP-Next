@@ -17,12 +17,12 @@ import {
 import LeadForm from '@/components/crm/LeadForm';
 import type { NextBestAction, LeadStats } from '@/lib/api-crm';
 
-const STATUS_COLORS: Record<string, { label: string; color: string; bg: string }> = {
-  new: { label: 'Mới', color: '#3b82f6', bg: '#dbeafe' },
-  contacted: { label: 'Đã liên hệ', color: '#10b981', bg: '#d1fae5' },
-  qualified: { label: 'Tiềm năng', color: '#f59e0b', bg: '#fef3c7' },
-  won: { label: 'Thành công', color: '#8b5cf6', bg: '#ede9fe' },
-  lost: { label: 'Thất bại', color: '#ef4444', bg: '#fee2e2' },
+const STATUS_COLORS: Record<string, { color: string; bg: string }> = {
+  new: { color: '#3b82f6', bg: '#dbeafe' },
+  contacted: { color: '#10b981', bg: '#d1fae5' },
+  qualified: { color: '#f59e0b', bg: '#fef3c7' },
+  won: { color: '#8b5cf6', bg: '#ede9fe' },
+  lost: { color: '#ef4444', bg: '#fee2e2' },
 };
 
 function NBACard({ action, priority, reason }: { action: string; priority: number; reason: string }) {
@@ -258,7 +258,7 @@ export default function CRMPage() {
                         ? `text-[${STATUS_COLORS[lead.status].color}] bg-[${STATUS_COLORS[lead.status].bg}]`
                         : 'bg-gray-100 text-gray-700'
                     }`}>
-                      {STATUS_COLORS[lead.status]?.label || lead.status}
+                      {t(`crm.statuses.${lead.status}`)}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-center">
