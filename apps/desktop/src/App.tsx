@@ -1,5 +1,6 @@
 // Smart ERP Desktop - Main App
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Sidebar } from '@smart-erp/ui';
 import type { NavItem } from '@smart-erp/ui';
 import { Dashboard } from './components/Dashboard';
@@ -11,15 +12,18 @@ import { syncService } from './lib/sync-service';
 
 type Screen = 'dashboard' | 'pos' | 'crm' | 'products' | 'orders' | 'inventory' | 'accounting';
 
-const NAV_ITEMS: NavItem[] = [
-  { key: 'dashboard', label: 'Tổng quan', href: '/dashboard' },
-  { key: 'pos', label: 'POS', href: '/pos' },
-  { key: 'orders', label: 'Đơn hàng', href: '/orders' },
-  { key: 'products', label: 'Sản phẩm', href: '/products' },
-  { key: 'inventory', label: 'Kho hàng', href: '/inventory' },
-  { key: 'crm', label: 'CRM', href: '/crm' },
-  { key: 'accounting', label: 'Kế toán', href: '/accounting' },
-];
+export default function DesktopApp() {
+  const { t } = useTranslation();
+
+  const NAV_ITEMS: NavItem[] = [
+    { key: 'dashboard', label: t('nav.dashboard'), href: '/dashboard' },
+    { key: 'pos', label: t('nav.pos'), href: '/pos' },
+    { key: 'orders', label: t('nav.orders'), href: '/orders' },
+    { key: 'products', label: t('nav.products'), href: '/products' },
+    { key: 'inventory', label: t('nav.inventory'), href: '/inventory' },
+    { key: 'crm', label: t('nav.crm'), href: '/crm' },
+    { key: 'accounting', label: t('nav.accounting'), href: '/accounting' },
+  ];
 
 export default function DesktopApp() {
   const [activeScreen, setActiveScreen] = useState<Screen>('dashboard');
@@ -52,9 +56,9 @@ export default function DesktopApp() {
       case 'accounting':
         return <AccountingScreen />;
       case 'products':
-        return <div className="p-8 text-gray-500">Sản phẩm</div>;
+        return <div className="p-8 text-gray-500">{t('nav.products')}</div>;
       case 'orders':
-        return <div className="p-8 text-gray-500">Đơn hàng</div>;
+        return <div className="p-8 text-gray-500">{t('nav.orders')}</div>;
       case 'inventory':
         return <InventoryScreen />;
       default:
