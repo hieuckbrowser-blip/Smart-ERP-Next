@@ -1,4 +1,4 @@
-import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod, CacheModule } from '@nestjs/common';
 import { ForecastModule } from './forecast/forecast.module';
 import { InventoryRecommendationModule } from './inventory-recommendation/inventory-recommendation.module';
 import { ConfigModule } from '@nestjs/config';
@@ -31,6 +31,8 @@ import { DRIZZLE } from './common/drizzle.decorator';
 
 @Module({
   imports: [
+    // Cache layer for performance
+    CacheModule.register({ isGlobal: true, ttl: 60, max: 100 }),
     // Forecast feature
     ForecastModule,
     // Inventory recommendation
