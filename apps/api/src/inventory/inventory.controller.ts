@@ -10,7 +10,7 @@ import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 export class InventoryController {
   constructor(private readonly inventoryService: InventoryService) {}
 
-  /** Lịch sử nhập/xuất kho toàn tenant */
+  /** Inventory transaction history for tenant */
   @Get('transactions')
   getTransactions(
     @Request() req: any,
@@ -27,7 +27,7 @@ export class InventoryController {
     });
   }
 
-  /** Điều chỉnh tồn kho thủ công */
+  /** Manual stock adjustment */
   @Post('adjust')
   adjust(
     @Request() req: any,
@@ -51,19 +51,19 @@ export class InventoryController {
     );
   }
 
-  /** Danh sách sản phẩm sắp hết hàng */
+  /** List of products running low on stock */
   @Get('low-stock')
   getLowStock(@Request() req: any) {
     return this.inventoryService.getLowStock(req.user.tenantId);
   }
 
-  /** Tổng quan tồn kho */
+  /** Inventory summary overview */
   @Get('summary')
   getSummary(@Request() req: any) {
     return this.inventoryService.getSummary(req.user.tenantId);
   }
 
-  /** Gợi ý đặt hàng lại dựa trên minStock/reorderQuantity */
+  /** Reorder suggestions based on minStock/reorderQuantity */
   @Get('reorder-suggestions')
   getReorderSuggestions(@Request() req: any) {
     return this.inventoryService.getReorderSuggestions(req.user.tenantId);
@@ -71,7 +71,7 @@ export class InventoryController {
 
   // ---------- Omnichannel Inventory Sync ----------
 
-  /** Lấy tồn kho khả dụng (đã trừ reservation + buffer) */
+  /** Get available stock (after subtracting reservation + buffer) */
   @Get('available-stock/:productId')
   getAvailableStock(
     @Request() req: any,
@@ -81,7 +81,7 @@ export class InventoryController {
     return this.inventoryService.getAvailableStock(req.user.tenantId, productId, storeId);
   }
 
-  /** Tạo reservation cho đơn marketplace */
+  /** Create reservation for marketplace order */
   @Post('reservations')
   createReservation(
     @Request() req: any,
@@ -102,7 +102,7 @@ export class InventoryController {
     );
   }
 
-  /** Huỷ reservation (khi đơn huỷ) */
+  /** Release reservation (when order is cancelled) */
   @Post('reservations/release')
   releaseReservation(
     @Request() req: any,
@@ -112,7 +112,7 @@ export class InventoryController {
     return this.inventoryService.releaseReservation(req.user.tenantId, body.externalOrderId);
   }
 
-  /** Xác nhận reservation (khi đơn fulfilled) */
+  /** Consume reservation (when order is fulfilled) */
   @Post('reservations/consume')
   consumeReservation(
     @Request() req: any,
@@ -122,13 +122,13 @@ export class InventoryController {
     return this.inventoryService.consumeReservation(req.user.tenantId, body.externalOrderId);
   }
 
-  /** Push tồn kho khả dụng lên marketplace */
+  /** Push available stock to marketplace */
   @Post('sync-channel-stock/:storeId')
   pushStockToMarketplace(@Request() req: any, @Param('storeId') storeId: string) {
     return this.inventoryService.pushStockToMarketplace(req.user.tenantId, storeId);
   }
 
-  /** Sync tồn kho cho tất cả stores */
+  /** Sync stock for all stores */
   @Post('sync-all-stores-stock')
   syncAllStoresStock(@Request() req: any) {
     return this.inventoryService.syncAllStoresStock(req.user.tenantId);

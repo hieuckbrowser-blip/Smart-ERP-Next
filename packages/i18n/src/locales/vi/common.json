@@ -210,6 +210,46 @@
       "notes": "Ghi chú về nhà cung cấp..."
     }
   },
+  "customers": {
+    "title": "Khách hàng",
+    "add": "Thêm khách hàng",
+    "edit": "Sửa khách hàng",
+    "searchPlaceholder": "Tìm kiếm khách hàng...",
+    "basicInfo": "Thông tin cơ bản",
+    "addressSection": "Địa chỉ",
+    "businessSection": "Cài đặt kinh doanh",
+    "active": "Đang hoạt động",
+    "notes": "Ghi chú",
+    "code": "Mã KH",
+    "name": "Tên khách hàng",
+    "phone": "Số điện thoại",
+    "email": "Email",
+    "taxCode": "Mã số thuế",
+    "contactPerson": "Người liên hệ",
+    "address": "Địa chỉ",
+    "ward": "Phường/Xã",
+    "district": "Quận/Huyện",
+    "province": "Tỉnh/Thành phố",
+    "debtLimit": "Hạn mức nợ",
+    "groups": {
+      "retail": "Bán lẻ",
+      "wholesale": "Bán sỉ",
+      "vip": "VIP"
+    },
+    "placeholders": {
+      "code": "KH-001",
+      "name": "Nguyễn Văn A",
+      "phone": "0901234567",
+      "email": "email@example.com",
+      "taxCode": "0123456789",
+      "contactPerson": "Người liên hệ",
+      "address": "Số nhà, tên đường",
+      "ward": "Phường/Xã",
+      "district": "Quận/Huyện",
+      "province": "Chọn tỉnh/thành",
+      "notes": "Ghi chú về khách hàng..."
+    }
+  },
   "settings": {
     "title": "Cài đặt",
     "general": "Chung",
@@ -240,6 +280,15 @@
     "darkMode": "Chế độ tối",
     "themeSystem": "Theo hệ thống",
     "language": "Ngôn ngữ"
+  },
+  "sync": {
+    "conflictTitle": "Phát hiện xung đột đồng bộ",
+    "localVersion": "Bản cục bộ",
+    "remoteVersion": "Bản máy chủ",
+    "keepLocal": "Giữ bản cục bộ",
+    "keepRemote": "Giữ bản máy chủ",
+    "lastSync": "Lần đồng bộ cuối",
+    "pendingChanges": "{{count}} thay đổi đang chờ"
   },
   "crm": {
     "title": "CRM",
@@ -276,34 +325,6 @@
       "email_campaign": "Email marketing",
       "other": "Khác"
     }
-  },
-  "activity": {
-    "created": "đã tạo",
-    "updated": "đã cập nhật",
-    "deleted": "đã xóa",
-    "approved": "đã duyệt",
-    "rejected": "đã từ chối",
-    "stock_adjusted": "điều chỉnh tồn kho",
-    "entityTypes": {
-      "order": "đơn hàng",
-      "product": "sản phẩm",
-      "customer": "khách hàng",
-      "supplier": "nhà cung cấp",
-      "inventory": "kho",
-      "lead": "lead",
-      "payment": "phiếu thu/chi",
-      "journalEntry": "bút toán",
-      "comment": "bình luận",
-      "chat": "chat",
-      "lot": "lô hàng",
-      "transfer": "chuyển kho"
-    }
-  },
-  "ecommerce": {
-    "localVersion": "Bản cục bộ",
-    "remoteVersion": "Bản máy chủ",
-    "keepLocal": "Giữ bản cục bộ",
-    "keepRemote": "Giữ bản máy chủ"
   },
   "accounting": {
     "posted": "Đã ghi",

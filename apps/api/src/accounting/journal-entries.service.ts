@@ -156,7 +156,7 @@ export class JournalEntriesService {
       tenantId,
       voucherNumber: `BC${year}${String(count + 1).padStart(6, '0')}`,
       voucherDate: new Date(),
-      description: `Đảo bút toán ${original.voucherNumber}${reason ? `: ${reason}` : ''}`,
+      description: `Reverse journal entry ${original.voucherNumber}${reason ? `: ${reason}` : ''}`,
       reference: original.voucherNumber,
       totalAmount: original.totalAmount,
       isPosted: true,

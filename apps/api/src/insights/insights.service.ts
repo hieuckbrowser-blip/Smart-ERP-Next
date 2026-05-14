@@ -115,13 +115,13 @@ export class InsightsService {
       insights.push({
         type: 'growth',
         severity: 'info',
-        message: `📈 Doanh thu hôm nay tăng ${revenueTrend.toFixed(1)}% so với hôm qua.`,
+        message: `📈 Revenue increased by ${revenueTrend.toFixed(1)}% compared to yesterday.`,
       });
     } else if (revenueTrend < -20) {
       insights.push({
         type: 'warning',
         severity: 'medium',
-        message: `⚠️ Doanh thu hôm nay giảm ${Math.abs(revenueTrend).toFixed(1)}% so với hôm qua.`,
+        message: `⚠️ Revenue decreased by ${Math.abs(revenueTrend).toFixed(1)}% compared to yesterday.`,
       });
     }
 
@@ -129,7 +129,7 @@ export class InsightsService {
       insights.push({
         type: 'alert',
         severity: 'high',
-        message: `🔴 ${lowStockCount} sản phẩm sắp hết hàng. Cần nhập thêm.`,
+        message: `🔴 ${lowStockCount} products are running low. Restock needed.`,
       });
     }
 
@@ -137,7 +137,7 @@ export class InsightsService {
       insights.push({
         type: 'info',
         severity: 'low',
-        message: '✅ Mọi chỉ số đều ổn định. Tiếp tục phát huy!',
+        message: '✅ All metrics are stable. Keep up the good work!',
       });
     }
 
@@ -150,7 +150,7 @@ export class InsightsService {
       recentOrders: recentOrders.map((o) => ({
         id: o.id,
         code: o.code,
-        customerName: 'Khách hàng',
+        customerName: 'Customer',
         total: parseFloat(o.total as string),
         status: o.status,
         createdAt: o.createdAt,

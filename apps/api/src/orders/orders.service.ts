@@ -192,7 +192,7 @@ export class OrdersService {
     <InvDate>${date}</InvDate>
     <SupplierName>${companyName}</SupplierName>
     <SupplierTaxCode>${taxCode}</SupplierTaxCode>
-    <BuyerName>${order.customerName || 'Khách lẻ'}</BuyerName>
+    <BuyerName>${order.customerName || 'Walk-in Customer'}</BuyerName>
     <BuyerAddress>${order.shippingAddress || ''}</BuyerAddress>
   </Header>
   <Details>
