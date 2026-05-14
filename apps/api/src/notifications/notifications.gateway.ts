@@ -80,4 +80,24 @@ export class NotificationsGateway
   ) {
     client.join(data.room);
   }
+
+  /** Broadcast new approval request */
+  notifyNewApproval(tenantId: string, requestId: string, message: string) {
+    this.broadcastToTenant(tenantId, 'approval:new', { requestId, message });
+  }
+
+  /** Broadcast approval decision */
+  notifyApprovalDecision(tenantId: string, requestId: string, status: 'approved' | 'rejected', message: string) {
+    this.broadcastToTenant(tenantId, 'approval:decision', { requestId, status, message });
+  }
+
+  /** Broadcast low stock alert */
+  notifyLowStock(tenantId: string, productId: string, productName: string, currentStock: number) {
+    this.broadcastToTenant(tenantId, 'stock.low', { productId, productName, currentStock });
+  }
+
+  /** Broadcast forecast ready notification */
+  notifyForecastReady(tenantId: string, userId: string, productId: string) {
+    this.sendToUser(userId, 'forecast:ready', { productId });
+  }
 }

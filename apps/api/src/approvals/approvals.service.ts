@@ -3,12 +3,14 @@ import { DrizzleService } from '../drizzle/drizzle.service';
 import { approvalRequests, approvalChainItems, NewApprovalRequest, NewApprovalChainItem, ApprovalRequest } from '@smart-erp/database';
 import { eq, and } from 'drizzle-orm';
 import { ApprovalRulesService } from './approval-rules.service';
+import { NotificationsGateway } from '../notifications/notifications.gateway';
 
 @Injectable()
 export class ApprovalsService {
   constructor(
     private drizzle: DrizzleService,
     private rulesService: ApprovalRulesService,
+    private notificationsGateway: NotificationsGateway,
   ) {}
 
   async submitForApproval(
@@ -58,6 +60,13 @@ export class ApprovalsService {
     // Skip chain items for auto-approved requests
     if (autoApproved) return request;
 
+    // Notify approvers
+    this.notificationsGateway.notifyNewApproval(
+      tenantId,
+      request.id,
+      `New approval request: ${documentType} (${documentAmount.toLocaleString()} VND)`,
+    );
+
     // Create chain items
     const chainItems: NewApprovalChainItem[] = approverIds.map((approverId, idx) => ({
       requestId: request.id,
@@ -104,6 +113,7 @@ export class ApprovalsService {
         .update(approvalRequests)
         .set({ status: 'approved', updatedAt: new Date() })
         .where(eq(approvalRequests.id, requestId));
+      this.notificationsGateway.notifyApprovalDecision(tenantId, requestId, 'approved', 'Request approved');
     } else {
       // Move to next step
       await this.drizzle.db
@@ -145,6 +155,8 @@ export class ApprovalsService {
     await this.drizzle.db
       .update(approvalRequests)
       .set({ status: 'rejected', updatedAt: new Date() });
+
+    this.notificationsGateway.notifyApprovalDecision(tenantId, requestId, 'rejected', 'Request rejected');
   }
 
   async getRequest(tenantId: string, requestId: string): Promise<ApprovalRequest> {
