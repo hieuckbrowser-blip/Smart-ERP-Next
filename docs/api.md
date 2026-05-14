@@ -293,3 +293,60 @@ Response: `{ "access_token": "...", "user": { "id", "email", "name", "tenantId",
 ```json
 { "statusCode": 400, "message": "Mã SKU đã tồn tại", "error": "Conflict" }
 ```
+
+---
+
+## Forecast `/forecast`
+
+| Method | Path                  | Description                        |
+| ------ | --------------------- | ---------------------------------- |
+| GET    | `/forecast/product/:id` | Get monthly demand forecast        |
+
+**Response:**
+```json
+{
+  "productId": "uuid",
+  "data": [{ "month": "Jun", "demand": 180 }]
+}
+```
+
+---
+
+## Inventory Recommendation `/inventory-recommendation`
+
+| Method | Path                              | Description                          |
+| ------ | --------------------------------- | ------------------------------------ |
+| GET    | `/inventory-recommendation/suggest` | Get AI-driven reorder suggestion   |
+
+**Query Parameters:** `productId`, `stock`
+
+**Response:**
+```json
+{ "productId": "uuid", "suggestedReorder": 50 }
+```
+
+**Requires:** JWT authentication. Logs activity on each request.
+
+---
+
+## Approvals `/approvals`
+
+| Method | Path                     | Description                      |
+| ------ | ------------------------ | -------------------------------- |
+| GET    | `/approvals`             | List all approval requests       |
+| POST   | `/approvals/:id/approve` | Approve a pending request        |
+| POST   | `/approvals/:id/reject`  | Reject a pending request         |
+
+**Auto-Approve:** Orders ≤ 5,000,000 VND with no approvers are automatically approved.
+
+---
+
+## AI `/ai`
+
+| Method | Path         | Description                    |
+| ------ | ------------ | ------------------------------ |
+| POST   | `/ai/forecast` | Request AI demand forecast   |
+
+**Body:** `{ "product_id": "uuid", "lookahead_days": 14 }`
+
+Returns daily predicted demand with confidence intervals.
