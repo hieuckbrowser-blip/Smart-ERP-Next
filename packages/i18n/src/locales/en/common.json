@@ -782,7 +782,16 @@
       "createStore": "Create store",
       "syncAll": "Sync all",
       "syncStore": "Sync store",
-      "viewLogs": "View logs"
+      "viewLogs": "View logs",
+      "pushStock": "Push Stock"
+    },
+    "stores": {
+      "empty": "No stores connected yet. Go to Settings → E-commerce to add."
+    },
+    "sync": {
+      "success": "Sync successful",
+      "allSuccess": "All stores synced successfully",
+      "failed": "Sync failed"
     }
   },
   "validation": {
