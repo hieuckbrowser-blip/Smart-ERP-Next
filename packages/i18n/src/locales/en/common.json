@@ -760,6 +760,12 @@
     "themeLight": "Light",
     "themeDark": "Dark",
     "themeSystem": "System",
+    "brandColor": "Brand Color",
+    "brandColorBlue": "Blue",
+    "brandColorGreen": "Green",
+    "brandColorPurple": "Purple",
+    "brandColorOrange": "Orange",
+    "brandColorRed": "Red",
     "language": "Language"
   },
   "sync": {

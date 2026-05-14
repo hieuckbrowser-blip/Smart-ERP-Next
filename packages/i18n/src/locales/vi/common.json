@@ -331,6 +331,12 @@
     "lightMode": "Chế độ sáng",
     "darkMode": "Chế độ tối",
     "themeSystem": "Theo hệ thống",
+    "brandColor": "Màu thương hiệu",
+    "brandColorBlue": "Xanh dương",
+    "brandColorGreen": "Xanh lá",
+    "brandColorPurple": "Tím",
+    "brandColorOrange": "Cam",
+    "brandColorRed": "Đỏ",
     "language": "Ngôn ngữ"
   },
   "sync": {
