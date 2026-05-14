@@ -39,6 +39,10 @@ export class ApprovalsService {
     // Find matching rule
     const rule = await this.rulesService.findMatchingRule(tenantId, documentType, documentAmount);
 
+    // Auto-approve if amount is under threshold (e.g., 5,000,000 VND)
+    const AUTO_APPROVE_THRESHOLD = 5_000_000;
+    const autoApproved = documentAmount <= AUTO_APPROVE_THRESHOLD && !approverIds.length;
+
     // Create approval request
     const newRequest: NewApprovalRequest = {
       tenantId,
@@ -46,10 +50,13 @@ export class ApprovalsService {
       documentType,
       ruleId: rule?.id,
       requestedBy,
-      status: 'pending',
+      status: autoApproved ? 'approved' : 'pending',
       currentStepIndex: '0',
     };
     const [request] = await this.drizzle.db.insert(approvalRequests).values(newRequest).returning();
+
+    // Skip chain items for auto-approved requests
+    if (autoApproved) return request;
 
     // Create chain items
     const chainItems: NewApprovalChainItem[] = approverIds.map((approverId, idx) => ({
