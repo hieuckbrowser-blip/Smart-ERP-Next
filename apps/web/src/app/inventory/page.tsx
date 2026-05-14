@@ -59,8 +59,10 @@ export default function InventoryPage() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
-  const [activeTab, setActiveTab] = useState<'transactions' | 'lowstock' | 'reorder' | 'lots' | 'transfers'>('transactions');
+  const [activeTab, setActiveTab] = useState<'transactions' | 'lowstock' | 'reorder' | 'lots' | 'transfers' | 'omnichannel'>('transactions');
   const [reorderSuggestions, setReorderSuggestions] = useState<any[]>([]);
+  const [stores, setStores] = useState<any[]>([]);
+  const [syncing, setSyncing] = useState<string | null>(null);
 
   // Lots state
   const [lots, setLots] = useState<any[]>([]);
@@ -109,7 +111,7 @@ export default function InventoryPage() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [summaryRes, txRes, lowRes, reorderRes, lotsRes, transfersRes, whRes] = await Promise.allSettled([
+      const [summaryRes, txRes, lowRes, reorderRes, lotsRes, transfersRes, whRes, storesRes] = await Promise.allSettled([
         apiClient.get('/inventory/summary'),
         apiClient.get('/inventory/transactions', { params: { page, limit: 30 } }),
         apiClient.get('/inventory/low-stock'),
@@ -117,6 +119,7 @@ export default function InventoryPage() {
         apiClient.get('/inventory/lots'),
         apiClient.get('/inventory/transfers'),
         apiClient.get('/warehouses'),
+        apiClient.get('/ecommerce/stores'),
       ]);
       if (summaryRes.status === 'fulfilled') setSummary(summaryRes.value.data);
       if (txRes.status === 'fulfilled') {
@@ -129,6 +132,7 @@ export default function InventoryPage() {
       if (lotsRes.status === 'fulfilled') setLots(lotsRes.value.data ?? []);
       if (transfersRes.status === 'fulfilled') setTransfers(transfersRes.value.data ?? []);
       if (whRes.status === 'fulfilled') setWarehouses(whRes.value.data ?? []);
+      if (storesRes.status === 'fulfilled') setStores(storesRes.value.data ?? []);
     } finally {
       setLoading(false);
     }
@@ -145,6 +149,30 @@ export default function InventoryPage() {
     }, 250);
     return () => clearTimeout(t);
   }, [adjustForm.productSearch]);
+
+  const syncStock = async (storeId: string) => {
+    setSyncing(storeId);
+    try {
+      const res = await apiClient.post(`/inventory/sync-channel-stock/${storeId}`);
+      alert(t('actions.success', 'Thao tác thành công') + ': ' + JSON.stringify(res.data));
+    } catch (err: any) {
+      alert(err.response?.data?.message ?? t('common.error'));
+    } finally {
+      setSyncing(null);
+    }
+  };
+
+  const syncStock = async (storeId: string) => {
+    setSyncing(storeId);
+    try {
+      const res = await apiClient.post(`/inventory/sync-channel-stock/${storeId}`);
+      alert(t('actions.success', 'Thao tác thành công') + ': ' + JSON.stringify(res.data));
+    } catch (err: any) {
+      alert(err.response?.data?.message ?? t('common.error'));
+    } finally {
+      setSyncing(null);
+    }
+  };
 
   const handleUpdateReorder = async (productId: string, minStock?: number, reorderQuantity?: number) => {
     try {
@@ -330,6 +358,7 @@ export default function InventoryPage() {
             { key: 'reorder' as const, label: `${t('inventory.reorderPoints')} (${reorderSuggestions.length})`, icon: RefreshCw },
             { key: 'lots' as const, label: `${t('inventory.lots.title')} (${lots.length})`, icon: Package },
             { key: 'transfers' as const, label: `${t('inventory.transfers.title')} (${transfers.length})`, icon: ArrowRightLeft },
+            { key: 'omnichannel' as const, label: `Omnichannel (${stores.length})`, icon: RefreshCw },
           ].map((tab) => {
             const Icon = tab.icon;
             return (
@@ -648,6 +677,106 @@ export default function InventoryPage() {
                   </table>
                 </div>
               </div>
+            )}
+
+            {activeTab === 'omnichannel' && (
+              <Card className="p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-base font-semibold">{t('ecommerce.stores.title', 'Omnichannel Stores')}</h2>
+                  <Button onClick={async () => {
+                    try {
+                      const res = await apiClient.post('/inventory/sync-all-stores-stock');
+                      alert(t('actions.success', 'Thao tác thành công') + ': ' + JSON.stringify(res.data));
+                    } catch { alert(t('common.error')); }
+                  }}>
+                    {t('ecommerce.actions.syncAll', 'Sync All Stores')}
+                  </Button>
+                </div>
+
+                <div className="space-y-3">
+                  {stores.length === 0 ? (
+                    <div className="text-sm text-gray-400 py-8 text-center">
+                      {t('ecommerce.stores.empty', 'No stores connected. Go to Settings → E-commerce to add stores.')}
+                    </div>
+                  ) : stores.map((s) => (
+                    <div key={s.id} className="border border-gray-200 rounded-lg p-4 flex items-center justify-between gap-4">
+                      <div className="min-w-0">
+                        <div className="font-medium text-gray-900 truncate">{s.name}</div>
+                        <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                          <span className="uppercase font-bold text-blue-600">{s.platform}</span>
+                          <span>·</span>
+                          <span className={s.lastSyncStatus === 'success' ? 'text-green-600' : s.lastSyncStatus === 'failed' ? 'text-red-600' : ''}>
+                            {s.lastSyncStatus ?? '—'}
+                          </span>
+                          {s.lastSyncAt && (
+                            <>
+                              <span>·</span>
+                              <span>{new Date(s.lastSyncAt).toLocaleString('vi-VN')}</span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      <Button
+                        size="sm"
+                        onClick={() => syncStock(s.id)}
+                        disabled={syncing === s.id}
+                      >
+                        {syncing === s.id ? t('common.processing') : t('ecommerce.actions.syncStore', 'Push Stock')}
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            )}
+
+            {activeTab === 'omnichannel' && (
+              <Card className="p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-base font-semibold">{t('ecommerce.stores.title', 'Omnichannel Stores')}</h2>
+                  <Button onClick={async () => {
+                    try {
+                      const res = await apiClient.post('/inventory/sync-all-stores-stock');
+                      alert(t('actions.success', 'Thao tác thành công') + ': ' + JSON.stringify(res.data));
+                    } catch { alert(t('common.error')); }
+                  }}>
+                    {t('ecommerce.actions.syncAll', 'Sync All Stores')}
+                  </Button>
+                </div>
+
+                <div className="space-y-3">
+                  {stores.length === 0 ? (
+                    <div className="text-sm text-gray-400 py-8 text-center">
+                      {t('ecommerce.stores.empty', 'No stores connected. Go to Settings → E-commerce to add stores.')}
+                    </div>
+                  ) : stores.map((s) => (
+                    <div key={s.id} className="border border-gray-200 rounded-lg p-4 flex items-center justify-between gap-4">
+                      <div className="min-w-0">
+                        <div className="font-medium text-gray-900 truncate">{s.name}</div>
+                        <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                          <span className="uppercase font-bold text-blue-600">{s.platform}</span>
+                          <span>·</span>
+                          <span className={s.lastSyncStatus === 'success' ? 'text-green-600' : s.lastSyncStatus === 'failed' ? 'text-red-600' : ''}>
+                            {s.lastSyncStatus ?? '—'}
+                          </span>
+                          {s.lastSyncAt && (
+                            <>
+                              <span>·</span>
+                              <span>{new Date(s.lastSyncAt).toLocaleString('vi-VN')}</span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      <Button
+                        size="sm"
+                        onClick={() => syncStock(s.id)}
+                        disabled={syncing === s.id}
+                      >
+                        {syncing === s.id ? t('common.processing') : t('ecommerce.actions.syncStore', 'Push Stock')}
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </Card>
             )}
           </>
         )}
