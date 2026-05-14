@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Text,
   View,
@@ -38,23 +39,8 @@ const mobileSyncService = new SyncService(
 
 type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel";
 
-const NAV_ITEMS: { key: Screen; label: string; icon: string }[] = [
-  { key: "dashboard", label: "Tổng quan", icon: "📊" },
-  { key: "pos", label: "POS", icon: "🛒" },
-  { key: "orders", label: "Đơn hàng", icon: "📋" },
-  { key: "products", label: "Sản phẩm", icon: "📦" },
-  { key: "inventory", label: "Kho hàng", icon: "🏭" },
-  { key: "suppliers", label: "Nhà CC", icon: "🏢" },
-  { key: "warehouses", label: "Kho", icon: "🏬" },
-  { key: "customers", label: "Khách hàng", icon: "👥" },
-  { key: "purchasing", label: "Mua hàng", icon: "🛒" },
-  { key: "leads", label: "Leads", icon: "🎯" },
-  { key: "accounting", label: "Kế toán", icon: "💰" },
-  { key: "reports", label: "Báo cáo", icon: "📈" },
-  { key: "omnichannel", label: "Omnichannel", icon: "🔄" },
-];
-
 export default function App() {
+  const { t } = useTranslation();
   const [authState, setAuthState] = useState<
     "loading" | "unauthenticated" | "authenticated"
   >("loading");
@@ -62,8 +48,23 @@ export default function App() {
   const [activeScreen, setActiveScreen] = useState<Screen>("dashboard");
   const [isOnline, setIsOnline] = useState(true);
 
+  const NAV_ITEMS: { key: Screen; label: string; icon: string }[] = [
+    { key: "dashboard", label: t("nav.dashboard"), icon: "📊" },
+    { key: "pos", label: t("nav.pos"), icon: "🛒" },
+    { key: "orders", label: t("nav.orders"), icon: "📋" },
+    { key: "products", label: t("nav.products"), icon: "📦" },
+    { key: "inventory", label: t("nav.inventory"), icon: "🏭" },
+    { key: "suppliers", label: t("nav.suppliers"), icon: "🏢" },
+    { key: "warehouses", label: t("nav.warehouses"), icon: "🏬" },
+    { key: "customers", label: t("nav.customers"), icon: "👥" },
+    { key: "purchasing", label: t("nav.purchasing"), icon: "🛒" },
+    { key: "leads", label: t("nav.crm"), icon: "🎯" },
+    { key: "accounting", label: t("nav.accounting"), icon: "💰" },
+    { key: "reports", label: t("nav.reports"), icon: "📈" },
+    { key: "omnichannel", label: "Omnichannel", icon: "🔄" },
+  ];
+
   useEffect(() => {
-    // Check stored credentials on startup
     SecureStore.getItemAsync("access_token").then((token) => {
       if (token) {
         SecureStore.getItemAsync("user").then((userStr) => {
