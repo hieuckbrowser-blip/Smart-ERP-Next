@@ -29,6 +29,7 @@ import POSScreen from "./src/screens/POSScreen";
 import ReportsScreen from "./src/screens/ReportsScreen";
 import AccountingScreen from "./src/screens/AccountingScreen";
 import OmnichannelScreen from "./src/screens/OmnichannelScreen";
+import ForecastScreen from "./src/screens/ForecastScreen";
 
 initI18n("vi");
 
@@ -37,7 +38,7 @@ const mobileSyncService = new SyncService(
   new SecureStoreTokenProvider(),
 );
 
-type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel";
+type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast";
 
 export default function App() {
   const { t } = useTranslation();
@@ -62,6 +63,7 @@ export default function App() {
     { key: "accounting", label: t("nav.accounting"), icon: "💰" },
     { key: "reports", label: t("nav.reports"), icon: "📈" },
     { key: "omnichannel", label: "Omnichannel", icon: "🔄" },
+    { key: "forecast", label: t("nav.forecast"), icon: "📈" },
   ];
 
   useEffect(() => {
