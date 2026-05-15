@@ -1142,6 +1142,36 @@
     },
     "insufficientMaterials": "Insufficient materials for {{component}}: need {{required}}, current stock {{available}}"
   },
+  "mrp": {
+    "title": "Material Requirements Planning",
+    "netRequirement": "Net Requirement",
+    "suggestedProduction": "Suggested Production",
+    "rawMaterialGap": "Raw Material Gap",
+    "forecastedDemand": "Forecasted Demand",
+    "salesOrderDemand": "Sales Order Demand",
+    "bomComponents": "BOM Components",
+    "requiredQuantity": "Required Qty",
+    "currentStock": "Current Stock",
+    "gap": "Gap",
+    "calculateMRP": "Calculate MRP",
+    "batchMRP": "Run Batch MRP",
+    "daysAhead": "Days Ahead"
+  },
+  "mrp": {
+    "title": "Material Requirements Planning",
+    "netRequirement": "Net Requirement",
+    "suggestedProduction": "Suggested Production",
+    "rawMaterialGap": "Raw Material Gap",
+    "forecastedDemand": "Forecasted Demand",
+    "salesOrderDemand": "Sales Order Demand",
+    "bomComponents": "BOM Components",
+    "requiredQuantity": "Required Qty",
+    "currentStock": "Current Stock",
+    "gap": "Gap",
+    "calculateMRP": "Calculate MRP",
+    "batchMRP": "Run Batch MRP",
+    "daysAhead": "Days Ahead"
+  },
   "export": {
     "title": "Data Export",
     "backup": "Backup",

@@ -669,17 +669,20 @@
     },
     "insufficientMaterials": "Không đủ nguyên liệu {{component}}: cần {{required}}, tồn kho hiện tại {{available}}"
   },
-      "checkpoints": "Trạm kiểm tra",
-      "passed": "Đạt",
-      "failed": "Không đạt",
-      "pending": "Chờ kiểm tra"
-    },
-    "cost": {
-      "title": "Chi phí sản xuất",
-      "totalCost": "Tổng chi phí",
-      "unitCost": "Chi phí đơn vị",
-      "materialCost": "Chi phí nguyên liệu"
-    }
+  "mrp": {
+    "title": "Hoạch định nhu cầu vật tư (MRP)",
+    "netRequirement": "Nhu cầu ròng",
+    "suggestedProduction": "Đề xuất sản xuất",
+    "rawMaterialGap": "Thiếu hụt nguyên liệu",
+    "forecastedDemand": "Nhu cầu dự báo",
+    "salesOrderDemand": "Nhu cầu đơn hàng",
+    "bomComponents": "Thành phần BOM",
+    "requiredQuantity": "Số lượng cần",
+    "currentStock": "Tồn kho hiện tại",
+    "gap": "Thiếu hụt",
+    "calculateMRP": "Tính MRP",
+    "batchMRP": "Chạy MRP hàng loạt",
+    "daysAhead": "Số ngày dự báo"
   },
   "export": {
     "title": "Xuất dữ liệu",
