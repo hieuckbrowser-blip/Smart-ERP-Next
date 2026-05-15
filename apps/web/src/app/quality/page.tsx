@@ -1,32 +1,27 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, Button, DataTable, Spinner, Tab, Tabs } from '@smart-erp/ui';
+import AuthGuard from '@/components/layout/AuthGuard';
 import { apiClient } from '@/lib/api-client';
-import { useToast } from '@/components/providers/ToastProvider';
-import { format } from 'date-fns';
 
 export default function QualityPage() {
   const { t } = useTranslation('common');
-  const toast = useToast();
   const [loading, setLoading] = useState(true);
-  const [plans, setPlans] = useState([]);
   const [inspections, setInspections] = useState([]);
-  const [defectCodes, setDefectCodes] = useState([]);
+  const [ncrs, setNCRs] = useState([]);
   const [report, setReport] = useState<any>(null);
   const [activeTab, setActiveTab] = useState('inspections');
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [plansRes, inspectionsRes, codesRes] = await Promise.all([
-        apiClient.get('/qms/plans'),
+      const [inspRes, ncrRes] = await Promise.all([
         apiClient.get('/qms/inspections'),
-        apiClient.get('/qms/defect-codes'),
+        apiClient.get('/qms/ncrs'),
       ]);
-      setPlans(plansRes.data);
-      setInspections(inspectionsRes.data);
-      setDefectCodes(codesRes.data);
+      setInspections(inspRes.data || []);
+      setNCRs(ncrRes.data || []);
       const today = new Date();
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(today.getDate() - 30);
@@ -34,88 +29,137 @@ export default function QualityPage() {
         params: { startDate: thirtyDaysAgo.toISOString(), endDate: today.toISOString() },
       });
       setReport(reportRes.data);
-    } catch (err) {
-      toast.error(t('common.error'));
+    } catch {
+      // ignore
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useEffect(() => { fetchData(); }, []);
 
-  const inspectionColumns = [
-    { key: 'inspection_date', label: t('qms.inspectionDate'), render: (v: string) => format(new Date(v), 'dd/MM/yyyy') },
-    { key: 'reference_type', label: t('qms.referenceType'), render: (v: string) => t(`qms.referenceType_${v}`) },
-    { key: 'reference_id', label: t('qms.referenceId') },
-    { key: 'verdict', label: t('qms.verdict'), render: (v: string) => {
-      const variant = v === 'pass' ? 'success' : v === 'fail' ? 'danger' : 'warning';
-      return <span className={`badge badge-${variant}`}>{t(`qms.verdict_${v}`)}</span>;
-    } },
-    { key: 'notes', label: t('common.notes') },
-  ];
+  const VERDICT_COLORS: Record<string, string> = {
+    pass: 'bg-green-100 text-green-800',
+    fail: 'bg-red-100 text-red-800',
+    conditional: 'bg-yellow-100 text-yellow-800',
+  };
 
-  const planColumns = [
-    { key: 'name', label: t('qms.planName') },
-    { key: 'product_id', label: t('products.name') },
-    { key: 'type', label: t('qms.inspectionType'), render: (v: string) => t(`qms.type_${v}`) },
-    { key: 'aql', label: 'AQL' },
-  ];
-
-  if (loading) return <div className="p-8 flex justify-center"><Spinner /></div>;
+  const SEVERITY_COLORS: Record<string, string> = {
+    low: 'bg-gray-100 text-gray-800',
+    medium: 'bg-yellow-100 text-yellow-800',
+    high: 'bg-orange-100 text-orange-800',
+    critical: 'bg-red-100 text-red-800',
+  };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">{t('qms.title')}</h1>
+    <AuthGuard>
+      <div className="p-6 space-y-6">
+        <h1 className="text-2xl font-bold">{t('qms.title')}</h1>
 
-      {/* Quality metrics cards */}
-      {report && (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <Card className="p-4">
-            <div className="text-sm text-gray-500">{t('qms.totalInspections')}</div>
-            <div className="text-2xl font-bold">{report.totalInspections}</div>
-          </Card>
-          <Card className="p-4">
-            <div className="text-sm text-gray-500">{t('qms.passed')}</div>
-            <div className="text-2xl font-bold text-green-600">{report.passed}</div>
-          </Card>
-          <Card className="p-4">
-            <div className="text-sm text-gray-500">{t('qms.failed')}</div>
-            <div className="text-2xl font-bold text-red-600">{report.failed}</div>
-          </Card>
-          <Card className="p-4">
-            <div className="text-sm text-gray-500">{t('qms.passRate')}</div>
-            <div className="text-2xl font-bold text-blue-600">{report.passRate.toFixed(1)}%</div>
-          </Card>
+        {/* Quality Metrics */}
+        {report && (
+          <div className="grid grid-cols-4 gap-4">
+            <div className="bg-white rounded-xl shadow p-4">
+              <div className="text-xs text-gray-500 uppercase">{t('qms.totalInspections')}</div>
+              <div className="text-2xl font-bold">{report.totalInspections}</div>
+            </div>
+            <div className="bg-white rounded-xl shadow p-4">
+              <div className="text-xs text-gray-500 uppercase">{t('qms.pass')}</div>
+              <div className="text-2xl font-bold text-green-600">{report.passed}</div>
+            </div>
+            <div className="bg-white rounded-xl shadow p-4">
+              <div className="text-xs text-gray-500 uppercase">{t('qms.fail')}</div>
+              <div className="text-2xl font-bold text-red-600">{report.failed}</div>
+            </div>
+            <div className="bg-white rounded-xl shadow p-4">
+              <div className="text-xs text-gray-500 uppercase">{t('qms.passRate')}</div>
+              <div className="text-2xl font-bold text-blue-600">{report.passRate?.toFixed(1) || 0}%</div>
+            </div>
+          </div>
+        )}
+
+        {/* Tabs */}
+        <div className="flex gap-2 border-b border-gray-200">
+          {['inspections', 'ncrs', 'spc'].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-2 text-sm font-medium rounded-t-lg ${
+                activeTab === tab ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'
+              }`}
+            >
+              {tab === 'inspections' ? t('qms.inspections') : tab === 'ncrs' ? t('qms.ncrs') : 'SPC Charts'}
+            </button>
+          ))}
         </div>
-      )}
 
-      <Tabs value={activeTab} onChange={setActiveTab}>
-        <Tab value="inspections" label={t('qms.inspections')} />
-        <Tab value="plans" label={t('qms.inspectionPlans')} />
-        <Tab value="defects" label={t('qms.defectCodes')} />
-      </Tabs>
-
-      <div className="mt-4">
-        {activeTab === 'inspections' && <DataTable data={inspections} columns={inspectionColumns} />}
-        {activeTab === 'plans' && <DataTable data={plans} columns={planColumns} />}
-        {activeTab === 'defects' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {defectCodes.map((code: any) => (
-              <Card key={code.id} className="p-3">
-                <div className="font-bold">{code.code}</div>
-                <div className="text-sm">{code.name}</div>
-                <div className="text-xs text-gray-400">{t(`qms.severity_${code.severity}`)}</div>
-              </Card>
+        {loading ? (
+          <div className="text-center py-8">{t('common.loading')}</div>
+        ) : activeTab === 'inspections' ? (
+          <div className="bg-white rounded-xl shadow overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-3 text-left">Date</th>
+                  <th className="px-4 py-3 text-left">Reference</th>
+                  <th className="px-4 py-3 text-left">{t('qms.verdict')}</th>
+                  <th className="px-4 py-3 text-left">{t('common.notes')}</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y">
+                {inspections.map((insp: any) => (
+                  <tr key={insp.id}>
+                    <td className="px-4 py-3">{new Date(insp.inspection_date).toLocaleDateString('vi-VN')}</td>
+                    <td className="px-4 py-3">{insp.reference_type} / {insp.reference_id}</td>
+                    <td className="px-4 py-3">
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${VERDICT_COLORS[insp.verdict] || ''}`}>
+                        {t(`qms.${insp.verdict}`)}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-gray-500">{insp.notes || '-'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {inspections.length === 0 && <div className="text-center text-gray-500 py-8">No inspections recorded</div>}
+          </div>
+        ) : activeTab === 'ncrs' ? (
+          <div className="grid gap-4">
+            {ncrs.map((ncr: any) => (
+              <div key={ncr.id} className={`bg-white rounded-xl shadow p-4 border-l-4 ${
+                ncr.severity === 'critical' ? 'border-red-500' : ncr.severity === 'high' ? 'border-orange-500' : 'border-yellow-500'
+              }`}>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="font-semibold">{ncr.code}</h3>
+                    <p className="text-sm text-gray-600 mt-1">{ncr.description}</p>
+                  </div>
+                  <span className={`px-2 py-1 rounded text-xs font-medium ${SEVERITY_COLORS[ncr.severity] || ''}`}>
+                    {ncr.severity}
+                  </span>
+                </div>
+                {ncr.root_cause && (
+                  <div className="mt-2 text-sm">
+                    <span className="text-gray-500">{t('qms.rootCause')}: </span>
+                    {ncr.root_cause}
+                  </div>
+                )}
+                <div className="mt-2 text-xs text-gray-400">
+                  {new Date(ncr.reported_at).toLocaleString('vi-VN')} — {ncr.status}
+                </div>
+              </div>
             ))}
+            {ncrs.length === 0 && <div className="text-center text-gray-500 py-8">No NCRs reported</div>}
+          </div>
+        ) : (
+          /* SPC Charts placeholder */
+          <div className="bg-white rounded-xl shadow p-8 text-center">
+            <h3 className="text-lg font-semibold mb-4">SPC Charts</h3>
+            <p className="text-gray-500">Statistical Process Control charts coming soon.</p>
+            <p className="text-sm text-gray-400 mt-2">Control charts (X-bar, R-chart), Process capability (Cp, Cpk)</p>
           </div>
         )}
       </div>
-
-      <div className="mt-4 text-sm text-gray-400">
-        {t('qms.disclaimer')}
-      </div>
-    </div>
+    </AuthGuard>
   );
 }
