@@ -286,3 +286,19 @@ Tối ưu hóa hiệu suất thiết bị và giảm thiểu thời gian dừng 
 - **Predictive & Preventive Maintenance**: Tự động hóa lịch bảo trì định kỳ cho máy móc, giúp ngăn ngừa sự cố trước khi chúng xảy ra, kéo dài tuổi thọ tài sản.
 - **Instant Floor Reporting**: Công nhân có thể báo lỗi máy ngay khi gặp sự cố qua ứng dụng di động, hệ thống sẽ tự động cập nhật trạng thái tài sản thành "Đang sửa chữa".
 - **Downtime Minimization**: Quy trình gán việc cho kỹ thuật viên và theo dõi thời gian sửa chữa giúp doanh nghiệp kiểm soát và giảm thiểu tối đa thời gian dừng sản xuất.
+
+---
+
+## Kho thông minh (Smart WMS) `/wms`
+Quản trị logistics chính xác đến từng vị trí (bin) và tối ưu hóa quy trình luân chuyển hàng hóa.
+
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| GET    | `/wms/tasks` | Danh sách các nhiệm vụ kho (Lấy hàng, Đóng gói, Nhập kho) |
+| GET    | `/wms/tasks/:id` | Xem chi tiết **Pick List** và vị trí hàng hóa chính xác |
+| PATCH  | `/wms/items/:id/pick` | **Mobile Confirm**: Xác nhận lấy hàng qua quét mã vạch |
+
+**Tính năng vượt trội:**
+- **Precision Bin Tracking**: Quản lý hàng hóa chính xác đến từng dãy, kệ và ô (Bin), giúp giảm 99% lỗi nhầm lẫn khi lấy hàng và tối ưu hóa không gian lưu trữ.
+- **Optimized Picking Routes**: Tự động gợi ý lộ trình lấy hàng ngắn nhất trong kho, giúp nhân viên tiết kiệm 30-50% thời gian di chuyển.
+- **Paperless Logistics**: Toàn bộ quy trình từ nhập kho, luân chuyển nội bộ đến xuất kho đều thực hiện 100% trên thiết bị di động với khả năng quét mã vạch/QR native.

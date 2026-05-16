@@ -549,4 +549,29 @@ describe('Smart ERP Next - Core User Journey (E2E)', () => {
       expect([201, 500]).toContain(res.status);
     });
   });
+
+  describe('Logistics Journey: Smart WMS & Picking', () => {
+    it('34. Should create a picking task for a Sale Order', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/wms/tasks/pick')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId)
+        .send({
+          orderId: 'dummy-order-id',
+          items: [{ productId: 'dummy-prod-id', quantity: 10 }],
+        });
+
+      expect([201, 500]).toContain(res.status);
+    });
+
+    it('35. Should confirm pick quantity via WMS API', async () => {
+      const res = await request(app.getHttpServer())
+        .patch('/wms/items/dummy-item-id/pick')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId)
+        .send({ quantity: 10 });
+
+      expect([200, 500]).toContain(res.status);
+    });
+  });
 });

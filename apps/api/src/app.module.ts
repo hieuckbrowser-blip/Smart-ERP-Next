@@ -52,11 +52,13 @@ import { db } from '@smart-erp/database';
 import { DRIZZLE } from './common/drizzle.decorator';
 import { MarketingModule } from './marketing/marketing.module';
 import { MaintenanceModule } from './maintenance/maintenance.module';
+import { WmsModule } from './wms/wms.module';
 
 @Module({
   imports: [
     MarketingModule,
     MaintenanceModule,
+    WmsModule,
     // Cache layer for performance
     CacheModule.register({ isGlobal: true, ttl: 60, max: 100 }),
     // Forecast feature

@@ -43,3 +43,4 @@ export * from './scm';
 export * from './qms';
 export * from './marketing';
 export * from './maintenance';
+export * from './wms';

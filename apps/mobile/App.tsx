@@ -45,6 +45,7 @@ import ScmScreen from "./src/screens/ScmScreen";
 import CustomerPortalScreen from "./src/screens/CustomerPortalScreen";
 import MarketingScreen from "./src/screens/MarketingScreen";
 import MaintenanceScreen from "./src/screens/MaintenanceScreen";
+import WmsScreen from "./src/screens/WmsScreen";
 
 initI18n("vi");
 
@@ -53,7 +54,7 @@ const mobileSyncService = new SyncService(
   new SecureStoreTokenProvider(),
 );
 
-type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance" | "payroll" | "contracts" | "approvals" | "field_service" | "timesheet" | "performance" | "scm" | "customer_portal" | "marketing" | "maintenance";
+type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance" | "payroll" | "contracts" | "approvals" | "field_service" | "timesheet" | "performance" | "scm" | "customer_portal" | "marketing" | "maintenance" | "wms";
 
 export default function App() {
   const { t } = useTranslation();
@@ -69,7 +70,8 @@ export default function App() {
     { key: "pos", label: t("nav.pos") || "POS", icon: "🛒" },
     { key: "orders", label: t("nav.orders") || "Đơn hàng", icon: "📋" },
     { key: "products", label: t("nav.products") || "Sản phẩm", icon: "📦" },
-    { key: "inventory", label: t("nav.inventory") || "Kho", icon: "🏭" },
+    { key: "inventory", label: t("nav.inventory") || "Kho (Cơ bản)", icon: "🏭" },
+    { key: "wms",       label: "Kho thông minh (WMS)",   icon: "🏗️" },
     { key: "quality",        label: t("nav.quality")        || "Chất lượng",        icon: "✅" },
     { key: "manufacturing",   label: t("nav.manufacturing")   || "Sản xuất",           icon: "🏭" },
     { key: "einvoice",        label: t("nav.einvoice")        || "Hóa đơn ĐT",        icon: "🧾" },
@@ -169,6 +171,7 @@ export default function App() {
       case "customer_portal": return <CustomerPortalScreen />;
       case "marketing":      return <MarketingScreen />;
       case "maintenance":    return <MaintenanceScreen />;
+      case "wms":            return <WmsScreen />;
       default: return <DashboardScreen user={user} />;
     }
   };
