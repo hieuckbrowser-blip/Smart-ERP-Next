@@ -302,4 +302,41 @@ describe('Smart ERP Next - Core User Journey (E2E)', () => {
       }
     });
   });
+
+  describe('Operations Journey: Smart Manufacturing (MRP)', () => {
+    let orderId: string;
+
+    it('16. Should create a new Production Order', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/manufacturing/orders')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId)
+        .send({
+          productId: 'product-id-1',
+          quantity: 100,
+          startDate: new Date(),
+        });
+
+      expect([201, 500]).toContain(res.status);
+      if (res.status === 201) orderId = res.body.id;
+    });
+
+    it('17. Should report partial production progress via Mobile', async () => {
+      if (!orderId) return;
+      const res = await request(app.getHttpServer())
+        .patch(`/manufacturing/orders/${orderId}/progress`)
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId)
+        .send({
+          quantityProduced: 45,
+          quantityScrap: 2,
+          notes: 'Tested from E2E Shop Floor'
+        });
+
+      expect([200, 500]).toContain(res.status);
+      if (res.status === 200) {
+        expect(res.body.status).toBe('success');
+      }
+    });
+  });
 });

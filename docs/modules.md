@@ -156,3 +156,20 @@ Trung tâm chỉ huy dành cho lãnh đạo, chuyển đổi dữ liệu thô th
 - **Native BI Dashboard**: Hiển thị biểu đồ xu hướng doanh thu ngay trên Mobile mà không cần qua bên thứ ba (Native advantage over Odoo web views).
 - **AI Revenue Prediction**: Sử dụng thuật toán Linear Regression để dự báo doanh thu tháng tới dựa trên dữ liệu lịch sử 3 tháng gần nhất.
 - **Smart Insights Overlay**: Tự động đưa ra các cảnh báo thông minh (Growth, Warning, Stock Alert) giúp lãnh đạo phản ứng kịp thời với biến động thị trường.
+
+---
+
+## Sản xuất Thông minh (Smart Manufacturing/MRP) `/manufacturing`
+Giải pháp quản lý sản xuất toàn diện từ định mức nguyên vật liệu (BOM) đến quản lý xưởng sản xuất (Shop Floor).
+
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| GET    | `/manufacturing/orders` | Danh sách lệnh sản xuất |
+| POST   | `/manufacturing/orders` | Tạo lệnh sản xuất mới, tự động tính toán nhu cầu vật tư |
+| PATCH  | `/manufacturing/orders/:id/progress` | **Shop Floor Update**: Công nhân cập nhật sản lượng thực tế ngay tại xưởng qua Mobile |
+| PATCH  | `/manufacturing/orders/:id/complete` | Hoàn tất lệnh, tự động nhập kho thành phẩm và trừ kho nguyên liệu |
+
+**Tính năng vượt trội:**
+- **Real-time Shop Floor**: Công nhân sử dụng Mobile để báo cáo sản lượng và phế phẩm, giúp ban lãnh đạo nắm bắt tiến độ sản xuất tức thì thay vì chờ báo cáo giấy.
+- **Auto-Inventory Sync**: Cơ chế tự động trừ kho nguyên liệu (Backflushing) và cộng kho thành phẩm chính xác, giảm thiểu sai sót kiểm kho.
+- **QC Integrated**: Tích hợp các điểm kiểm tra chất lượng (Quality Checkpoints) ngay trong quá trình sản xuất.

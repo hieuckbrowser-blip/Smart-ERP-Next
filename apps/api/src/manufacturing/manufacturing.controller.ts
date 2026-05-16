@@ -48,6 +48,12 @@ export class ManufacturingController {
     return this.service.completeProduction(req.user.tenantId, id, req.user.sub);
   }
 
+  @ApiOperation({ summary: 'Report production progress' })
+  @Patch('orders/:id/progress')
+  async reportProgress(@Request() req: any, @Param('id') id: string, @Body() body: any) {
+    return this.service.reportProductionProgress(req.user.tenantId, id, body);
+  }
+
   @ApiOperation({ summary: 'Get production order details' })
   @Get('orders/:id')
   async getOrder(@Request() req: any, @Param('id') id: string) {

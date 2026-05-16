@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   RefreshControl,
+  Alert,
 } from 'react-native';
 import { useTranslation } from '@smart-erp/i18n';
 import { api } from '../lib/api';
@@ -61,6 +62,41 @@ export default function ManufacturingScreen() {
   const onRefresh = () => {
     setRefreshing(true);
     fetchOrders();
+  };
+
+  const handleReportProgress = (order: ProductionOrder) => {
+    // In a full app, this would open a modal/bottom sheet
+    // For this demonstration, we use a simple Alert with choices
+    Alert.alert(
+      'Cập nhật Tiến độ',
+      `Lệnh: ${order.orderCode}\nSản phẩm: ${order.productName}\nSố lượng mục tiêu: ${order.quantity}`,
+      [
+        { text: 'Hủy', style: 'cancel' },
+        { 
+          text: 'Báo cáo Sản lượng', 
+          onPress: async () => {
+            try {
+              await api.patch(`/manufacturing/orders/${order.id}/progress`, {
+                quantityProduced: Math.floor(order.quantity / 2),
+                notes: 'Cập nhật từ thiết bị di động'
+              });
+              Alert.alert('Thành công', 'Đã ghi nhận tiến độ');
+              fetchOrders();
+            } catch (err) { Alert.alert('Lỗi', 'Không thể cập nhật'); }
+          }
+        },
+        { 
+          text: 'Hoàn tất Lệnh', 
+          onPress: async () => {
+            try {
+              await api.patch(`/manufacturing/orders/${order.id}/complete`, {});
+              Alert.alert('Thành công', 'Đã hoàn tất lệnh sản xuất');
+              fetchOrders();
+            } catch (err) { Alert.alert('Lỗi', 'Không thể hoàn tất'); }
+          }
+        }
+      ]
+    );
   };
 
   const filteredOrders = activeFilter === 'all'
@@ -179,12 +215,15 @@ export default function ManufacturingScreen() {
               ) : null}
             </View>
 
-            {/* Progress indicator for in_progress orders */}
-            {order.status === 'in_progress' ? (
-              <View style={styles.progressBar}>
-                <View style={[styles.progressFill, { width: '65%' }]} />
-              </View>
-            ) : null}
+            {/* Progress reporting for in_progress orders */}
+            {order.status === 'in_progress' && (
+              <TouchableOpacity 
+                style={styles.reportButton} 
+                onPress={() => handleReportProgress(order)}
+              >
+                <Text style={styles.reportButtonText}>Cập nhật Sản lượng</Text>
+              </TouchableOpacity>
+            )}
           </TouchableOpacity>
         ))
       )}
@@ -288,19 +327,24 @@ const styles = StyleSheet.create({
   footerLabel: { fontSize: 10, color: '#9ca3af', textTransform: 'uppercase', fontWeight: '600' },
   footerValue: { fontSize: 14, fontWeight: '700', color: '#374151', marginTop: 1 },
 
-  // Progress bar
-  progressBar: {
-    height: 4,
-    backgroundColor: '#e5e7eb',
-    borderRadius: 2,
-    marginTop: 12,
-    overflow: 'hidden',
+  reportButton: {
+    backgroundColor: '#4f46e5',
+    paddingVertical: 10,
+    borderRadius: 10,
+    marginTop: 14,
+    alignItems: 'center',
+    shadowColor: '#4f46e5',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 3,
   },
-  progressFill: {
-    height: '100%',
-    backgroundColor: '#2563eb',
-    borderRadius: 2,
+  reportButtonText: {
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: '700',
   },
+  bottomPad: { height: 40 },
 
   bottomPad: { height: 40 },
 });
