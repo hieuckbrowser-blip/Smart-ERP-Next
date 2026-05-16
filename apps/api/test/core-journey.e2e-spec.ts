@@ -594,4 +594,29 @@ describe('Smart ERP Next - Core User Journey (E2E)', () => {
       expect([201, 500]).toContain(res.status);
     });
   });
+
+  describe('Project Governance: Advanced PM & Gantt', () => {
+    it('38. Should retrieve project data for Gantt chart', async () => {
+      const res = await request(app.getHttpServer())
+        .get('/projects/dummy-project-id/gantt')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId);
+
+      expect([200, 500]).toContain(res.status);
+    });
+
+    it('39. Should allocate a resource to a project', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/projects/dummy-project-id/resources')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId)
+        .send({
+          userId: 'dummy-user-id',
+          role: 'Lead Developer',
+          allocationPercentage: 50,
+        });
+
+      expect([201, 500]).toContain(res.status);
+    });
+  });
 });

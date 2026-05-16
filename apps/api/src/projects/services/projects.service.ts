@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { db } from '@smart-erp/database';
-import { projects, projectTasks, projectTimesheets } from '@smart-erp/database/schema';
+import { projects, projectTasks, projectTimesheets, projectTaskDependencies, projectMembers } from '@smart-erp/database/schema';
 import { eq, and, sql, desc } from '@smart-erp/database/drizzle';
 
 @Injectable()
@@ -97,5 +97,54 @@ export class ProjectsService {
       })
       .returning();
     return task;
+  }
+
+  /**
+   * Get data structured for Gantt charts
+   */
+  async getGanttData(tenantId: string, projectId: string) {
+    const tasks = await db
+      .select()
+      .from(projectTasks)
+      .where(and(eq(projectTasks.tenantId, tenantId), eq(projectTasks.projectId, projectId)))
+      .orderBy(projectTasks.createdAt);
+
+    const dependencies = await db
+      .select()
+      .from(projectTaskDependencies)
+      .where(eq(projectTaskDependencies.tenantId, tenantId));
+
+    return {
+      tasks: tasks.map(t => ({
+        id: t.id,
+        text: t.title,
+        start_date: t.createdAt,
+        duration: 5, // Default or calculated
+        progress: t.status === 'done' ? 1 : 0.5,
+      })),
+      links: dependencies.map(d => ({
+        id: d.id,
+        source: d.dependsOnId,
+        target: d.taskId,
+        type: d.type,
+      }))
+    };
+  }
+
+  /**
+   * Allocate a member to a project
+   */
+  async allocateResource(tenantId: string, projectId: string, userId: string, data: { role: string; allocationPercentage: number }) {
+    const [member] = await db
+      .insert(projectMembers)
+      .values({
+        tenantId,
+        projectId,
+        userId,
+        role: data.role,
+        allocationPercentage: data.allocationPercentage,
+      })
+      .returning();
+    return member;
   }
 }

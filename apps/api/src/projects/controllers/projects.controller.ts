@@ -47,4 +47,16 @@ export class ProjectsController {
   createTask(@Request() req: any, @Param('id') id: string, @Body() dto: any) {
     return this.projectsService.createTask(req.user.tenantId, id, dto);
   }
+
+  @ApiOperation({ summary: 'Get project data for Gantt chart' })
+  @Get(':id/gantt')
+  getGantt(@Request() req: any, @Param('id') id: string) {
+    return this.projectsService.getGanttData(req.user.tenantId, id);
+  }
+
+  @ApiOperation({ summary: 'Allocate a resource to a project' })
+  @Post(':id/resources')
+  allocateResource(@Request() req: any, @Param('id') id: string, @Body() body: any) {
+    return this.projectsService.allocateResource(req.user.tenantId, id, body.userId, body);
+  }
 }

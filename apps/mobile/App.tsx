@@ -47,6 +47,7 @@ import MarketingScreen from "./src/screens/MarketingScreen";
 import MaintenanceScreen from "./src/screens/MaintenanceScreen";
 import WmsScreen from "./src/screens/WmsScreen";
 import SupplierPortalScreen from "./src/screens/SupplierPortalScreen";
+import ProjectAdvancedScreen from "./src/screens/ProjectAdvancedScreen";
 
 initI18n("vi");
 
@@ -55,7 +56,7 @@ const mobileSyncService = new SyncService(
   new SecureStoreTokenProvider(),
 );
 
-type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance" | "payroll" | "contracts" | "approvals" | "field_service" | "timesheet" | "performance" | "scm" | "customer_portal" | "marketing" | "maintenance" | "wms" | "supplier_portal";
+type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance" | "payroll" | "contracts" | "approvals" | "field_service" | "timesheet" | "performance" | "scm" | "customer_portal" | "marketing" | "maintenance" | "wms" | "supplier_portal" | "project_advanced";
 
 export default function App() {
   const { t } = useTranslation();
@@ -91,6 +92,8 @@ export default function App() {
     { key: "customer_portal", label: "Cổng thông tin Khách",   icon: "🏠" },
     { key: "leads",           label: t("nav.crm")             || "CRM",               icon: "🎯" },
     { key: "marketing",       label: "Tiếp thị & Camp",       icon: "📢" },
+    { key: "projects",        label: t("nav.projects")        || "Dự án",             icon: "🏗️" },
+    { key: "project_advanced", label: "Quản trị Dự án (Adv)",    icon: "📊" },
     { key: "accounting",      label: t("nav.accounting")      || "Kế toán",           icon: "💰" },
     { key: "reports",         label: t("nav.reports")         || "Báo cáo",           icon: "📈" },
   ];
@@ -175,6 +178,7 @@ export default function App() {
       case "maintenance":    return <MaintenanceScreen />;
       case "wms":            return <WmsScreen />;
       case "supplier_portal": return <SupplierPortalScreen />;
+      case "project_advanced": return <ProjectAdvancedScreen />;
       default: return <DashboardScreen user={user} />;
     }
   };

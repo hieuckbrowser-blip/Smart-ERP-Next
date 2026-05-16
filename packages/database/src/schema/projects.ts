@@ -103,6 +103,50 @@ export const projectTimesheets = pgTable(
   })
 );
 
+export const projectTaskDependencies = pgTable(
+  'project_task_dependencies',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    tenantId: uuid('tenant_id')
+      .notNull()
+      .references(() => tenants.id, { onDelete: 'cascade' }),
+      
+    taskId: uuid('task_id')
+      .notNull()
+      .references(() => projectTasks.id, { onDelete: 'cascade' }),
+      
+    dependsOnId: uuid('depends_on_id')
+      .notNull()
+      .references(() => projectTasks.id, { onDelete: 'cascade' }),
+      
+    // Dependency type: FS (Finish-to-Start), SS, FF, SF
+    type: text('type').default('FS'),
+  }
+);
+
+export const projectMembers = pgTable(
+  'project_members',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    tenantId: uuid('tenant_id')
+      .notNull()
+      .references(() => tenants.id, { onDelete: 'cascade' }),
+      
+    projectId: uuid('project_id')
+      .notNull()
+      .references(() => projects.id, { onDelete: 'cascade' }),
+      
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+      
+    role: text('role').default('member'),
+    allocationPercentage: integer('allocation_percentage').default(100), // Resource load
+  }
+);
+
 export type Project = typeof projects.$inferSelect;
 export type ProjectTask = typeof projectTasks.$inferSelect;
 export type ProjectTimesheet = typeof projectTimesheets.$inferSelect;
+export type ProjectMember = typeof projectMembers.$inferSelect;
+export type ProjectTaskDependency = typeof projectTaskDependencies.$inferSelect;
