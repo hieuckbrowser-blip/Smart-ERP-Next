@@ -28,3 +28,4 @@ export * from './ecommerce_stores';
 export * from './inventory_reservations';
 export * from './bills_of_materials'; // includes bomRoutings
 export * from './production_orders';
+export * from './e_invoices';

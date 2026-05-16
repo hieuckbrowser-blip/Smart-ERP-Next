@@ -1115,6 +1115,56 @@
     "quality": "Chất lượng",
     "omnichannel": "Đa kênh",
     "manufacturing": "Sản xuất",
-    "hr": "Nhân sự"
+    "hr": "Nhân sự",
+    "einvoice": "Hóa đơn điện tử"
+  },
+  "einvoice": {
+    "title": "Hóa đơn điện tử",
+    "subtitle": "Quản lý hóa đơn theo Nghị định 123/2020/NĐ-CP — tích hợp VNPT, Viettel, MISA",
+    "create": "Tạo hóa đơn",
+    "invoiceNumber": "Số hóa đơn",
+    "invoiceSeries": "Ký hiệu",
+    "buyer": "Người mua",
+    "buyerName": "Tên người mua",
+    "buyerTaxCode": "Mã số thuế",
+    "buyerAddress": "Địa chỉ",
+    "buyerEmail": "Email",
+    "totalAmount": "Tổng tiền",
+    "vatAmount": "Tiền thuế VAT",
+    "vatRate": "Thuế suất VAT",
+    "status": "Trạng thái",
+    "issuedAt": "Ngày phát hành",
+    "issue": "Phát hành",
+    "cancel": "Hủy hóa đơn",
+    "replace": "Thay thế",
+    "adjust": "Điều chỉnh",
+    "view": "Xem",
+    "downloadPdf": "Tải PDF",
+    "lookupCode": "Mã tra cứu",
+    "provider": "Nhà cung cấp HĐĐT",
+    "noInvoices": "Chưa có hóa đơn nào",
+    "cancellationReason": "Lý do hủy",
+    "statuses": {
+      "draft": "Bản nháp",
+      "signed": "Đã ký",
+      "issued": "Đã phát hành",
+      "cancelled": "Đã hủy",
+      "replaced": "Đã thay thế",
+      "adjusted": "Điều chỉnh"
+    },
+    "stats": {
+      "issued": "Đã phát hành",
+      "draft": "Bản nháp",
+      "cancelled": "Đã hủy",
+      "revenue": "Doanh thu",
+      "vat": "Tổng VAT"
+    },
+    "providers": {
+      "vnpt": "VNPT e-Invoice",
+      "viettel": "Viettel e-Invoice",
+      "misa": "MISA e-Invoice",
+      "easy_invoice": "Easy Invoice",
+      "bkav": "BKAV Invoice"
+    }
   }
 }

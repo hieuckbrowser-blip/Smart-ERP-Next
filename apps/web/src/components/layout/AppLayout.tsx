@@ -26,6 +26,7 @@ import {
   CreditCard,
   RefreshCw,
   TrendingUp,
+  FileText,
 } from "lucide-react";
 import NotificationCenter from "./NotificationCenter";
 import { syncService } from "../../lib/sync-service";
@@ -181,6 +182,12 @@ export default function AppLayout({
       label: t("nav.forecast"),
       icon: <TrendingUp className="w-5 h-5" />,
       href: "/reports/forecast",
+    },
+    {
+      key: "einvoice",
+      label: t("nav.einvoice") || "Hóa đơn điện tử",
+      icon: <FileText className="w-5 h-5" />,
+      href: "/e-invoice",
     },
     {
       key: "users",

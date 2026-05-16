@@ -28,6 +28,7 @@
 | Loyalty Program          | ✅ Points/Tiers/Rewards|   ❌    |   ✅    |  ❌  |   ❌    |
 | Fixed Assets             | ✅ Depreciation       |    ❌    |   ❌    |  ✅  |   ✅    |
 | Project Management       | ✅ Tasks/Milestones   |    ❌    |   ❌    |  ❌  |   ✅    |
+| E-Invoice (HĐ điện tử)  | ✅ VNPT/Viettel/MISA  |  Addon   |  Addon  |  ✅  | Partial |
 
 ---
 

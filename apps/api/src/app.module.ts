@@ -40,6 +40,7 @@ import { ManufacturingModule } from './manufacturing/manufacturing.module';
 import { MRPModule } from './mrp/mrp.module';
 import { QmsModule } from './qms/qms.module';
 import { AnalyticsDashboardModule } from './analytics-dashboard/analytics-dashboard.module';
+import { EInvoiceModule } from './e-invoice/e-invoice.module';
 import { CustomerPortalModule } from './customers/customer-portal.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { db } from '@smart-erp/database';
@@ -91,6 +92,7 @@ import { DRIZZLE } from './common/drizzle.decorator';
     QmsModule,
     AnalyticsDashboardModule,
     CustomerPortalModule,
+    EInvoiceModule,
   ],
   controllers: [AppController],
   providers: [
