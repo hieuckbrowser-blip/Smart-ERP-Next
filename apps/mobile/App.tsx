@@ -36,6 +36,7 @@ import EInvoiceScreen from "./src/screens/EInvoiceScreen";
 import ManufacturingScreen from "./src/screens/ManufacturingScreen";
 import AttendanceScreen from "./src/screens/AttendanceScreen";
 import PayrollScreen from "./src/screens/PayrollScreen";
+import EContractScreen from "./src/screens/EContractScreen";
 
 initI18n("vi");
 
@@ -44,7 +45,7 @@ const mobileSyncService = new SyncService(
   new SecureStoreTokenProvider(),
 );
 
-type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance" | "payroll";
+type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance" | "payroll" | "contracts";
 
 export default function App() {
   const { t } = useTranslation();
@@ -64,6 +65,7 @@ export default function App() {
     { key: "quality",        label: t("nav.quality")        || "Chất lượng",        icon: "✅" },
     { key: "manufacturing",   label: t("nav.manufacturing")   || "Sản xuất",           icon: "🏭" },
     { key: "einvoice",        label: t("nav.einvoice")        || "Hóa đơn ĐT",        icon: "🧾" },
+    { key: "contracts",       label: "Hợp đồng",              icon: "🖋️" },
     { key: "attendance",      label: t("attendance.title")    || "Chấm công",         icon: "⏱️" },
     { key: "payroll",         label: "Tính lương",            icon: "💰" },
     { key: "suppliers",       label: t("nav.suppliers")       || "Nhà CC",            icon: "🏢" },
@@ -142,6 +144,7 @@ export default function App() {
       case "manufacturing":  return <ManufacturingScreen />;
       case "attendance":     return <AttendanceScreen />;
       case "payroll":        return <PayrollScreen />;
+      case "contracts":      return <EContractScreen />;
       default: return <DashboardScreen user={user} />;
     }
   };
