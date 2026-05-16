@@ -134,6 +134,7 @@ smart-erp-next/
 | **CRM (Sales Pipeline)**  | ✅  | ✅  |   ✅   |   ✅    |
 | **Đa kênh (Omnichannel)** | ✅  | ✅  |   ✅   |   ✅    |
 | **Hóa đơn điện tử**| ✅  | ✅  |   ✅   |   🔜    |
+| **Hợp đồng Điện tử (E-Contract)**| ✅  | ❌  |   ✅   |   ✅    |
 | **Chấm công (HR)**  | ✅  | 🔜  |   🔜   |   🔜    |
 | **Tính lương (Payroll)**| ✅  | ❌  |   ✅   |   ✅    |
 | **Helpdesk**   | ✅  | ✅  |   ✅   |   🔜    |
