@@ -18,34 +18,48 @@ Manages the end-to-end sales lifecycle, from initial contact to closed deals, ut
 ---
 
 ## E-Invoice `/e-invoice`
-Handles electronic invoicing fully compliant with Vietnam Decree 123/2020. Connects natively with VNPT/Misa via provider configuration.
+Hệ thống xử lý hóa đơn điện tử tuân thủ hoàn toàn Thông tư 78 và Nghị định 123/2020/NĐ-CP. Kết nối trực tiếp với các nhà cung cấp (VNPT, Misa, Viettel) thông qua cấu hình provider.
 
 | Method | Path | Description |
 | ------ | ---- | ----------- |
-| GET    | `/e-invoice` | List all issued and draft invoices |
-| POST   | `/e-invoice` | Generate an e-invoice draft from sales order |
-| PATCH  | `/e-invoice/:id/issue` | Sign & Issue to Tax Authority (CQT) |
+| GET    | `/e-invoice` | Liệt kê danh sách hóa đơn (nháp và đã phát hành) |
+| POST   | `/e-invoice` | Tạo nháp hóa đơn từ Đơn hàng (Sales Order) |
+| PATCH  | `/e-invoice/:id/issue` | Ký số và gửi dữ liệu lên Cơ quan Thuế (CQT) |
+
+---
+
+## Hợp đồng Điện tử `/e-contracts`
+Phân hệ e-Contract cho phép doanh nghiệp B2B tạo, gửi và ký số hợp đồng ngay trên nền tảng Smart ERP mà không cần bên thứ ba.
+
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| GET    | `/e-contracts` | Liệt kê các hợp đồng điện tử |
+| POST   | `/e-contracts` | Khởi tạo hợp đồng mới từ CRM Lead hoặc Customer |
+| PATCH  | `/e-contracts/:id/sign` | Thực hiện ký số (Xác thực OTP/Token/Chữ ký ảnh) |
+
+**Cấu trúc dữ liệu:**
+- `signature_data`: Lưu trữ tọa độ chữ ký, IP người ký và log bằng chứng pháp lý.
 
 ---
 
 ## HR & Payroll `/hr`
-Next-Gen HR system natively tracking Geo-location Check-ins and Auto-computing Net Salaries.
+Hệ thống nhân sự thế hệ mới, tích hợp chấm công GPS và tự động hóa bảng lương.
 
 | Method | Path | Description |
 | ------ | ---- | ----------- |
-| POST   | `/hr/attendance/shifts` | Config work shifts & hours |
-| POST   | `/hr/attendance/check-in` | Mobile App Check-in (GPS + Selfie verification) |
-| POST   | `/hr/payroll/boards/generate` | Auto calculate base + OT - late fees |
-| GET    | `/hr/payroll/my-payslips` | Native mobile endpoint for employee payslips |
+| POST   | `/hr/attendance/shifts` | Thiết lập ca làm việc và khung giờ |
+| POST   | `/hr/attendance/check-in` | Chấm công qua App (GPS + Xác thực vị trí) |
+| POST   | `/hr/payroll/boards/generate` | Tự động tính toán lương thực nhận dựa trên công và OT |
+| GET    | `/hr/payroll/my-payslips` | Xem phiếu lương trực tiếp trên Mobile App |
 
 ---
 
-## Workflow Automation Engine `/automations` (Core System)
-No-Code engine empowering users to create triggers based on any system event without developer intervention.
+## Workflow Automation Engine `/automations` (Lõi hệ thống)
+Cỗ máy No-code cho phép người dùng tự định nghĩa các quy trình tự động hóa mà không cần can thiệp vào mã nguồn.
 
-**DB Schema (`automations` table):**
-- `triggerEvent`: What causes the flow to run (e.g., `invoice.issued`)
-- `conditions`: JSONB declarative conditions (e.g., `{"amount": { ">": 5000000 } }`)
-- `actions`: JSONB array of execution nodes (e.g., `{"type": "email", "to": "manager"}`)
+**Cơ chế hoạt động:**
+- `triggerEvent`: Sự kiện kích hoạt (Ví dụ: `invoice.issued`, `employee.late`).
+- `conditions`: Điều kiện lọc theo định dạng JSONB (Ví dụ: `{"totalAmount": { ">": 10000000 } }`).
+- `actions`: Mảng các hành động thực thi (Gửi Email, Thông báo App, Cập nhật trạng thái CRM).
 
-*Note: The primary execution engine is tied natively to the Drizzle + NestJS lifecycle events.*
+*Lưu ý: Engine thực thi được tích hợp sâu vào lifecycle của NestJS và Drizzle ORM.*

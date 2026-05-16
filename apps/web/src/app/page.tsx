@@ -43,16 +43,26 @@ export default function Dashboard() {
 
   const generateAiInsight = async () => {
     setGenerating(true);
-    // Giả lập AI Phân tích dữ liệu từ CRM, Payroll và Sales
-    setTimeout(() => {
-      setAiInsight(
-        "🤖 **Phân tích của Copilot:**\n" +
-        "• **Bán hàng**: Doanh thu tháng này đạt " + formatCurrency(stats?.totalRevenue || 154200000) + ", tăng 15.4% so với tháng trước. Tốc độ chốt đơn tại CRM đang rất tốt (tỉ lệ Win 32%).\n" +
-        "• **Nhân sự**: Quỹ lương dự kiến chiếm 12% tổng doanh thu. Tỉ lệ đi trễ ở bộ phận Sales có dấu hiệu tăng (8 người/tuần).\n" +
-        "• **Khuyến nghị**: Nên tạo ngay chiến dịch Loyalty cho nhóm khách VVIP để đạt mục tiêu doanh thu 200 Triệu cuối tháng. Hãy xem xét thưởng nóng cho Sales Team!"
-      );
+    try {
+      const res = await apiClient.get<any>("/ai-copilot/insights");
+      const data = res.data;
+      
+      let insightText = `🤖 **Phân tích của Copilot (${data.healthStatus.toUpperCase()}):**\n` +
+        `• **Bán hàng**: Doanh thu đạt ${formatCurrency(data.revenue)}. CRM có ${data.leadsCount} lead mới.\n` +
+        `• **Hợp đồng**: Đã ký kết thành công ${data.signedCount} hợp đồng điện tử.\n` +
+        `• **Nhân sự**: Ghi nhận ${data.lateCount} trường hợp đi trễ trong tháng.\n`;
+        
+      if (data.recommendations && data.recommendations.length > 0) {
+        insightText += `• **Khuyến nghị**: ${data.recommendations.join(' ')}`;
+      }
+      
+      setAiInsight(insightText);
+    } catch (e) {
+      console.error('Failed to fetch AI insights', e);
+      setAiInsight("⚠️ Không thể kết nối với AI Copilot. Vui lòng kiểm tra lại kết nối API.");
+    } finally {
       setGenerating(false);
-    }, 1500);
+    }
   };
 
   const formatCurrency = (val: number) =>
