@@ -115,64 +115,64 @@ export class ChatbotService {
 
     if (orderCode) {
       return {
-        message: `Đang tra cứu đơn hàng ${orderCode}... Vui lòng đợi trong giây lát.`,
+        message: `Looking up order ${orderCode}... Please wait a moment.`,
         intent: 'order_status',
         entities: { orderCode },
         actions: [
-          { type: 'view_order', label: 'Xem chi tiết đơn hàng' },
-          { type: 'track_shipment', label: 'Theo dõi vận chuyển' },
+          { type: 'view_order', label: 'chatbot.actions.viewOrder' },
+          { type: 'track_shipment', label: 'chatbot.actions.trackShipment' },
         ],
       };
     }
 
     return {
-      message: 'Bạn có thể cho tôi biết mã đơn hàng (ví dụ: DH-001) để tôi tra cứu trạng thái giúp bạn.',
+      message: 'Please provide an order code (e.g., DH-001) so I can help you check the status.',
       intent: 'order_status',
-      suggestions: ['DH-001', 'DH-002', 'Xem tất cả đơn hàng'],
+      suggestions: ['DH-001', 'DH-002', 'chatbot.suggestions.viewAllOrders'],
     };
   }
 
   private async handleProductInquiry(message: string): Promise<ChatResponse> {
     return {
-      message: 'Tôi có thể giúp bạn tìm kiếm sản phẩm, kiểm tra giá và tồn kho. Bạn đang tìm sản phẩm nào?',
+      message: 'I can help you search for products, check prices and inventory. What are you looking for?',
       intent: 'product_inquiry',
-      suggestions: ['Tìm sản phẩm theo tên', 'Tìm theo SKU', 'Xem sản phẩm mới nhất', 'Sản phẩm khuyến mãi'],
+      suggestions: ['chatbot.suggestions.searchByName', 'chatbot.suggestions.searchBySKU', 'chatbot.suggestions.newProducts', 'chatbot.suggestions.promoProducts'],
       actions: [
-        { type: 'search_products', label: 'Tìm kiếm sản phẩm' },
-        { type: 'view_categories', label: 'Xem danh mục' },
+        { type: 'search_products', label: 'chatbot.actions.searchProducts' },
+        { type: 'view_categories', label: 'chatbot.actions.viewCategories' },
       ],
     };
   }
 
   private async handlePaymentHelp(message: string): Promise<ChatResponse> {
     return {
-      message: 'Tôi có thể giúp bạn với các vấn đề thanh toán. Bạn cần hỗ trợ gì?',
+      message: 'I can help you with payment issues. What do you need assistance with?',
       intent: 'payment_help',
-      suggestions: ['Phương thức thanh toán', 'Lịch sử thanh toán', 'Hóa đơn', 'Hoàn tiền'],
+      suggestions: ['chatbot.suggestions.paymentMethods', 'chatbot.suggestions.paymentHistory', 'chatbot.suggestions.invoices', 'chatbot.suggestions.refunds'],
       actions: [
-        { type: 'view_payments', label: 'Xem lịch sử thanh toán' },
-        { type: 'view_invoices', label: 'Xem hóa đơn' },
+        { type: 'view_payments', label: 'chatbot.actions.viewPayments' },
+        { type: 'view_invoices', label: 'chatbot.actions.viewInvoices' },
       ],
     };
   }
 
   private async handleAccountHelp(message: string): Promise<ChatResponse> {
     return {
-      message: 'Tôi có thể giúp bạn quản lý tài khoản. Bạn cần hỗ trợ gì?',
+      message: 'I can help you manage your account. What do you need assistance with?',
       intent: 'account_help',
-      suggestions: ['Đổi mật khẩu', 'Cập nhật hồ sơ', 'Cài đặt thông báo', 'Quyền truy cập'],
+      suggestions: ['chatbot.suggestions.changePassword', 'chatbot.suggestions.updateProfile', 'chatbot.suggestions.notifSettings', 'chatbot.suggestions.accessRights'],
       actions: [
-        { type: 'edit_profile', label: 'Cập nhật hồ sơ' },
-        { type: 'change_password', label: 'Đổi mật khẩu' },
+        { type: 'edit_profile', label: 'chatbot.actions.editProfile' },
+        { type: 'change_password', label: 'chatbot.actions.changePassword' },
       ],
     };
   }
 
   private handleGreeting(): ChatResponse {
     return {
-      message: 'Xin chào! Tôi là trợ lý ảo của Smart ERP. Tôi có thể giúp bạn:\n\n• Tra cứu đơn hàng\n• Tìm kiếm sản phẩm\n• Hỗ trợ thanh toán\n• Quản lý tài khoản\n\nBạn cần giúp gì ạ?',
+      message: 'Hello! I am your Smart ERP virtual assistant. I can help you with:\n\n• Order lookup\n• Product search\n• Payment support\n• Account management\n\nHow can I help you today?',
       intent: 'greeting',
-      suggestions: ['Tra cứu đơn hàng', 'Tìm sản phẩm', 'Hỗ trợ thanh toán', 'Quản lý tài khoản'],
+      suggestions: ['chatbot.suggestions.orderLookup', 'chatbot.suggestions.productSearch', 'chatbot.suggestions.paymentSupport', 'chatbot.suggestions.accountMgmt'],
     };
   }
 
@@ -203,9 +203,9 @@ export class ChatbotService {
 
     // Fallback response
     return {
-      message: 'Cảm ơn bạn đã nhắn tin! Tôi chưa hiểu rõ câu hỏi của bạn. Bạn có thể thử:\n\n• "Tra cứu đơn hàng DH-001"\n• "Tìm sản phẩm [tên sản phẩm]"\n• "Hỗ trợ thanh toán"\n• "Quản lý tài khoản"\n\nHoặc liên hệ hotline: 1900-xxxx để được hỗ trợ trực tiếp.',
+      message: 'Thank you for your message! I did not quite understand your question. You can try:\n\n• "Track order DH-001"\n• "Search for product [name]"\n• "Payment help"\n• "Account management"\n\nOr contact our hotline: 1900-xxxx for direct support.',
       intent: 'general',
-      suggestions: ['Tra cứu đơn hàng', 'Tìm sản phẩm', 'Hỗ trợ thanh toán', 'Liên hệ hotline'],
+      suggestions: ['chatbot.suggestions.orderLookup', 'chatbot.suggestions.productSearch', 'chatbot.suggestions.paymentSupport', 'chatbot.suggestions.contactHotline'],
     };
   }
 }

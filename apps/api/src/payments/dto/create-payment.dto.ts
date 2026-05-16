@@ -5,7 +5,7 @@ import { Type } from 'class-transformer';
 
 export class CreatePaymentDto {
   @IsIn(['receipt', 'payment'])
-  type: string; // receipt = phiếu thu, payment = phiếu chi
+  type: string; // receipt = incoming payment, payment = outgoing payment
 
   @IsOptional()
   @IsIn(['order', 'purchase_order', 'manual'])

@@ -70,7 +70,7 @@ export class DocumentScannerService {
         fields: {
           invoiceNumber: { value: 'INV-2024-001', confidence: 0.95 },
           date: { value: '2024-05-14', confidence: 0.98 },
-          vendorName: { value: 'Công ty ABC', confidence: 0.88 },
+          vendorName: { value: 'ABC Company', confidence: 0.88 },
           totalAmount: { value: '15,500,000', confidence: 0.94 },
           taxAmount: { value: '1,550,000', confidence: 0.90 },
           currency: { value: 'VND', confidence: 0.99 },
@@ -80,10 +80,10 @@ export class DocumentScannerService {
         type: 'receipt',
         confidence: 0.88,
         fields: {
-          merchantName: { value: 'Cửa hàng XYZ', confidence: 0.92 },
+          merchantName: { value: 'XYZ Store', confidence: 0.92 },
           date: { value: '2024-05-14', confidence: 0.95 },
           totalAmount: { value: '350,000', confidence: 0.96 },
-          items: { value: 'Sản phẩm A x2, Sản phẩm B x1', confidence: 0.85 },
+          items: { value: 'Product A x2, Product B x1', confidence: 0.85 },
         },
       },
       purchase_order: {
@@ -92,7 +92,7 @@ export class DocumentScannerService {
         fields: {
           poNumber: { value: 'PO-2024-042', confidence: 0.94 },
           date: { value: '2024-05-14', confidence: 0.97 },
-          supplierName: { value: 'Nhà cung cấp DEF', confidence: 0.91 },
+          supplierName: { value: 'DEF Supplier', confidence: 0.91 },
           totalAmount: { value: '25,000,000', confidence: 0.93 },
           deliveryDate: { value: '2024-05-21', confidence: 0.89 },
         },
@@ -102,7 +102,7 @@ export class DocumentScannerService {
     return mocks[hint || 'invoice'] || {
       type: 'unknown',
       confidence: 0.5,
-      fields: { rawText: { value: 'Không thể nhận dạng tài liệu', confidence: 0.5 } },
+      fields: { rawText: { value: 'Unable to recognize document', confidence: 0.5 } },
     };
   }
 }
