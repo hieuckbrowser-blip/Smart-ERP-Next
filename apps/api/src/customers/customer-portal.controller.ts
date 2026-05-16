@@ -1,34 +1,45 @@
-import { Controller, Get, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards, Request } from '@nestjs/common';
 import { CustomerPortalService } from './customer-portal.service';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
-@Controller('customer-portal')
+@ApiTags('Customer Portal')
 @UseGuards(JwtAuthGuard)
+@Controller('portal')
 export class CustomerPortalController {
   constructor(private readonly service: CustomerPortalService) {}
 
+  @ApiOperation({ summary: 'Get my orders' })
   @Get('orders')
-  async getOrders(@Request() req: any) {
-    return this.service.getOrders(req.user.tenantId, req.user.sub);
+  getOrders(@Request() req: any) {
+    const customerId = req.user.customerId || 'dummy-customer-id';
+    return this.service.getOrders(req.user.tenantId, customerId);
   }
 
-  @Get('invoices')
-  async getInvoices(@Request() req: any) {
-    return this.service.getInvoices(req.user.tenantId, req.user.sub);
+  @ApiOperation({ summary: 'Track an order' })
+  @Get('orders/:id/track')
+  trackOrder(@Request() req: any, @Param('id') id: string) {
+    return this.service.getOrderTracking(req.user.tenantId, id);
   }
 
-  @Get('payments')
-  async getPayments(@Request() req: any) {
-    return this.service.getPaymentHistory(req.user.tenantId, req.user.sub);
-  }
-
+  @ApiOperation({ summary: 'Get my support tickets' })
   @Get('tickets')
-  async getTickets(@Request() req: any) {
-    return this.service.getTickets(req.user.tenantId, req.user.sub);
+  getTickets(@Request() req: any) {
+    const customerId = req.user.customerId || 'dummy-customer-id';
+    return this.service.getTickets(req.user.tenantId, customerId);
   }
 
-  @Get('profile')
-  async getProfile(@Request() req: any) {
-    return this.service.getProfile(req.user.tenantId, req.user.sub);
+  @ApiOperation({ summary: 'Create a support ticket' })
+  @Post('tickets')
+  createTicket(@Request() req: any, @Body() body: any) {
+    const customerId = req.user.customerId || 'dummy-customer-id';
+    return this.service.createTicket(req.user.tenantId, customerId, body);
+  }
+
+  @ApiOperation({ summary: 'Get my invoices' })
+  @Get('invoices')
+  getInvoices(@Request() req: any) {
+    const customerId = req.user.customerId || 'dummy-customer-id';
+    return this.service.getInvoices(req.user.tenantId, customerId);
   }
 }

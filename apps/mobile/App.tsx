@@ -42,6 +42,7 @@ import FieldServiceScreen from "./src/screens/FieldServiceScreen";
 import TimesheetScreen from "./src/screens/TimesheetScreen";
 import PerformanceScreen from "./src/screens/PerformanceScreen";
 import ScmScreen from "./src/screens/ScmScreen";
+import CustomerPortalScreen from "./src/screens/CustomerPortalScreen";
 
 initI18n("vi");
 
@@ -50,7 +51,7 @@ const mobileSyncService = new SyncService(
   new SecureStoreTokenProvider(),
 );
 
-type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance" | "payroll" | "contracts" | "approvals" | "field_service" | "timesheet" | "performance" | "scm";
+type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance" | "payroll" | "contracts" | "approvals" | "field_service" | "timesheet" | "performance" | "scm" | "customer_portal";
 
 export default function App() {
   const { t } = useTranslation();
@@ -80,6 +81,7 @@ export default function App() {
     { key: "suppliers",       label: t("nav.suppliers")       || "Nhà CC",            icon: "🏢" },
     { key: "purchasing",      label: t("nav.purchasing")      || "Mua hàng",          icon: "🛒" },
     { key: "scm",             label: "Gợi ý nhập hàng (AI)",   icon: "🤖" },
+    { key: "customer_portal", label: "Cổng thông tin Khách",   icon: "🏠" },
     { key: "leads",           label: t("nav.crm")             || "CRM",               icon: "🎯" },
     { key: "accounting",      label: t("nav.accounting")      || "Kế toán",           icon: "💰" },
     { key: "reports",         label: t("nav.reports")         || "Báo cáo",           icon: "📈" },
@@ -160,6 +162,7 @@ export default function App() {
       case "timesheet":      return <TimesheetScreen />;
       case "performance":    return <PerformanceScreen />;
       case "scm":            return <ScmScreen />;
+      case "customer_portal": return <CustomerPortalScreen />;
       default: return <DashboardScreen user={user} />;
     }
   };

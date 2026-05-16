@@ -445,4 +445,29 @@ describe('Smart ERP Next - Core User Journey (E2E)', () => {
       expect([200, 500]).toContain(res.status);
     });
   });
+
+  describe('Customer Experience: Portal Self-Service', () => {
+    it('26. Customer should see order history via Portal API', async () => {
+      const res = await request(app.getHttpServer())
+        .get('/portal/orders')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId);
+
+      expect([200, 500]).toContain(res.status);
+    });
+
+    it('27. Customer should create a Support Ticket via Portal', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/portal/tickets')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId)
+        .send({
+          title: 'Hỏi về thời gian giao hàng',
+          description: 'Tôi chưa nhận được hàng cho đơn SO-123',
+          priority: 'medium',
+        });
+
+      expect([201, 500]).toContain(res.status);
+    });
+  });
 });

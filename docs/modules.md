@@ -221,3 +221,20 @@ Giải pháp tối ưu hóa tồn kho thông qua dự báo nhu cầu và quản 
 - **Predictive Procurement**: Sử dụng AI để phân tích tốc độ bán hàng (Sales Velocity) và thời gian giao hàng của nhà cung cấp (Lead Time) để gợi ý thời điểm nhập hàng tối ưu.
 - **Stockout Prevention**: Cảnh báo sớm các nguy cơ hết hàng trước khi nó xảy ra, giúp doanh nghiệp không bỏ lỡ cơ hội kinh doanh.
 - **Supplier Reliability Tracking**: Tự động đánh giá độ tin cậy của nhà cung cấp dựa trên thực tế giao hàng, hỗ trợ ra quyết định lựa chọn đối tác cung ứng.
+
+---
+
+## Cổng thông tin Khách hàng (Customer Portal) `/portal`
+Trải nghiệm khách hàng (Customer Experience - CX) hiện đại, cho phép đối tác và khách hàng tự tra cứu và tương tác với hệ thống.
+
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| GET    | `/portal/orders` | Khách hàng tra cứu lịch sử đơn hàng và tình trạng giao hàng |
+| GET    | `/portal/orders/:id/track` | **Real-time Tracking**: Theo dõi hành trình đơn hàng trực quan |
+| POST   | `/portal/tickets` | **Self-Service Support**: Khách hàng tự gửi yêu cầu hỗ trợ/bảo hành |
+| GET    | `/portal/invoices` | Xem và tải về các hóa đơn điện tử liên quan |
+
+**Tính năng vượt trội:**
+- **Full Transparency**: Khách hàng không cần gọi điện hỏi "Hàng của tôi đến đâu rồi?" vì họ có thể tự theo dõi trạng thái real-time ngay trên App.
+- **Automated Support Loop**: Yêu cầu hỗ trợ từ khách hàng được tự động chuyển vào phân hệ `Field Service` hoặc `Helpdesk` để xử lý kịp thời.
+- **Unified CX**: Tích hợp toàn bộ lịch sử giao dịch, hợp đồng và công nợ tại một điểm duy nhất, tạo sự chuyên nghiệp cho doanh nghiệp.
