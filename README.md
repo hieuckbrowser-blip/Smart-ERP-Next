@@ -292,6 +292,8 @@ pnpm --filter @smart-erp/docs start     # Docs: http://localhost:3002
 | `/quality`             | Chất lượng (QMS)     |
 | `/omnichannel`         | Bán hàng đa kênh     |
 | `/manufacturing`       | Sản xuất (MRP)       |
+| `/manufacturing/bom`   | Định mức NVL (BOM)   |
+| `/manufacturing/production-orders` | Lệnh sản xuất |
 | `/hr/employees`        | Nhân sự              |
 | `/hr/payroll`          | Bảng lương           |
 | `/users`               | Quản lý người dùng   |
