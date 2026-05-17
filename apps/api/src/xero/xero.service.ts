@@ -78,7 +78,6 @@ export class XeroService {
       externalId,
       externalPlatform: 'xero',
       orderDate: new Date(xeroInvoice.Date),
-      total: String(orderData.total), // Convert number to string for numeric column
     };
     if (existing) {
       await db.update(orders).set(orderData).where(eq(orders.id, existing.id));

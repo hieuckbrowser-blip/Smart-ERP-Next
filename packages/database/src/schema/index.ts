@@ -27,3 +27,4 @@ export * from './product_serials';
 export * from './warehouse_transfers';
 export * from './bills_of_materials';
 export * from './accounting';
+export * from './xero';
