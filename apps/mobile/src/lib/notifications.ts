@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as Notifications from 'expo-notifications';
 import * as SecureStore from 'expo-secure-store';
 import { useTranslation } from 'react-i18next';

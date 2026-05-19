@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { DrizzleService } from '../drizzle/drizzle.service';
 import { crmLeads } from '@smart-erp/database';
 import { orders, e_contracts } from '@smart-erp/database';

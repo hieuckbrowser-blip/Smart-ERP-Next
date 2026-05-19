@@ -1,1 +1,1 @@
-﻿export * from "./create-warehouse-transfer.dto";
+export * from "./create-warehouse-transfer.dto";

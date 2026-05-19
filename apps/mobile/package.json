@@ -9,6 +9,7 @@
     "@smart-erp/types": "workspace:*",
     "@smart-erp/utils": "workspace:*",
     "detox": "20.50.4",
+    "dexie": "4.4.2",
     "expo": "~52.0.0",
     "expo-camera": "55.0.18",
     "expo-notifications": "55.0.23",
@@ -16,7 +17,9 @@
     "expo-sqlite": "~15.0.0",
     "expo-status-bar": "~2.0.0",
     "react": "19.2.6",
-    "react-native": "0.76.0"
+    "react-i18next": "^14.1.2",
+    "react-native": "0.76.0",
+    "socket.io-client": "4.8.3"
   },
   "devDependencies": {
     "@types/react": "~19.2.14",

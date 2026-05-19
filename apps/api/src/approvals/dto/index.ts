@@ -1,4 +1,4 @@
-﻿import { IsString, IsUUID, IsNumber, Min, IsArray, IsOptional, IsIn } from "class-validator";
+import { IsString, IsUUID, IsNumber, Min, IsArray, IsOptional, IsIn } from "class-validator";
 export class ApprovalRequestDto {
   @IsString()
   @IsIn(["invoice", "payment", "order"])

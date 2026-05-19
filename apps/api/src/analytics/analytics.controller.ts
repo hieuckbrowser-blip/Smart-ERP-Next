@@ -1,1 +1,1 @@
-﻿export class AnalyticsController {}
+export class AnalyticsController {}

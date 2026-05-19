@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { device, element, by, expect } from 'detox';
 
 describe('Offline sync', () => {

@@ -1,1 +1,1 @@
-﻿export class AnomalyService {}
+export class AnomalyService {}

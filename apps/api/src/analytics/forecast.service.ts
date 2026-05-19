@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { orders, orderItems } from '@smart-erp/database/schema';
 import { eq, and, gte, sql, desc } from '@smart-erp/database/drizzle';

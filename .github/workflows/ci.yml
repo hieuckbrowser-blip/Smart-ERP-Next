@@ -24,8 +24,8 @@ jobs:
         run: pnpm lint || echo "No lint script – skipping"
       - name: Type check
         run: pnpm type-check || echo "No type-check script – skipping"
-      - name: Run unit tests
-        run: pnpm test || echo "No test script – skipping"
+      - name: Run unit tests with coverage
+        run: pnpm test:cov || echo "No test script – skipping"
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
       - name: Run web E2E tests

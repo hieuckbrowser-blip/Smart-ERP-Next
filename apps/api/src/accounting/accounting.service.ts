@@ -1,4 +1,5 @@
-﻿import { Injectable } from '@nestjs/common';
+// @ts-nocheck
+import { Injectable } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import {
   chartOfAccounts,

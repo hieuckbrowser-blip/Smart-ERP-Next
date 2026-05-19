@@ -1,4 +1,4 @@
-﻿import { Injectable, ConflictException } from "@nestjs/common";
+import { Injectable, ConflictException } from "@nestjs/common";
 import { db } from "@smart-erp/database";
 import { products, inventoryTransactions, inventoryReservations, ecommerceStores } from "@smart-erp/database/schema";
 import { eq, and, sql, desc, gte, lte } from "@smart-erp/database/drizzle";

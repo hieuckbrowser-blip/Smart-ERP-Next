@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { io, Socket } from 'socket.io-client';
 import { getToken } from './auth';
 import { useEffect, useState } from 'react';

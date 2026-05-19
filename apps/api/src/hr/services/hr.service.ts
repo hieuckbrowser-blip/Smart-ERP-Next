@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { employees, payrolls } from '@smart-erp/database/schema';

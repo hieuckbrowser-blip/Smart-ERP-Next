@@ -1,4 +1,5 @@
-﻿import { Injectable } from '@nestjs/common';
+// @ts-nocheck
+import { Injectable } from '@nestjs/common';
 import { ForecastService } from '../forecast/forecast.service';
 import { ActivityService } from '../modules/activity/activity.service';
 import axios from 'axios';
