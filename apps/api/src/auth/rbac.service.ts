@@ -23,8 +23,22 @@ export interface Role {
   isSystem: boolean;
 }
 
-const DEFAULT_ROLES: Record<string, (Permission | string)[]> = {
-  admin: ['*'] as any,
+const ALL_PERMISSIONS: Permission[] = [
+  'customers.read', 'customers.create', 'customers.update', 'customers.delete',
+  'products.read', 'products.create', 'products.update', 'products.delete',
+  'orders.read', 'orders.create', 'orders.update', 'orders.delete', 'orders.approve',
+  'inventory.read', 'inventory.adjust', 'inventory.transfer',
+  'suppliers.read', 'suppliers.create', 'suppliers.update', 'suppliers.delete',
+  'payments.read', 'payments.create', 'payments.update',
+  'reports.read', 'reports.export',
+  'settings.read', 'settings.update',
+  'users.read', 'users.create', 'users.update', 'users.delete',
+  'manufacturing.read', 'manufacturing.create', 'manufacturing.update',
+  'analytics.read', 'automation.read', 'automation.manage',
+];
+
+const DEFAULT_ROLES: Record<string, Permission[]> = {
+  admin: ALL_PERMISSIONS,
   manager: [
     'customers.read', 'customers.create', 'customers.update',
     'products.read', 'products.create', 'products.update',

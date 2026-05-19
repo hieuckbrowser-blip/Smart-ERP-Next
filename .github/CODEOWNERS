@@ -1,0 +1,13 @@
+﻿# Smart ERP Next - Code Owners
+* @smart-erp/team
+/apps/api/ @smart-erp/api-team
+/apps/web/ @smart-erp/web-team
+/apps/mobile/ @smart-erp/mobile-team
+/apps/desktop/ @smart-erp/desktop-team
+/docs/ @smart-erp/docs-team
+/packages/ @smart-erp/packages-team
+
+assets/ @smart-erp/assets-team
+/assets/ @smart-erp/assets-team
+/release-assets/ @smart-erp/release-team
+

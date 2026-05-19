@@ -114,7 +114,7 @@ export class BillingService {
 
   /** Get tenant's current subscription */
   async getSubscription(tenantId: string): Promise<Subscription> {
-    const [sub] = await this.drizzle.db.execute(
+    const result = await this.drizzle.db.execute(
       sql`
         SELECT s.*, p.name as plan_name
         FROM subscriptions s
@@ -124,9 +124,26 @@ export class BillingService {
         LIMIT 1
       `,
     );
-
-    if ((sub as any[])?.length) {
-      return (sub as any[])[0] as Subscription;
+    const rows = result.rows;
+    if (rows.length) {
+      const row = rows[0];
+      // Map the result to Subscription shape
+      return {
+        id: row.id,
+        tenantId: row.tenant_id,
+        planId: row.plan_id,
+        planName: row.plan_name,
+        status: row.status as Subscription['status'],
+        currentPeriodStart: row.current_period_start,
+        currentPeriodEnd: row.current_period_end,
+        cancelAtPeriodEnd: row.cancel_at_period_end,
+        usage: {
+          users: row.usage_users,
+          products: row.usage_products,
+          orders: row.usage_orders,
+          storage: row.usage_storage,
+        },
+      } as Subscription;
     }
 
     // Default to free plan

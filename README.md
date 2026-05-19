@@ -1,6 +1,6 @@
-# Smart ERP Next
+﻿# Smart ERP Next
 
-**Hệ thống quản trị doanh nghiệp thế hệ mới** — vượt trội ERPNext, Odoo, KiotViet, Nhanhvn, MISA về tốc độ, trải nghiệm và khả năng mở rộng.
+**Há»‡ thá»‘ng quáº£n trá»‹ doanh nghiá»‡p tháº¿ há»‡ má»›i** â€” vÆ°á»£t trá»™i ERPNext, Odoo, KiotViet, Nhanhvn, MISA vá» tá»‘c Ä‘á»™, tráº£i nghiá»‡m vÃ  kháº£ nÄƒng má»Ÿ rá»™ng.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org)
@@ -8,80 +8,80 @@
 
 ---
 
-## So sánh với đối thủ
+## So sÃ¡nh vá»›i Ä‘á»‘i thá»§
 
-| Tính năng                |    Smart ERP Next     | KiotViet | Nhanhvn | MISA | ERPNext |
+| TÃ­nh nÄƒng                |    Smart ERP Next     | KiotViet | Nhanhvn | MISA | ERPNext |
 | ------------------------ | :-------------------: | :------: | :-----: | :--: | :-----: |
-| Native đa nền tảng       | ✅ Web+Mobile+Desktop |    ❌    |   ❌    |  ❌  |   ❌    |
-| Offline-first + CRDT     |          ✅           |    ❌    |   ❌    |  ❌  |   ❌    |
-| Mã nguồn mở              |          ✅           |    ❌    |   ❌    |  ❌  |   ✅    |
-| Bản địa hóa vi/en        |      ✅ Built-in      |    ✅    |   ✅    |  ✅  | Partial |
-| Multi-tenant             |          ✅           |    ❌    |   ❌    |  ❌  |   ✅    |
-| Real-time WebSocket      |          ✅           | Partial  | Partial |  ❌  |   ❌    |
-| POS tích hợp             |          ✅           |    ✅    |   ✅    |  ❌  |   ✅    |
-| Monorepo shared packages |          ✅           |    ❌    |   ❌    |  ❌  |   ❌    |
-| Lot tracking + Expiry    |          ✅           |    ❌    |   ❌    |  ❌  |   ❌    |
-| Multi-warehouse transfer |          ✅           |    ❌    |   ❌    |  ❌  |   ❌    |
-| AI Business Intelligence | ✅ Predictive Stock   |    ❌    |   ❌    |  ❌  | Partial |
-| Omnichannel Hub          | ✅ Shopee/TikTok/Amazon/eBay | Partial  | ✅       |  ❌  | Partial |
-| HR/Payroll               | ✅ Full Module        |    ❌    |   ❌    |  ✅  |   ✅    |
-| Loyalty Program          | ✅ Points/Tiers/Rewards|   ❌    |   ✅    |  ❌  |   ❌    |
-| Fixed Assets             | ✅ Depreciation       |    ❌    |   ❌    |  ✅  |   ✅    |
-| Project Management       | ✅ Tasks/Milestones   |    ❌    |   ❌    |  ❌  |   ✅    |
-| E-Invoice (HĐ điện tử)  | ✅ VNPT/Viettel/MISA  |  Addon   |  Addon  |  ✅  | Partial |
+| Native Ä‘a ná»n táº£ng       | âœ… Web+Mobile+Desktop |    âŒ    |   âŒ    |  âŒ  |   âŒ    |
+| Offline-first + CRDT     |          âœ…           |    âŒ    |   âŒ    |  âŒ  |   âŒ    |
+| MÃ£ nguá»“n má»Ÿ              |          âœ…           |    âŒ    |   âŒ    |  âŒ  |   âœ…    |
+| Báº£n Ä‘á»‹a hÃ³a vi/en        |      âœ… Built-in      |    âœ…    |   âœ…    |  âœ…  | Partial |
+| Multi-tenant             |          âœ…           |    âŒ    |   âŒ    |  âŒ  |   âœ…    |
+| Real-time WebSocket      |          âœ…           | Partial  | Partial |  âŒ  |   âŒ    |
+| POS tÃ­ch há»£p             |          âœ…           |    âœ…    |   âœ…    |  âŒ  |   âœ…    |
+| Monorepo shared packages |          âœ…           |    âŒ    |   âŒ    |  âŒ  |   âŒ    |
+| Lot tracking + Expiry    |          âœ…           |    âŒ    |   âŒ    |  âŒ  |   âŒ    |
+| Multi-warehouse transfer |          âœ…           |    âŒ    |   âŒ    |  âŒ  |   âŒ    |
+| AI Business Intelligence | âœ… Predictive Stock   |    âŒ    |   âŒ    |  âŒ  | Partial |
+| Omnichannel Hub          | âœ… Shopee/TikTok/Amazon/eBay | Partial  | âœ…       |  âŒ  | Partial |
+| HR/Payroll               | âœ… Full Module        |    âŒ    |   âŒ    |  âœ…  |   âœ…    |
+| Loyalty Program          | âœ… Points/Tiers/Rewards|   âŒ    |   âœ…    |  âŒ  |   âŒ    |
+| Fixed Assets             | âœ… Depreciation       |    âŒ    |   âŒ    |  âœ…  |   âœ…    |
+| Project Management       | âœ… Tasks/Milestones   |    âŒ    |   âŒ    |  âŒ  |   âœ…    |
+| E-Invoice (HÄ Ä‘iá»‡n tá»­)  | âœ… VNPT/Viettel/MISA  |  Addon   |  Addon  |  âœ…  | Partial |
 
 ---
 
-## Tính năng nổi bật
+## TÃ­nh nÄƒng ná»•i báº­t
 
-### 🧠 AI-Powered Business Intelligence
-- **Dự báo nhu cầu (Demand Forecasting)**: Sử dụng lịch sử bán hàng thực tế để dự báo tồn kho cần thiết.
-- **Gợi ý nhập hàng tự động**: Tính toán số lượng đặt hàng tối ưu dựa trên tốc độ bán và lead time.
-- **Inventory Recommendation Service**: AI‑driven reorder suggestions via `/inventory-recommendation/suggest` endpoint.
+### ðŸ§  AI-Powered Business Intelligence
+- **Dá»± bÃ¡o nhu cáº§u (Demand Forecasting)**: Sá»­ dá»¥ng lá»‹ch sá»­ bÃ¡n hÃ ng thá»±c táº¿ Ä‘á»ƒ dá»± bÃ¡o tá»“n kho cáº§n thiáº¿t.
+- **Gá»£i Ã½ nháº­p hÃ ng tá»± Ä‘á»™ng**: TÃ­nh toÃ¡n sá»‘ lÆ°á»£ng Ä‘áº·t hÃ ng tá»‘i Æ°u dá»±a trÃªn tá»‘c Ä‘á»™ bÃ¡n vÃ  lead time.
+- **Inventory Recommendation Service**: AIâ€‘driven reorder suggestions via `/inventory-recommendation/suggest` endpoint.
 - **Forecast Dashboard**: Visual demand forecast UI with i18n support.
 
-### 🌐 E-commerce Integration Hub (Omnichannel)
-- **Đồng bộ đa sàn**: Kết nối Shopee, Lazada, TikTok Shop, Amazon, eBay, Shopify.
-- **Chống bán quá đà (Oversell Protection)**: Cơ chế giữ hàng (reservation) ngay khi có đơn từ sàn.
-- **Tồn kho khả dụng thông minh**: Tự động trừ safety buffer trước khi đẩy số lượng lên marketplace.
-- **Real-time Sync Logs**: Theo dõi chi tiết từng lần đồng bộ dữ liệu.
+### ðŸŒ E-commerce Integration Hub (Omnichannel)
+- **Äá»“ng bá»™ Ä‘a sÃ n**: Káº¿t ná»‘i Shopee, Lazada, TikTok Shop, Amazon, eBay, Shopify.
+- **Chá»‘ng bÃ¡n quÃ¡ Ä‘Ã  (Oversell Protection)**: CÆ¡ cháº¿ giá»¯ hÃ ng (reservation) ngay khi cÃ³ Ä‘Æ¡n tá»« sÃ n.
+- **Tá»“n kho kháº£ dá»¥ng thÃ´ng minh**: Tá»± Ä‘á»™ng trá»« safety buffer trÆ°á»›c khi Ä‘áº©y sá»‘ lÆ°á»£ng lÃªn marketplace.
+- **Real-time Sync Logs**: Theo dÃµi chi tiáº¿t tá»«ng láº§n Ä‘á»“ng bá»™ dá»¯ liá»‡u.
 
-## 🚀 Triển khai nhanh (Deployment)
+## ðŸš€ Triá»ƒn khai nhanh (Deployment)
 
-Hệ thống được thiết kế để triển khai "Một nút bấm" thông qua Docker.
+Há»‡ thá»‘ng Ä‘Æ°á»£c thiáº¿t káº¿ Ä‘á»ƒ triá»ƒn khai "Má»™t nÃºt báº¥m" thÃ´ng qua Docker.
 
-### Cách 1: Sử dụng Script tự động (Khuyên dùng)
-Nếu bạn đang dùng Windows, chỉ cần chạy:
+### CÃ¡ch 1: Sá»­ dá»¥ng Script tá»± Ä‘á»™ng (KhuyÃªn dÃ¹ng)
+Náº¿u báº¡n Ä‘ang dÃ¹ng Windows, chá»‰ cáº§n cháº¡y:
 ```powershell
 ./deploy.ps1
 ```
-Script sẽ tự động:
-1. Tạo file cấu hình `.env`
-2. Build toàn bộ Monorepo (Turbo build)
-3. Khởi chạy Docker containers (API, Web, DB, AI)
+Script sáº½ tá»± Ä‘á»™ng:
+1. Táº¡o file cáº¥u hÃ¬nh `.env`
+2. Build toÃ n bá»™ Monorepo (Turbo build)
+3. Khá»Ÿi cháº¡y Docker containers (API, Web, DB, AI)
 
-### Cách 2: Thủ công với Docker Compose
-1. Sao chép cấu hình mẫu: `cp .env.example .env`
-2. Khởi chạy: `docker-compose up -d --build`
+### CÃ¡ch 2: Thá»§ cÃ´ng vá»›i Docker Compose
+1. Sao chÃ©p cáº¥u hÃ¬nh máº«u: `cp .env.example .env`
+2. Khá»Ÿi cháº¡y: `docker-compose up -d --build`
 
-### Truy cập hệ thống:
+### Truy cáº­p há»‡ thá»‘ng:
 - **Web Dashboard**: `http://localhost:3001`
 - **API Swagger**: `http://localhost:3000/api`
 - **AI Service**: `http://localhost:8000`
 
 ---
 
-## Offline‑First & Real‑Time
-- **Real‑time activity notifications** via WebSockets (tenant‑scoped)
-- **Real‑time approval requests** – approvers get instant notifications and can approve/reject directly from the web UI
+## Offlineâ€‘First & Realâ€‘Time
+- **Realâ€‘time activity notifications** via WebSockets (tenantâ€‘scoped)
+- **Realâ€‘time approval requests** â€“ approvers get instant notifications and can approve/reject directly from the web UI
 - **Sync status indicator** with pending changes count and manual/auto retry
 - **Conflict resolution** UI for offline edits (powered by Dexie + background sync)
 
-## 🛒 Omnichannel E-commerce Integration
+## ðŸ›’ Omnichannel E-commerce Integration
 
 ## Tech Stack
 
-| Thành phần   | Công nghệ                               |
+| ThÃ nh pháº§n   | CÃ´ng nghá»‡                               |
 | ------------ | --------------------------------------- |
 | Monorepo     | pnpm 9 + Turborepo 2                    |
 | Backend API  | NestJS 10, Drizzle ORM, PostgreSQL 14+  |
@@ -89,44 +89,44 @@ Script sẽ tự động:
 | Mobile       | Expo 52, React Native 0.76, SecureStore |
 | Desktop      | Tauri 2 (Rust + WebView)                |
 | Docs         | Docusaurus 3 (vi/en)                    |
-| i18n         | i18next — vi mặc định, en hỗ trợ        |
+| i18n         | i18next â€” vi máº·c Ä‘á»‹nh, en há»— trá»£        |
 
-## 🌍 Internationalization
+## ðŸŒ Internationalization
 
 The application is fully internationalized with support for:
-- **Vietnamese (vi)** – default language
+- **Vietnamese (vi)** â€“ default language
 - **English (en)**
 
-All user‑facing text uses i18n keys from the `@smart-erp/i18n` package. To add translations, edit the JSON files in `packages/i18n/src/locales/`.
+All userâ€‘facing text uses i18n keys from the `@smart-erp/i18n` package. To add translations, edit the JSON files in `packages/i18n/src/locales/`.
 | Validation   | Zod (frontend) + class-validator (API)  |
 | Offline Sync | Dexie (IndexedDB) + CRDT vector clocks  |
 | Real-time    | Socket.IO 4                             |
 
 ---
 
-## Cấu trúc dự án
+## Cáº¥u trÃºc dá»± Ã¡n
 
 ```
 smart-erp-next/
-├── apps/
-│   ├── api/          # NestJS backend — 15 modules
-│   ├── web/          # Next.js 15 — 28 pages
-│   ├── mobile/       # Expo 52 — 5 screens + auth
-│   ├── desktop/      # Tauri 2 — wraps web app
-│   └── docs/         # Docusaurus 3 — vi/en
-├── packages/
-│   ├── database/     # Drizzle ORM schemas + SQL migrations
-│   ├── i18n/         # i18next vi/en translations (200+ keys)
-│   ├── types/        # Shared TypeScript types
-│   ├── shared/       # Platform/module/localization/positioning contracts
-│   ├── validation/   # Zod schemas (product, customer, order)
-│   ├── sync/         # Offline sync + CRDT service (Dexie)
-│   ├── ui/           # Shared React components (10 components)
-│   ├── hooks/        # Shared React hooks (5 hooks)
-│   ├── utils/        # Pure TS utilities (currency, date, string)
-│   ├── config-eslint/
-│   └── config-typescript/
-└── docs/             # API reference
+â”œâ”€â”€ apps/
+â”‚   â”œâ”€â”€ api/          # NestJS backend â€” 15 modules
+â”‚   â”œâ”€â”€ web/          # Next.js 15 â€” 28 pages
+â”‚   â”œâ”€â”€ mobile/       # Expo 52 â€” 5 screens + auth
+â”‚   â”œâ”€â”€ desktop/      # Tauri 2 â€” wraps web app
+â”‚   â””â”€â”€ docs/         # Docusaurus 3 â€” vi/en
+â”œâ”€â”€ packages/
+â”‚   â”œâ”€â”€ database/     # Drizzle ORM schemas + SQL migrations
+â”‚   â”œâ”€â”€ i18n/         # i18next vi/en translations (200+ keys)
+â”‚   â”œâ”€â”€ types/        # Shared TypeScript types
+â”‚   â”œâ”€â”€ shared/       # Platform/module/localization/positioning contracts
+â”‚   â”œâ”€â”€ validation/   # Zod schemas (product, customer, order)
+â”‚   â”œâ”€â”€ sync/         # Offline sync + CRDT service (Dexie)
+â”‚   â”œâ”€â”€ ui/           # Shared React components (10 components)
+â”‚   â”œâ”€â”€ hooks/        # Shared React hooks (5 hooks)
+â”‚   â”œâ”€â”€ utils/        # Pure TS utilities (currency, date, string)
+â”‚   â”œâ”€â”€ config-eslint/
+â”‚   â””â”€â”€ config-typescript/
+â””â”€â”€ docs/             # API reference
 ```
 
 ---
@@ -135,47 +135,47 @@ smart-erp-next/
 
 | Module         | API | Web | Mobile | Desktop |
 | -------------- | :-: | :-: | :----: | :-----: |
-| Dashboard      | ✅  | ✅  |   ✅   |   ✅    |
-| POS (Bán hàng) | ✅  | ✅  |   ✅   |   ✅    |
-| Đơn hàng       | ✅  | ✅  |   ✅   |   ✅    |
-| Sản phẩm       | ✅  | ✅  |   ✅   |   ✅    |
-| Kho hàng       | ✅  | ✅  |   ✅   |   ✅    |
-| Khách hàng     | ✅  | ✅  |   ✅   |   ✅    |
-| Nhà cung cấp   | ✅  | ✅  |   ✅   |   🔜    |
-| Mua hàng       | ✅  | ✅  |   ✅   |   🔜    |
-| Thu chi        | ✅  | ✅  |   🔜   |   🔜    |
-| Quản lý kho    | ✅  | ✅  |   🔜   |   🔜    |
-| Lô hàng (Lot) | ✅  | ✅  |   🔜   |   🔜    |
-| Chuyển kho     | ✅  | ✅  |   🔜   |   🔜    |
-| Người dùng     | ✅  | ✅  |   🔜   |   🔜    |
-| Báo cáo        | ✅  | ✅  |   ✅   |   🔜    |
-| Cài đặt        |  —  | ✅  |   🔜   |   🔜    |
-| **HR/Payroll** | ✅  | ✅  |   ✅   |   ✅    |
-| **Loyalty**    | ✅  | ✅  |   ✅   |   🔜    |
-| **Fixed Assets**| ✅  | ✅  |   ✅   |   🔜    |
-| **Projects**   | ✅  | ✅  |   ✅   |   🔜    |
-| **Quản lý Sản xuất (MRP)**| ✅  | ❌  |   ✅   |   ✅    |
-| **Quản lý Chất lượng**    | ✅  | ❌  |   ❌   |   🔜    |
-| **CRM (Sales Pipeline)**  | ✅  | ✅  |   ✅   |   ✅    |
-| **Đa kênh (Omnichannel)** | ✅  | ✅  |   ✅   |   ✅    |
-| **Hóa đơn điện tử**| ✅  | ✅  |   ✅   |   🔜    |
-| **Hợp đồng Điện tử (E-Contract)**| ✅  | ❌  |   ✅   |   ✅    |
-| **Chấm công (HR)**  | ✅  | 🔜  |   🔜   |   🔜    |
-| **Tính lương (Payroll)**| ✅  | ❌  |   ✅   |   ✅    |
-| **Helpdesk**   | ✅  | ✅  |   ✅   |   🔜    |
-| **AI Forecast**| ✅  | ✅  |   ✅   |   ✅    |
+| Dashboard      | âœ…  | âœ…  |   âœ…   |   âœ…    |
+| POS (BÃ¡n hÃ ng) | âœ…  | âœ…  |   âœ…   |   âœ…    |
+| ÄÆ¡n hÃ ng       | âœ…  | âœ…  |   âœ…   |   âœ…    |
+| Sáº£n pháº©m       | âœ…  | âœ…  |   âœ…   |   âœ…    |
+| Kho hÃ ng       | âœ…  | âœ…  |   âœ…   |   âœ…    |
+| KhÃ¡ch hÃ ng     | âœ…  | âœ…  |   âœ…   |   âœ…    |
+| NhÃ  cung cáº¥p   | âœ…  | âœ…  |   âœ…   |   ðŸ”œ    |
+| Mua hÃ ng       | âœ…  | âœ…  |   âœ…   |   ðŸ”œ    |
+| Thu chi        | âœ…  | âœ…  |   ðŸ”œ   |   ðŸ”œ    |
+| Quáº£n lÃ½ kho    | âœ…  | âœ…  |   ðŸ”œ   |   ðŸ”œ    |
+| LÃ´ hÃ ng (Lot) | âœ…  | âœ…  |   ðŸ”œ   |   ðŸ”œ    |
+| Chuyá»ƒn kho     | âœ…  | âœ…  |   ðŸ”œ   |   ðŸ”œ    |
+| NgÆ°á»i dÃ¹ng     | âœ…  | âœ…  |   ðŸ”œ   |   ðŸ”œ    |
+| BÃ¡o cÃ¡o        | âœ…  | âœ…  |   âœ…   |   ðŸ”œ    |
+| CÃ i Ä‘áº·t        |  â€”  | âœ…  |   ðŸ”œ   |   ðŸ”œ    |
+| **HR/Payroll** | âœ…  | âœ…  |   âœ…   |   âœ…    |
+| **Loyalty**    | âœ…  | âœ…  |   âœ…   |   ðŸ”œ    |
+| **Fixed Assets**| âœ…  | âœ…  |   âœ…   |   ðŸ”œ    |
+| **Projects**   | âœ…  | âœ…  |   âœ…   |   ðŸ”œ    |
+| **Quáº£n lÃ½ Sáº£n xuáº¥t (MRP)**| âœ…  | âŒ  |   âœ…   |   âœ…    |
+| **Quáº£n lÃ½ Cháº¥t lÆ°á»£ng**    | âœ…  | âŒ  |   âŒ   |   ðŸ”œ    |
+| **CRM (Sales Pipeline)**  | âœ…  | âœ…  |   âœ…   |   âœ…    |
+| **Äa kÃªnh (Omnichannel)** | âœ…  | âœ…  |   âœ…   |   âœ…    |
+| **HÃ³a Ä‘Æ¡n Ä‘iá»‡n tá»­**| âœ…  | âœ…  |   âœ…   |   ðŸ”œ    |
+| **Há»£p Ä‘á»“ng Äiá»‡n tá»­ (E-Contract)**| âœ…  | âŒ  |   âœ…   |   âœ…    |
+| **Cháº¥m cÃ´ng (HR)**  | âœ…  | ðŸ”œ  |   ðŸ”œ   |   ðŸ”œ    |
+| **TÃ­nh lÆ°Æ¡ng (Payroll)**| âœ…  | âŒ  |   âœ…   |   âœ…    |
+| **Helpdesk**   | âœ…  | âœ…  |   âœ…   |   ðŸ”œ    |
+| **AI Forecast**| âœ…  | âœ…  |   âœ…   |   âœ…    |
 
 ---
 
 ## Docker
 
-### Chạy AI Forecasting Service
+### Cháº¡y AI Forecasting Service
 
 ```bash
-# Chạy Python AI service (Prophet ML)
+# Cháº¡y Python AI service (Prophet ML)
 docker-compose up -d ai-forecast
 
-# Kiểm tra health
+# Kiá»ƒm tra health
 curl http://localhost:8000/health
 
 # Xem logs
@@ -194,34 +194,34 @@ docker-compose logs -f ai-forecast
 
 ```
 tenants
-  ├── users (roles: admin/manager/accountant/warehouse/sales/user)
-  ├── products → product_categories, inventory_transactions
-  ├── product_lots (batch tracking, expiry dates, FEFO)
-  ├── product_serials (individual item tracking, warranty)
-  ├── customers → loyalty_cards → loyalty_transactions
-  ├── suppliers
-  ├── warehouses
-  ├── warehouse_transfers (draft→approved→shipped→received)
-  ├── orders → order_items
-  ├── purchase_orders → purchase_order_items
-  ├── payments
-  ├── employees → payrolls
-  ├── fixed_assets (depreciation tracking)
-  ├── projects → project_tasks → project_milestones → project_time_entries
-  └── loyalty_rewards
+  â”œâ”€â”€ users (roles: admin/manager/accountant/warehouse/sales/user)
+  â”œâ”€â”€ products â†’ product_categories, inventory_transactions
+  â”œâ”€â”€ product_lots (batch tracking, expiry dates, FEFO)
+  â”œâ”€â”€ product_serials (individual item tracking, warranty)
+  â”œâ”€â”€ customers â†’ loyalty_cards â†’ loyalty_transactions
+  â”œâ”€â”€ suppliers
+  â”œâ”€â”€ warehouses
+  â”œâ”€â”€ warehouse_transfers (draftâ†’approvedâ†’shippedâ†’received)
+  â”œâ”€â”€ orders â†’ order_items
+  â”œâ”€â”€ purchase_orders â†’ purchase_order_items
+  â”œâ”€â”€ payments
+  â”œâ”€â”€ employees â†’ payrolls
+  â”œâ”€â”€ fixed_assets (depreciation tracking)
+  â”œâ”€â”€ projects â†’ project_tasks â†’ project_milestones â†’ project_time_entries
+  â””â”€â”€ loyalty_rewards
 ```
 
 ---
 
 ## Packages
 
-| Package                 | Mô tả                                                                     |
+| Package                 | MÃ´ táº£                                                                     |
 | ----------------------- | ------------------------------------------------------------------------- |
 | `@smart-erp/database`   | Drizzle ORM schemas, SQL migrations                                       |
 | `@smart-erp/i18n`       | i18next vi/en, `initI18n()`, `useTranslation`                             |
 | `@smart-erp/shared`     | Native platform, ERP module, localization, competitive strategy contracts |
 | `@smart-erp/types`      | TypeScript types: User, Product, Order, Customer...                       |
-| `@smart-erp/validation` | Zod schemas với error messages tiếng Việt                                 |
+| `@smart-erp/validation` | Zod schemas vá»›i error messages tiáº¿ng Viá»‡t                                 |
 | `@smart-erp/sync`       | Offline sync + CRDT vector clocks (Dexie)                                 |
 | `@smart-erp/ui`         | Button, Card, DataTable, Sidebar, StatCard, Badge...                      |
 | `@smart-erp/hooks`      | useDebounce, usePagination, useFormatters, useOnlineStatus...             |
@@ -229,16 +229,16 @@ tenants
 
 ---
 
-## Bắt đầu
+## Báº¯t Ä‘áº§u
 
-### Yêu cầu
+### YÃªu cáº§u
 
 - Node.js >= 20
 - pnpm >= 9
 - PostgreSQL >= 14
 - Rust (cho Tauri desktop)
 
-### Cài đặt
+### CÃ i Ä‘áº·t
 
 ```bash
 git clone https://github.com/smart-erp/smart-erp-next.git
@@ -246,11 +246,11 @@ cd smart-erp-next
 pnpm install
 ```
 
-### Cấu hình môi trường
+### Cáº¥u hÃ¬nh mÃ´i trÆ°á»ng
 
 ```bash
 cp apps/api/.env.example apps/api/.env
-# Chỉnh sửa DATABASE_URL và JWT_SECRET
+# Chá»‰nh sá»­a DATABASE_URL vÃ  JWT_SECRET
 ```
 
 `apps/api/.env`:
@@ -272,20 +272,20 @@ NEXT_PUBLIC_API_URL=http://localhost:3000
 ### Database
 
 ```bash
-# Chạy migration SQL
+# Cháº¡y migration SQL
 psql $DATABASE_URL -f packages/database/drizzle/0001_initial_schema.sql
 
-# Hoặc dùng Drizzle migrate
+# Hoáº·c dÃ¹ng Drizzle migrate
 cd packages/database && pnpm migrate
 ```
 
-### Khởi động
+### Khá»Ÿi Ä‘á»™ng
 
 ```bash
-# Tất cả cùng lúc
+# Táº¥t cáº£ cÃ¹ng lÃºc
 pnpm dev
 
-# Riêng lẻ
+# RiÃªng láº»
 pnpm --filter @smart-erp/api dev        # API: http://localhost:3000
 pnpm --filter @smart-erp/web dev        # Web: http://localhost:3001
 pnpm --filter @smart-erp/mobile start   # Mobile: Expo
@@ -297,44 +297,44 @@ pnpm --filter @smart-erp/docs start     # Docs: http://localhost:3002
 
 ## Web Routes
 
-| Route                  | Mô tả                |
+| Route                  | MÃ´ táº£                |
 | ---------------------- | -------------------- |
-| `/login`               | Đăng nhập            |
-| `/dashboard`           | Tổng quan            |
-| `/pos`                 | Bán hàng tại quầy    |
-| `/orders`              | Danh sách đơn hàng   |
-| `/orders/[id]`         | Chi tiết đơn hàng    |
-| `/products`            | Danh sách sản phẩm   |
-| `/products/create`     | Tạo sản phẩm         |
-| `/products/[id]/edit`  | Sửa sản phẩm         |
-| `/inventory`           | Kho hàng             |
-| `/customers`           | Khách hàng           |
-| `/customers/create`    | Tạo khách hàng       |
-| `/customers/[id]/edit` | Sửa khách hàng       |
-| `/suppliers`           | Nhà cung cấp         |
-| `/suppliers/create`    | Tạo NCC              |
-| `/suppliers/[id]/edit` | Sửa NCC              |
-| `/purchasing`          | Đơn nhập hàng        |
-| `/purchasing/create`   | Tạo đơn nhập         |
-| `/purchasing/[id]`     | Chi tiết + nhận hàng |
+| `/login`               | ÄÄƒng nháº­p            |
+| `/dashboard`           | Tá»•ng quan            |
+| `/pos`                 | BÃ¡n hÃ ng táº¡i quáº§y    |
+| `/orders`              | Danh sÃ¡ch Ä‘Æ¡n hÃ ng   |
+| `/orders/[id]`         | Chi tiáº¿t Ä‘Æ¡n hÃ ng    |
+| `/products`            | Danh sÃ¡ch sáº£n pháº©m   |
+| `/products/create`     | Táº¡o sáº£n pháº©m         |
+| `/products/[id]/edit`  | Sá»­a sáº£n pháº©m         |
+| `/inventory`           | Kho hÃ ng             |
+| `/customers`           | KhÃ¡ch hÃ ng           |
+| `/customers/create`    | Táº¡o khÃ¡ch hÃ ng       |
+| `/customers/[id]/edit` | Sá»­a khÃ¡ch hÃ ng       |
+| `/suppliers`           | NhÃ  cung cáº¥p         |
+| `/suppliers/create`    | Táº¡o NCC              |
+| `/suppliers/[id]/edit` | Sá»­a NCC              |
+| `/purchasing`          | ÄÆ¡n nháº­p hÃ ng        |
+| `/purchasing/create`   | Táº¡o Ä‘Æ¡n nháº­p         |
+| `/purchasing/[id]`     | Chi tiáº¿t + nháº­n hÃ ng |
 | `/payments`            | Thu chi              |
-| `/warehouses`          | Quản lý kho          |
-| `/reports`             | Báo cáo              |
-| `/quality`             | Chất lượng (QMS)     |
-| `/omnichannel`         | Bán hàng đa kênh     |
-| `/manufacturing`       | Sản xuất (MRP)       |
-| `/manufacturing/bom`   | Định mức NVL (BOM)   |
-| `/manufacturing/production-orders` | Lệnh sản xuất |
-| `/hr/employees`        | Nhân sự              |
-| `/hr/payroll`          | Bảng lương           |
-| `/users`               | Quản lý người dùng   |
-| `/settings`            | Cài đặt              |
+| `/warehouses`          | Quáº£n lÃ½ kho          |
+| `/reports`             | BÃ¡o cÃ¡o              |
+| `/quality`             | Cháº¥t lÆ°á»£ng (QMS)     |
+| `/omnichannel`         | BÃ¡n hÃ ng Ä‘a kÃªnh     |
+| `/manufacturing`       | Sáº£n xuáº¥t (MRP)       |
+| `/manufacturing/bom`   | Äá»‹nh má»©c NVL (BOM)   |
+| `/manufacturing/production-orders` | Lá»‡nh sáº£n xuáº¥t |
+| `/hr/employees`        | NhÃ¢n sá»±              |
+| `/hr/payroll`          | Báº£ng lÆ°Æ¡ng           |
+| `/users`               | Quáº£n lÃ½ ngÆ°á»i dÃ¹ng   |
+| `/settings`            | CÃ i Ä‘áº·t              |
 
 ---
 
 ## Performance Optimizations
 
-- Composite index on `orders(tenant_id, status)` for faster tenant‑scoped order listing
+- Composite index on `orders(tenant_id, status)` for faster tenantâ€‘scoped order listing
 - Composite index on `payments(tenant_id, paid_at)` for faster financial reporting
 - Composite index on `inventory_transactions(tenant_id, created_at)` for faster daily and monthly inventory reports
 - `.gitattributes` enforces LF line endings across all text files (no CRLF formatting errors)
@@ -348,7 +348,7 @@ pnpm --filter @smart-erp/docs start     # Docs: http://localhost:3002
 ## Commit Convention
 
 ```
-type(scope): mô tả ngắn gọn
+type(scope): mÃ´ táº£ ngáº¯n gá»n
 
 Types: feat, fix, docs, style, refactor, test, chore
 Scopes: api, web, mobile, desktop, db, i18n, ui, sync, types, validation, hooks, utils, docs
@@ -358,4 +358,4 @@ Scopes: api, web, mobile, desktop, db, i18n, ui, sync, types, validation, hooks,
 
 ## License
 
-MIT © Smart ERP Team
+MIT Â© Smart ERP Team

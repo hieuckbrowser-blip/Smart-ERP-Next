@@ -1,0 +1,5 @@
+﻿
+FROM node:20-alpine
+WORKDIR /app
+COPY --from=0 /app/node_modules ./node_modules
+COPY . .
