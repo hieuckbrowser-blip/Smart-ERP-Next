@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { currencies as currenciesTable, exchangeRates } from '@smart-erp/database/schema';

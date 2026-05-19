@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Injectable } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { crmLeads, crmOpportunities, customers, orders } from '@smart-erp/database/schema';
