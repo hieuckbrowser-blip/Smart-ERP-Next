@@ -352,6 +352,8 @@
     "searchPlaceholder": "Search by order code, customer...",
     "updateFailed": "Update failed",
     "confirmDelete": "Are you sure you want to cancel this order?",
+    "printInvoice": "Print Invoice",
+    "einvoice": "E-Invoice",
     "channels": {
       "pos": "In-store",
       "online": "Online",

@@ -176,6 +176,8 @@
     "confirmDelete": "Bạn có chắc chắn muốn hủy đơn này?",
     "cancelReason": "Lý do hủy",
     "history": "Lịch sử",
+    "printInvoice": "In hóa đơn",
+    "einvoice": "Hóa đơn điện tử",
     "createOrder": "Tạo đơn",
     "confirm": "Xác nhận",
     "cancel": "Hủy đơn",
