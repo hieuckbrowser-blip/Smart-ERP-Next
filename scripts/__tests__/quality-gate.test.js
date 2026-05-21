@@ -9,7 +9,7 @@ describe('quality gate plan', () => {
     const plan = buildGatePlan('commit');
     const gateIds = plan.gates.map((gate) => gate.id);
 
-    expect(gateIds).toEqual(['lint', 'type-check', 'unit-coverage']);
+    expect(gateIds).toEqual(['lint', 'test-layout', 'type-check', 'unit-coverage']);
     expect(plan.certifiesRelease).toBe(false);
     expect(formatSuccessMessage(plan)).toContain('khong phai release certification');
   });
@@ -21,6 +21,7 @@ describe('quality gate plan', () => {
     expect(plan.certifiesRelease).toBe(true);
     expect(gateIds).toEqual([
       'lint',
+      'test-layout',
       'type-check',
       'unit-coverage',
       'web-build',
@@ -37,6 +38,7 @@ describe('quality gate plan', () => {
     const plan = buildGatePlan('release');
     const results = new Map([
       ['lint', { status: 'passed' }],
+      ['test-layout', { status: 'passed' }],
       ['type-check', { status: 'passed' }],
       ['unit-coverage', { status: 'passed' }],
     ]);

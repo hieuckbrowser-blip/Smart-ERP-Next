@@ -33,7 +33,7 @@ module.exports = {
     },
   },
   testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
-  testPathIgnorePatterns: ['/node_modules/', '/tests/', '/dist/', '/build/', '/e2e/', '\\.spec\\.js$', '/apps/desktop/tests/'],
+  testPathIgnorePatterns: ['/node_modules/', '/tests/', '/dist/', '/build/', '/e2e/', '\\.spec\\.js$', '/apps/api/test/', '/apps/desktop/tests/'],
   transform: {
     '^.+\\.(ts|tsx|js|jsx)$': ['ts-jest', {
       tsconfig: {

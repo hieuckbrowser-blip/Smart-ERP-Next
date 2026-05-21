@@ -15,6 +15,7 @@ pnpm qa:commit
 Runs the commit gate:
 
 - lint all workspaces
+- test directory ownership audit
 - type-check all workspaces
 - Jest unit/integration tests with configured coverage thresholds
 
@@ -50,6 +51,12 @@ Jest/unit coverage is intentionally separate from browser and native journey tes
 The e2e assertion audit scans every end-user/app-local root above: `apps/api/test`, `apps/desktop/tests`, `apps/mobile/e2e`, `apps/web/e2e`, `e2e/tests`, and `tests`.
 
 `pnpm test:cov` ignores `/tests/`, `/e2e/`, and `apps/desktop/tests`, so a Jest coverage percentage must not be read as proof that browser or native journeys passed.
+
+API test directory ownership is enforced by `pnpm audit:test-layout`:
+
+- `apps/api/test` is reserved for Nest API e2e specs named `*.e2e-spec.ts` plus approved e2e helper files.
+- API unit/integration specs belong under `apps/api/src`, either colocated as `*.spec.ts` or inside `apps/api/src/__tests__`.
+- Root-level `apps/api/tests` and `apps/api/__tests__` are blocked because they do not map cleanly to one runner.
 
 ## Native Artifacts
 

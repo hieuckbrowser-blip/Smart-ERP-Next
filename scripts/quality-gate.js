@@ -8,6 +8,12 @@ const COMMON_GATES = [
     args: ['lint'],
   },
   {
+    id: 'test-layout',
+    name: 'Audit test directory ownership',
+    command: 'pnpm',
+    args: ['audit:test-layout'],
+  },
+  {
     id: 'type-check',
     name: 'Type-check all workspaces',
     command: 'pnpm',

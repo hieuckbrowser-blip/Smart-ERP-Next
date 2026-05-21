@@ -9,6 +9,7 @@
     "turbo": "^2.9.14"
   },
   "scripts": {
+    "audit:test-layout": "node scripts/audit-test-layout.js",
     "build": "turbo build",
     "audit:e2e-assertions": "node scripts/audit-e2e-assertions.js",
     "clean": "turbo clean && remove-items /all node_modules",
