@@ -1,10 +1,10 @@
 {
   "dependencies": {
-    "dexie": "^4.0.8",
-    "idb": "^8.0.0"
+    "dexie": "^4.4.2",
+    "idb": "^8.0.3"
   },
   "devDependencies": {
-    "typescript": "^5.4.5"
+    "typescript": "^5.9.3"
   },
   "main": "./src/index.ts",
   "name": "@smart-erp/sync",

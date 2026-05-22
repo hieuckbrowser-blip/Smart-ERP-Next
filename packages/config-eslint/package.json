@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "@antfu/eslint-config": "^2.21.0",
-    "eslint": "^8.57.0",
-    "typescript": "^5.4.5"
+    "@antfu/eslint-config": "^2.27.3",
+    "eslint": "^8.57.1",
+    "typescript": "^5.9.3"
   },
   "main": "index.js",
   "name": "@smart-erp/eslint-config",

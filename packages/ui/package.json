@@ -27,16 +27,16 @@
   },
   "dependencies": {
     "@smart-erp/i18n": "workspace:*",
-    "class-variance-authority": "^0.7.0",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.394.0",
-    "react": "^19.0.0",
-    "tailwind-merge": "^2.5.5"
+    "react": "^19.2.6",
+    "tailwind-merge": "^2.6.1"
   },
   "devDependencies": {
     "@smart-erp/tsconfig": "workspace:*",
-    "@types/react": "^19.0.0",
-    "typescript": "^5.4.5"
+    "@types/react": "^19.2.15",
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "react": ">=18"

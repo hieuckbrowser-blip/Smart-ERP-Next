@@ -10,12 +10,12 @@
   },
   "dependencies": {
     "@smart-erp/utils": "workspace:*",
-    "react": "^19.0.0"
+    "react": "^19.2.6"
   },
   "devDependencies": {
     "@smart-erp/tsconfig": "workspace:*",
-    "@types/react": "^19.0.0",
-    "typescript": "^5.4.5"
+    "@types/react": "^19.2.15",
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "react": ">=18"

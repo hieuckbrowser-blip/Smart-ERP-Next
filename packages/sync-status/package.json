@@ -1,12 +1,12 @@
 {
   "dependencies": {
-    "expo-sqlite": "~15.0.0",
+    "expo-sqlite": "~15.0.6",
     "zustand": "^4.5.7"
   },
   "devDependencies": {
     "@smart-erp/tsconfig": "workspace:*",
-    "tsup": "^8.0.0",
-    "typescript": "^5.4.5"
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
   },
   "exports": {
     ".": {
