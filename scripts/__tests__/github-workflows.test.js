@@ -51,4 +51,18 @@ describe('GitHub workflow definitions', () => {
       }
     }
   });
+
+  it('uses a Node version compatible with workspace dependencies', () => {
+    for (const workflowName of readWorkflowNames()) {
+      const doc = YAML.parse(readWorkflow(workflowName));
+
+      for (const job of Object.values(doc.jobs)) {
+        for (const step of job.steps) {
+          if (step.uses?.startsWith('actions/setup-node@')) {
+            expect(String(step.with?.['node-version'])).toBe('22');
+          }
+        }
+      }
+    }
+  });
 });
