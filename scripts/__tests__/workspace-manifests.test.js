@@ -13,4 +13,17 @@ describe('workspace package manifests', () => {
 
     expect(manifest.devDependencies).toHaveProperty('@types/node');
   });
+
+  it('keeps root Jest TypeScript options compatible with the CI compiler', () => {
+    const jestConfig = require(path.join(repoRoot, 'jest.config.js'));
+    const transform = jestConfig.transform['^.+\\.(ts|tsx|js|jsx)$'];
+
+    expect(transform[1].tsconfig.ignoreDeprecations).toBe('5.0');
+  });
+
+  it('declares a root TypeScript version for Jest transforms', () => {
+    const manifest = readJson('package.json');
+
+    expect(manifest.devDependencies).toHaveProperty('typescript', '5.9.3');
+  });
 });
