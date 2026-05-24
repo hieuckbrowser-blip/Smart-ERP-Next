@@ -2,9 +2,12 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, master ]
+
+permissions:
+  contents: read
 
 jobs:
   test-and-build:
@@ -20,15 +23,13 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Lint
-        run: pnpm lint
-      - name: Type check
-        run: pnpm type-check
-      - name: Run unit tests with coverage
-        run: pnpm test:cov
+      - name: Run commit quality gate
+        run: pnpm qa:commit
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps
-      - name: Run E2E tests
-        run: npx playwright test
+        run: pnpm exec playwright install --with-deps
+      - name: Run API E2E tests
+        run: pnpm test:api:e2e
+      - name: Run web E2E tests
+        run: pnpm test:e2e
       - name: Build all apps
         run: pnpm build

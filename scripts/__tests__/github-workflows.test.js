@@ -21,4 +21,14 @@ describe('GitHub workflow definitions', () => {
     expect(workflow).not.toMatch(/\|\|\s*echo/i);
     expect(workflow).not.toContain('continuing release build');
   });
+
+  it('runs CI on the default branch and uses the project E2E command', () => {
+    const workflow = readWorkflow('ci.yml');
+    const doc = YAML.parse(workflow);
+
+    expect(doc.on.push.branches).toContain('master');
+    expect(doc.on.pull_request.branches).toContain('master');
+    expect(workflow).toContain('pnpm test:e2e');
+    expect(workflow).not.toContain('npx playwright test');
+  });
 });
