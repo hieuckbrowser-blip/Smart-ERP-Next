@@ -57,6 +57,8 @@ describe('GitHub workflow definitions', () => {
     expect(migrateStep.env?.DATABASE_URL).toMatch(/^postgresql:\/\/postgres:postgres@localhost:5432\//);
     expect(apiE2EStep.env?.DATABASE_URL).toMatch(/^postgresql:\/\/postgres:postgres@localhost:5432\//);
     expect(webE2EStep.env?.DATABASE_URL).toMatch(/^postgresql:\/\/postgres:postgres@localhost:5432\//);
+    expect(webE2EStep.env?.PORT).toBe('3001');
+    expect(webE2EStep.env?.NEXT_PUBLIC_API_URL).toBe('http://localhost:3001');
     expect(migrateStep.run).toContain('drizzle-kit migrate');
     expect(apiE2EStep.run).toBe('pnpm test:api:e2e');
   });

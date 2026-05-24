@@ -54,7 +54,9 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/smart_erp_test
           JWT_SECRET: ci-e2e-secret
+          NEXT_PUBLIC_API_URL: http://localhost:3001
           NODE_ENV: test
+          PORT: '3001'
         run: pnpm test:e2e
       - name: Build all apps
         run: pnpm build
