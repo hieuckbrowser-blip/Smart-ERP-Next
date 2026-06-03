@@ -146,24 +146,25 @@ All user‑facing text uses i18n keys from the `@smart-erp/i18n` package. To add
 ```
 smart-erp-next/
 ├── apps/
-│   ├── api/          # NestJS backend — 15 modules
-│   ├── web/          # Next.js 15 — 28 pages
-│   ├── mobile/       # Expo 52 — 5 screens + auth
-│   ├── desktop/      # Tauri 2 — wraps web app
-│   └── docs/         # Docusaurus 3 — vi/en
+│   ├── api/          # NestJS backend — 15+ modules
+│   ├── web/          # Next.js 15 dashboard
+│   ├── mobile/       # React Native (Expo)
+│   ├── desktop/      # Tauri 2
+│   └── docs/         # Docusaurus 3
 ├── packages/
-│   ├── database/     # Drizzle ORM schemas + SQL migrations
-│   ├── i18n/         # i18next vi/en translations (200+ keys)
-│   ├── types/        # Shared TypeScript types
-│   ├── shared/       # Platform/module/localization/positioning contracts
-│   ├── validation/   # Zod schemas (product, customer, order)
-│   ├── sync/         # Offline sync + CRDT service (Dexie)
-│   ├── ui/           # Shared React components (10 components)
-│   ├── hooks/        # Shared React hooks (5 hooks)
-│   ├── utils/        # Pure TS utilities (currency, date, string)
-│   ├── config-eslint/
-│   └── config-typescript/
-└── docs/             # API reference
+│   ├── database/     # Drizzle ORM schemas + migrations
+│   ├── i18n/         # i18next vi/en
+│   ├── types/        # Shared TS types
+│   ├── shared/       # Platform/localization/competitive contracts
+│   ├── validation/   # Zod schemas
+│   ├── sync/         # Offline sync + CRDT
+│   ├── ui/           # Shared React UI kit
+│   ├── hooks/        # Shared hooks
+│   └── utils/        # Pure TS utilities
+├── docs/
+│   └── guides/
+│       └── forecast-locator.md
+└── PRODUCTION_CHECKLIST.md
 ```
 
 ---

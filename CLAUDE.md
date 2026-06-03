@@ -1,159 +1,65 @@
-# CLAUDE.md — Smart ERP Next
+# CLAUDE.md
 
-Behavioral guidelines for AI-assisted development on this project.
+Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
+
+**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
 
 ## 1. Think Before Coding
 
-- State assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them.
-- If a simpler approach exists, say so.
-- If something is unclear, stop and name what's confusing.
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
+
+Before implementing:
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them - don't pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
 
 ## 2. Simplicity First
 
-- Minimum code that solves the problem. Nothing speculative.
+**Minimum code that solves the problem. Nothing speculative.**
+
 - No features beyond what was asked.
 - No abstractions for single-use code.
+- No "flexibility" or "configurability" that wasn't requested.
+- No error handling for impossible scenarios.
 - If you write 200 lines and it could be 50, rewrite it.
+
+Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
 ## 3. Surgical Changes
 
+**Touch only what you must. Clean up only your own mess.**
+
+When editing existing code:
 - Don't "improve" adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
 - Match existing style, even if you'd do it differently.
+- If you notice unrelated dead code, mention it - don't delete it.
+
+When your changes create orphans:
 - Remove imports/variables/functions that YOUR changes made unused.
+- Don't remove pre-existing dead code unless asked.
 
-## 4. Project Structure (CRITICAL)
+The test: Every changed line should trace directly to the user's request.
 
-```
-smart-erp-next/
-├── apps/
-│   ├── api/          ← NestJS backend (src/ is at apps/api/src/)
-│   ├── web/          ← Next.js frontend (src/ is at apps/web/src/)
-│   ├── mobile/       ← Expo app (src/ is at apps/mobile/src/)
-│   └── desktop/      ← Tauri app (src/ is at apps/desktop/src/)
-├── packages/
-│   ├── database/
-│   ├── i18n/
-│   ├── ui/
-│   ├── shared/
-│   ├── types/
-│   ├── utils/
-│   ├── hooks/
-│   └── validation/
-```
+## 4. Goal-Driven Execution
 
-### ⚠️ NEVER create nested app directories or misplace app code in packages/
-
-- **WRONG**: `apps/api/apps/api/src/...` — never nest an app inside itself
-- **WRONG**: `apps/web/apps/desktop/...` — never nest one app inside another
-- **WRONG**: `apps/web/app/...` — Next.js App Router lives at `apps/web/src/app/`
-- **WRONG**: `packages/api/src/...` — NestJS backend code belongs in `apps/api/src/`, not `packages/`
-- **RIGHT**: All source files for `api` go under `apps/api/src/`
-- **RIGHT**: All source files for `web` go under `apps/web/src/`
-- **RIGHT**: `packages/` is only for shared libraries consumed by multiple apps (ui, i18n, utils, types, hooks, validation, database, sync, shared)
-
-If you find yourself writing a path like `apps/X/apps/...` or `packages/api/...`, **stop and fix the path**.
-
-> This structure can be extended (new apps, new packages) — the rule is about **nesting**, not about limiting growth.
-
-## 5. Project-Specific Rules
-
-### Tech Stack
-
-- **Monorepo**: pnpm + Turborepo
-- **API**: NestJS 10, Drizzle ORM, PostgreSQL 14+
-- **Web**: Next.js 15 App Router, Tailwind CSS, React 19
-- **Mobile**: Expo 52, React Native 0.76, SecureStore
-- **Desktop**: Tauri 2 (Rust)
-- **i18n**: `@smart-erp/i18n` — always use `t('namespace.key')` pattern
-- **Validation**: Zod (`@smart-erp/validation`) on frontend, class-validator on API
-
-### i18n Rules
-
-- All user-facing strings MUST use `useTranslation('common')` + `t('section.key')`
-- Add keys to BOTH `vi/common.json` AND `en/common.json`
-- Vietnamese is the default language (`fallbackLng: 'vi'`)
-- Key pattern: `module.key` e.g. `products.title`, `orders.status`
-- For mobile and desktop apps, import from `@smart-erp/i18n` – the same keys are shared across all platforms
-
-### Encoding & File Format Rules (Critical for Vietnamese)
-
-- **All source files MUST be saved as UTF-8 without BOM**. This ensures Vietnamese characters (ă, â, đ, ê, ô, ơ, ư, etc.) display correctly in all environments.
-- **Use LF line endings** (not CRLF) for all source code files to avoid cross‑platform formatting issues.
-- **Never hardcode user‑facing Vietnamese text** outside of i18n translation files (`packages/i18n/src/locales/vi/`). If you see Vietnamese characters in a component or service file, it should be using `t()`.
-- When writing console logs or error messages in the backend, prefer English or use parameterized i18n messages.
-
-### API Rules
-
-- All service methods MUST filter by `tenantId` — never expose cross-tenant data
-- Use `req.user.sub` for userId, `req.user.tenantId` for tenant (from JWT)
-- Return `{ items, total, page, limit, totalPages }` for paginated endpoints
-- Never return `passwordHash` in any response
-
-### Web Rules
-
-- All protected pages MUST wrap with `<AuthGuard>`
-- Use `@/lib/api-client` (axios) for all API calls
-- Use `useToast()` from `@/components/providers/ToastProvider` for feedback
-- Use `@smart-erp/hooks` for `useDebounce`, `usePagination`, `useFormatters`
-- Use `@smart-erp/utils` for pure formatting (no React dependency)
-
-### Mobile Rules
-
-- Use `apps/mobile/src/lib/api.ts` for all API calls (SecureStore auth)
-- Use `SecureStoreTokenProvider` for sync service
-- All screens must handle loading + empty + error states
-
-### Commit Convention
-
-```
-type(scope): description
-
-Types: feat, fix, docs, style, refactor, test, chore
-Scopes: api, web, mobile, desktop, db, i18n, ui, sync, types, validation, hooks, utils, docs
-```
-
-## 6. Goal-Driven Execution
+**Define success criteria. Loop until verified.**
 
 Transform tasks into verifiable goals:
-
 - "Add validation" → "Write tests for invalid inputs, then make them pass"
 - "Fix the bug" → "Write a test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
 
-## 7. Internationalization (i18n) & Vietnamese Encoding
+For multi-step tasks, state a brief plan:
+```
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+3. [Step] → verify: [check]
+```
 
-**CRITICAL FOR VIETNAMESE LANGUAGE SUPPORT**
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
-- **NEVER hardcode Vietnamese text** anywhere in the codebase. Use i18n keys with `t('namespace.key')` in frontend and English in backend (API error responses are in English).
-- **All source files must be UTF-8 without BOM** – Vietnamese characters (ă, â, đ, ê, ô, ơ, ư) will break otherwise.
-- **Use LF line endings** (not CRLF) for all source files. Git normalizes on commit.
-- **i18n keys follow dot notation**: `module.key.subkey` (e.g., `products.searchPlaceholder`).
-- **Add new keys to both** `packages/i18n/src/locales/vi/common.json` **and** `en/common.json` simultaneously.
-- **Backend exception messages:** use English; they may be displayed to frontend via alerts.
+---
 
-**Encoding check (Windows PowerShell):** `Get-Content -Encoding UTF8 <file>`
-**Encoding check (Linux/macOS):** `file -bi <file>`
-
-**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and no hardcoded Vietnamese strings remain.
-
-## Activity Logging Convention
-
-All user operations that affect business data (create, update, delete, approve, reject, stock adjustments) MUST log an entry via `ActivityService.log(...)` with:
-- `tenantId`, `userId`
-- `action` (one of: created, updated, deleted, approved, rejected, stock_adjusted)
-- `entityType` (order, product, customer, supplier, inventory)
-- `entityId`
-- `details` (optional, JSON)
-
-The frontend displays these in the "Recent Activities" dashboard widget.
-
-## Activity Logging Convention
-
-All user operations that affect business data (create, update, delete, approve, reject, stock adjustments) MUST log an entry via `ActivityService.log(...)` with:
-- `tenantId`, `userId`
-- `action` (one of: created, updated, deleted, approved, rejected, stock_adjusted)
-- `entityType` (order, product, customer, supplier, inventory)
-- `entityId`
-- `details` (optional, JSON)
-
-The frontend displays these in the "Recent Activities" dashboard widget.
+**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.

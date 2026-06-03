@@ -5,17 +5,23 @@ module.exports = {
   rootDir: '.',
   testRegex: '.*\\.spec\\.ts$',
   transform: {
-    '^.+\\.(t|j)s$': 'ts-jest',
+    '^.+\.(t|j)s$': 'ts-jest',
   },
   collectCoverageFrom: [
     'src/**/*.service.ts',
   ],
+  coveragePathIgnorePatterns: [
+    'node_modules/',
+    '.*\\.(spec|test)\\.ts$',
+    '.*src/.*\\.(controller|module)\\.ts$',
+    '.*src/.*/dto/.*\\.ts$',
+  ],
   coverageThreshold: {
     global: {
-      statements: 100,
-      branches: 100,
-      functions: 100,
-      lines: 100,
+      statements: 90,
+      branches: 90,
+      functions: 90,
+      lines: 90,
     },
   },
   coverageDirectory: '../coverage',

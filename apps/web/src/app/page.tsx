@@ -1,8 +1,6 @@
 // @ts-nocheck
 "use client";
 
-"use client";
-
 import { FiArrowUp, FiBox, FiDollarSign, FiShoppingCart, FiUsers, FiCpu } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import AuthGuard from "@/components/layout/AuthGuard";

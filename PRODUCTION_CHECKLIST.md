@@ -1,5 +1,10 @@
 # Smart ERP Next — Production Readiness Checklist
 
+## 🔢 Canonical Forecast Contract
+- Không phải app tách `apps/ai-forecast`.
+- Forecast centroid: `apps/api/src/forecast/forecast.service.ts` + `forecast.controller.ts`.
+- Wrap by: `forecast monthly/daily`, khác với `analytics/cashflow/predictive-analytics`.
+
 ## ✅ Pre-Deployment Checklist
 
 ### Infrastructure

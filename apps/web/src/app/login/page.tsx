@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { authApi } from '@/lib/api-client';
 import { Mail, Lock, LogIn, Building2, Eye, EyeOff } from 'lucide-react';
+import { authApi } from '@/lib/api-client';
 
 export default function LoginPage() {
   const { t } = useTranslation('common');
@@ -58,9 +58,9 @@ export default function LoginPage() {
           <div className="inline-flex items-center justify-center w-14 h-14 bg-blue-600 rounded-2xl shadow-lg mb-4">
             <Building2 className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Smart ERP Next</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('appName')}</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Hệ thống quản trị doanh nghiệp thông minh
+            {t('auth.loginSubtitle')}
           </p>
         </div>
 
@@ -149,28 +149,35 @@ export default function LoginPage() {
 
           {/* Demo credentials */}
           <div className="mt-6 pt-5 border-t border-gray-100 dark:border-gray-700">
-            <p className="text-xs text-gray-400 text-center mb-2">{t('auth.demo')}</p>
-            <button
-              onClick={fillDemo}
-              className="w-full py-2 px-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-xs text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 transition font-mono"
-            >
-              {t('auth.demoCredentials')}
-            </button>
-          </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-gray-400 text-center">{t('auth.demo')}</p>
+                <p className="text-xs text-gray-500 font-mono text-center mt-1">
+                  {t('auth.demoCredentials')}
+                </p>
+              </div>
+              <button
+                formAction="button"
+                onClick={fillDemo}
+                className="px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-xs text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 transition"
+              >
+                {t('auth.fillDemo')}
+              </button>
+            </div>
 
-          <p className="mt-5 text-center text-sm text-gray-500 dark:text-gray-400">
-            Chưa có tài khoản?{' '}
-            <Link href="/register" className="font-semibold text-blue-600 hover:underline">
-              Đăng ký MVP
-            </Link>
-          </p>
+            <p className="mt-5 text-center text-sm text-gray-500 dark:text-gray-400">
+              {t('auth.haveAccount')}{' '}
+              <Link href="/register" className="font-semibold text-blue-600 hover:underline">
+                {t('auth.register')}
+              </Link>
+            </p>
+          </div>
         </div>
 
         <p className="text-center text-xs text-gray-400 mt-6">
-          Smart ERP Next v0.2.0 · MIT License
+          {t('appName')} v0.2.0 · MIT License
         </p>
       </div>
     </div>
   );
 }
-

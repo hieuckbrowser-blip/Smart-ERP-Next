@@ -4,10 +4,12 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Building2, Eye, EyeOff, Lock, Mail, UserPlus, Users } from 'lucide-react';
 import { authApi } from '@/lib/api-client';
 
 export default function RegisterPage() {
+  const { t } = useTranslation('common');
   const router = useRouter();
   const [name, setName] = useState('');
   const [companyName, setCompanyName] = useState('');
@@ -23,7 +25,7 @@ export default function RegisterPage() {
     setError('');
 
     if (password !== confirmPassword) {
-      setError('Mật khẩu xác nhận không khớp.');
+      setError(t('auth.confirmPasswordMismatch'));
       return;
     }
 
@@ -42,7 +44,7 @@ export default function RegisterPage() {
       document.cookie = `access_token=${encodeURIComponent(access_token)}; Path=/; Max-Age=604800; SameSite=Lax`;
       router.push('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Không thể đăng ký tài khoản. Vui lòng thử lại.');
+      setError(err.response?.data?.message || t('auth.registerFailed'));
     } finally {
       setLoading(false);
     }
@@ -55,21 +57,21 @@ export default function RegisterPage() {
           <div className="inline-flex items-center justify-center w-14 h-14 bg-blue-600 rounded-2xl shadow-lg mb-4">
             <Building2 className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Smart ERP Next</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('appName')}</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Tạo workspace ERP để bắt đầu dùng MVP
+            {t('auth.registerSubtitle')}
           </p>
         </div>
 
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 p-8">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-            Đăng ký tài khoản
+            {t('auth.register')}
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                Họ tên
+                {t('auth.fullName')}
               </label>
               <div className="relative">
                 <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -78,7 +80,7 @@ export default function RegisterPage() {
                   onChange={(event) => setName(event.target.value)}
                   type="text"
                   className="w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition"
-                  placeholder="Nguyễn Văn A"
+                  placeholder={t('auth.fullNamePlaceholder')}
                   required
                   minLength={2}
                   autoComplete="name"
@@ -88,7 +90,7 @@ export default function RegisterPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                Tên công ty
+                {t('auth.companyName')}
               </label>
               <div className="relative">
                 <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -97,7 +99,7 @@ export default function RegisterPage() {
                   onChange={(event) => setCompanyName(event.target.value)}
                   type="text"
                   className="w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition"
-                  placeholder="Công ty ABC"
+                  placeholder={t('auth.companyNamePlaceholder')}
                   required
                   minLength={2}
                   autoComplete="organization"
@@ -107,7 +109,7 @@ export default function RegisterPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                Email
+                {t('auth.email')}
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -125,7 +127,7 @@ export default function RegisterPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                Mật khẩu
+                {t('auth.password')}
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -134,7 +136,7 @@ export default function RegisterPage() {
                   onChange={(event) => setPassword(event.target.value)}
                   type={showPassword ? 'text' : 'password'}
                   className="w-full pl-10 pr-10 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition"
-                  placeholder="Tối thiểu 8 ký tự"
+                  placeholder="••••••••"
                   required
                   minLength={8}
                   autoComplete="new-password"
@@ -151,7 +153,7 @@ export default function RegisterPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                Xác nhận mật khẩu
+                {t('auth.confirmPassword')}
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -160,7 +162,7 @@ export default function RegisterPage() {
                   onChange={(event) => setConfirmPassword(event.target.value)}
                   type={showPassword ? 'text' : 'password'}
                   className="w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition"
-                  placeholder="Nhập lại mật khẩu"
+                  placeholder={t('auth.confirmPasswordPlaceholder')}
                   required
                   minLength={8}
                   autoComplete="new-password"
@@ -180,14 +182,14 @@ export default function RegisterPage() {
               className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-2.5 px-4 rounded-xl transition flex items-center justify-center gap-2 text-sm"
             >
               <UserPlus className="w-4 h-4" />
-              {loading ? 'Đang tạo tài khoản...' : 'Tạo tài khoản'}
+              {loading ? t('auth.registering') : t('auth.register')}
             </button>
           </form>
 
           <p className="mt-5 text-center text-sm text-gray-500 dark:text-gray-400">
-            Đã có tài khoản?{' '}
+            {t('auth.haveAccount')}{' '}
             <Link href="/login" className="font-semibold text-blue-600 hover:underline">
-              Đăng nhập
+              {t('auth.login')}
             </Link>
           </p>
         </div>

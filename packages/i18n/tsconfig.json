@@ -1,1 +1,12 @@
-{"extends":"@smart-erp/tsconfig/base.json","compilerOptions":{"lib":["ES2022"],"outDir":"./dist","rootDir":"."},"include":["src","__tests__"],"exclude":["node_modules","dist"]}
+{
+ "extends": "@smart-erp/tsconfig/base.json",
+ "compilerOptions": {
+  "lib": ["ES2022"],
+  "outDir": "./dist",
+  "rootDir": ".",
+  "resolveJsonModule": true,
+  "jsx": "react-jsx"
+ },
+ "include": ["src", "__tests__"],
+ "exclude": ["node_modules", "dist"]
+}
