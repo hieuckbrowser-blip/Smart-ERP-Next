@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import AuthGuard from '@/components/layout/AuthGuard';
 import { apiClient } from '@/lib/api-client';
-import { Card, Button, Badge, DataTable, StatCard } from '@smart-erp/ui';
+import { Button, DataTable } from '@smart-erp/shared';
 
 interface EInvoice {
   id: string;
@@ -148,7 +148,7 @@ export default function EInvoicePage() {
       header: t('einvoice.status') || 'Trạng thái',
       accessor: (row: EInvoice) => {
         const cfg = STATUS_CONFIG[row.status] || STATUS_CONFIG.draft;
-        return <Badge variant={cfg.variant} icon={cfg.icon}>{cfg.label}</Badge>;
+        return <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${cfg.variant === 'primary' || cfg.variant === 'success' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : cfg.variant === 'warning' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300' : cfg.variant === 'danger' || cfg.variant === 'error' ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'}`}>{cfg.icon}{cfg.label}</span>;
       },
     },
     {
@@ -218,33 +218,18 @@ export default function EInvoicePage() {
         {/* Stats */}
         {stats ? (
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            <StatCard
-              title={t('einvoice.stats.issued') || 'Đã phát hành'}
-              value={stats.issued_count || 0}
-              icon={<Send className="w-5 h-5 text-green-500" />}
-              className="border-l-4 border-l-green-500"
-            />
-            <StatCard
-              title={t('einvoice.stats.draft') || 'Bản nháp'}
-              value={stats.draft_count || 0}
-              icon={<Clock className="w-5 h-5 text-gray-400" />}
-            />
-            <StatCard
-              title={t('einvoice.stats.cancelled') || 'Đã hủy'}
-              value={stats.cancelled_count || 0}
-              icon={<XCircle className="w-5 h-5 text-red-400" />}
-            />
-            <StatCard
-              title={t('einvoice.stats.revenue') || 'Doanh thu'}
-              value={formatVND(stats.total_revenue || 0)}
-              icon={<FileText className="w-5 h-5 text-blue-500" />}
-              className="border-l-4 border-l-blue-500"
-            />
-            <StatCard
-              title={t('einvoice.stats.vat') || 'Tổng VAT'}
-              value={formatVND(stats.total_vat || 0)}
-              icon={<FileText className="w-5 h-5 text-purple-500" />}
-            />
+            {[
+              { title: t('einvoice.stats.issued') || 'Đã phát hành', value: stats.issued_count || 0 },
+              { title: t('einvoice.stats.draft') || 'Bản nháp', value: stats.draft_count || 0 },
+              { title: t('einvoice.stats.cancelled') || 'Đã hủy', value: stats.cancelled_count || 0 },
+              { title: t('einvoice.stats.revenue') || 'Doanh thu', value: formatVND(stats.total_revenue || 0) },
+              { title: t('einvoice.stats.vat') || 'Tổng VAT', value: formatVND(stats.total_vat || 0) },
+            ].map((s, i) => (
+              <div key={i} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+                <p className="text-sm text-gray-500 dark:text-gray-400">{s.title}</p>
+                <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">{s.value}</p>
+              </div>
+            ))}
           </div>
         ) : null}
 
@@ -266,14 +251,14 @@ export default function EInvoicePage() {
         </div>
 
         {/* Table */}
-        <Card className="shadow-sm border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
           <DataTable
             data={filteredInvoices}
             columns={columns}
             loading={loading}
             emptyMessage={t('einvoice.noInvoices') || 'Chưa có hóa đơn nào'}
           />
-        </Card>
+        </div>
       </div>
     </AuthGuard>
   );
