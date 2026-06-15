@@ -79,6 +79,7 @@ services:
       - smart-erp-network
 
   ai-forecast:
+    profiles: ["ai"]
     build:
       context: ./apps/ai-forecast
       dockerfile: Dockerfile
