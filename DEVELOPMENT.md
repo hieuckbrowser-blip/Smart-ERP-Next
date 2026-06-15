@@ -10,14 +10,25 @@ docker compose up -d
 
 # 2. Open browser
 # http://localhost:3457
-# Login: admin@demo.smarterp.vn / demo123456
+# Register a new account or use seeded demo account
 ```
 
 Docker will automatically:
 - Start PostgreSQL
 - Build API + Web
 - Run database migrations
-- Seed demo data (on first run)
+
+## Demo Data
+
+```bash
+# Reset DB and seed demo data
+./scripts/reset-dev.sh
+
+# After seeding:
+# Login: admin@demo.smarterp.vn / demo123456
+```
+
+Or register a new account at `/register` — works immediately.
 
 ## Production (single container)
 
@@ -47,4 +58,12 @@ pnpm test         # Run Jest unit tests
 pnpm test:e2e     # Run Playwright E2E
 pnpm lint         # Lint all workspaces
 pnpm build        # Build all packages
+```
+
+## Maintenance
+
+```bash
+./scripts/health-check.sh   # Check all services
+./scripts/reset-dev.sh       # Reset DB + re-seed
+./scripts/backup.sh          # Backup database
 ```
