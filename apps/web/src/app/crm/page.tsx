@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Phone, DollarSign } from 'lucide-react';
+import { Target, Phone, DollarSign } from 'lucide-react';
 import AuthGuard from '@/components/layout/AuthGuard';
 import { apiClient } from '@/lib/api-client';
 import { PageHeader } from '@smart-erp/shared';
