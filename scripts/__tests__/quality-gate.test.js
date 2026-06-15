@@ -1,3 +1,4 @@
+const path = require('node:path');
 const {
   buildGatePlan,
   buildGateEnv,
@@ -97,11 +98,10 @@ describe('quality gate plan', () => {
   });
 
   it('prepends repo-local shims so Turbo can find pnpm through Corepack', () => {
-    const env = buildGateEnv('E:\\GitHub\\smart-erp-next');
+    const env = buildGateEnv('/repo');
     const pathKey = Object.keys(env).find((key) => key.toLowerCase() === 'path') || 'PATH';
+    const sep = process.platform === 'win32' ? ';' : ':';
 
-    expect(env[pathKey].split(process.platform === 'win32' ? ';' : ':')[0]).toBe(
-      'E:\\GitHub\\smart-erp-next\\scripts\\shims',
-    );
+    expect(env[pathKey].split(sep)[0]).toMatch(/[/\\]repo[/\\]scripts[/\\]shims$/);
   });
 });
