@@ -1,5 +1,4 @@
 @echo off
-chcp 65001 >nul
 setlocal enabledelayedexpansion
 
 title Smart ERP Next Dev
@@ -22,22 +21,22 @@ if errorlevel 1 (
 )
 
 echo Dang chay database migrations...
-pnpm exec drizzle-kit migrate --config=packages/database/drizzle.config.ts 2>nul
+call pnpm exec drizzle-kit migrate --config=packages/database/drizzle.config.ts
 
 echo.
 echo ============================================
-echo  Smart ERP Next — Dev Server
+echo  Smart ERP Next - Dev Server
 echo ============================================
 echo  API: http://localhost:3456
 echo  Web: http://localhost:3457
 echo ============================================
 echo.
 
-start "API" cmd /c "pnpm --filter @smart-erp/api dev"
-start "Web" cmd /c "pnpm --filter @smart-erp/web dev"
+start "SmartERP-API" cmd /c "call pnpm --filter @smart-erp/api dev"
+start "SmartERP-Web" cmd /c "call pnpm --filter @smart-erp/web dev"
 
 echo Nhan phim bat ky de dung tat ca servers...
 pause >nul
-taskkill /f /fi "WINDOWTITLE eq API" >nul 2>nul
-taskkill /f /fi "WINDOWTITLE eq Web" >nul 2>nul
+taskkill /f /fi "WINDOWTITLE eq SmartERP-API" >nul 2>nul
+taskkill /f /fi "WINDOWTITLE eq SmartERP-Web" >nul 2>nul
 echo Da dung.
