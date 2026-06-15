@@ -2,7 +2,7 @@
 'use client';
 
 import { useCallback, useState, useEffect } from 'react';
-import { useTranslation } from '@smart-erp/i18n';
+import { useTranslation } from 'react-i18next';
 import { apiClient } from '@/lib/api-client';
 import { Button, Input, Select, Table, TableHeader, TableRow, TableHead, TableBody, TableCell, DatePicker } from '@smart-erp/shared';
 import { Download } from 'lucide-react';

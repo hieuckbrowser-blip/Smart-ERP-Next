@@ -2,7 +2,6 @@
   "dependencies": {
     "@headlessui/react": "2.2.10",
     "@smart-erp/hooks": "workspace:*",
-    "@smart-erp/i18n": "workspace:*",
     "@smart-erp/shared": "workspace:*",
     "@smart-erp/socket-types": "workspace:*",
     "@smart-erp/sync": "workspace:*",

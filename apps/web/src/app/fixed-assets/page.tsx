@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useTranslation } from '@smart-erp/i18n';
+import { useTranslation } from 'react-i18next';
 import AuthGuard from '@/components/layout/AuthGuard';
 import { PageHeader, DataTable, Button } from '@smart-erp/shared';
 

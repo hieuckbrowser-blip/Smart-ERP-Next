@@ -4,7 +4,6 @@
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-picker/picker": "2.9.0",
     "@react-navigation/native": "7.2.4",
-    "@smart-erp/i18n": "workspace:*",
     "@smart-erp/shared": "workspace:*",
     "@smart-erp/sync": "workspace:*",
     "@smart-erp/types": "workspace:*",

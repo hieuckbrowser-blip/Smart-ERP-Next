@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslation } from '@smart-erp/i18n';
+import { useTranslation } from 'react-i18next';
 import AuthGuard from '@/components/layout/AuthGuard';
 import { PageHeader, DataTable, Button } from '@smart-erp/shared';
 import { useToast } from '@/components/providers/ToastProvider';
