@@ -136,8 +136,8 @@ jobs:
           file: apps/api/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/api:${{ github.event.inputs.version }}
-            ghcr.io/${{ github.repository }}/api:latest
+            ghcr.io/${{ lower(github.repository) }}/api:${{ github.event.inputs.version }}
+            ghcr.io/${{ lower(github.repository) }}/api:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -150,8 +150,8 @@ jobs:
             NEXT_PUBLIC_API_URL=/api
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/web:${{ github.event.inputs.version }}
-            ghcr.io/${{ github.repository }}/web:latest
+            ghcr.io/${{ lower(github.repository) }}/web:${{ github.event.inputs.version }}
+            ghcr.io/${{ lower(github.repository) }}/web:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -162,8 +162,8 @@ jobs:
           file: apps/ai-forecast/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/ai-forecast:${{ github.event.inputs.version }}
-            ghcr.io/${{ github.repository }}/ai-forecast:latest
+            ghcr.io/${{ lower(github.repository) }}/ai-forecast:${{ github.event.inputs.version }}
+            ghcr.io/${{ lower(github.repository) }}/ai-forecast:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
