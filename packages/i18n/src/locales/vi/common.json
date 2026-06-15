@@ -675,7 +675,7 @@
     }
   },
   "crm": {
-    "title": "CRM",
+    "title": "CRM & Sales Pipeline",
     "statuses": {
       "new": "Mới",
       "contacted": "Đã liên hệ",
@@ -691,14 +691,14 @@
       "follow_up": "Theo dõi"
     },
     "editLead": "Sửa Lead",
-    "addLead": "Thêm Lead mới",
+    "addLead": "Thêm khách hàng",
     "firstName": "Tên",
     "lastName": "Họ",
     "phone": "Số điện thoại",
     "company": "Công ty",
     "source": "Nguồn",
     "status": "Trạng thái",
-    "leadScore": "Điểm Lead",
+    "leadScore": "Điểm",
     "industry": "Ngành",
     "notes": "Ghi chú",
     "sources": {
@@ -711,7 +711,17 @@
     },
     "email": "Email",
     "searchLeads": "T?m ki?m kh?ch h?ng ti?m n?ng",
-    "subtitle": "Qu?n l? kh?ch h?ng ti?m n?ng v? c? h?i b?n h?ng"
+    "subtitle": "Quản lý khách hàng tiềm năng & hành trình chốt Sale",
+    "new": "Khách mới",
+    "contacted": "Đã liên hệ",
+    "qualified": "Đánh giá",
+    "proposal": "Báo giá",
+    "won": "Chốt thành công",
+    "lost": "Mất",
+    "totalScore": "Tổng điểm",
+    "dragHint": "Kéo thả lead để cập nhật trạng thái",
+    "noLeads": "Chưa có khách hàng tiềm năng",
+    "noLeadsDesc": "Thêm khách hàng mới để bắt đầu xây dựng pipeline"
   },
   "accounting": {
     "title": "Kế toán",

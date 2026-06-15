@@ -1052,7 +1052,7 @@
     }
   },
   "crm": {
-    "title": "CRM",
+    "title": "CRM & Sales Pipeline",
     "statuses": {
       "new": "New",
       "contacted": "Contacted",
@@ -1068,14 +1068,14 @@
       "follow_up": "Follow Up"
     },
     "editLead": "Edit Lead",
-    "addLead": "Add New Lead",
+    "addLead": "Add Lead",
     "firstName": "First Name",
     "lastName": "Last Name",
     "phone": "Phone",
     "company": "Company",
     "source": "Source",
     "status": "Status",
-    "leadScore": "Lead Score",
+    "leadScore": "Score",
     "industry": "Industry",
     "notes": "Notes",
     "sources": {
@@ -1087,7 +1087,17 @@
       "other": "Other"
     },
     "searchLeads": "Search leads",
-    "subtitle": "Manage leads and sales opportunities"
+    "subtitle": "Manage leads and sales journey",
+    "new": "New",
+    "contacted": "Contacted",
+    "qualified": "Qualified",
+    "proposal": "Proposal",
+    "won": "Won",
+    "lost": "Lost",
+    "totalScore": "Total Score",
+    "dragHint": "Drag & drop leads to update status",
+    "noLeads": "No leads yet",
+    "noLeadsDesc": "Add new leads to build your pipeline"
   },
   "advanced_reports": {
     "title": "Advanced Reports",
