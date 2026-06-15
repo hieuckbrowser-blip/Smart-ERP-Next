@@ -160,7 +160,7 @@ export default function OmnichannelPage() {
 
   return (
     <AuthGuard>
-      <div className="space-y-6">
+      <div className="p-6 space-y-6">
         <PageHeader
           title={t('omnichannel.title')}
           description={t('omnichannel.subtitle')}
