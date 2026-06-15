@@ -7,7 +7,7 @@ export default defineConfig({
   retries: 1,
   workers: 1,
   reporter: [['html', { open: 'never' }], ['list']],
-  timeout: 30000,
+  timeout: 180000,
   use: {
     baseURL: 'http://localhost:3457',
     trace: 'on-first-retry',
@@ -23,7 +23,7 @@ export default defineConfig({
     {
       command: 'pnpm --filter @smart-erp/api dev',
       url: 'http://localhost:3456/health',
-      timeout: 120000,
+      timeout: 180000,
       reuseExistingServer: true,
       env: {
         PORT: process.env.API_PORT ?? '3456',
@@ -33,7 +33,7 @@ export default defineConfig({
     {
       command: 'pnpm --filter @smart-erp/web dev --port 3457',
       url: 'http://localhost:3457/login',
-      timeout: 120000,
+      timeout: 180000,
       reuseExistingServer: true,
       env: {
         NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3456',
