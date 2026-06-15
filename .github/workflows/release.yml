@@ -46,6 +46,7 @@ jobs:
         run: pnpm verify:ios-release-prereqs
 
       - name: Build Android installable artifact with EAS
+        if: env.EXPO_TOKEN != ''
         shell: bash
         run: |
           mkdir -p artifacts/eas
