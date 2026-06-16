@@ -17,9 +17,14 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle 401 — redirect to login
+// Unwrap NestJS serialization wrapper: { value: [...], Count: N } → [...]
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    if (response.data && typeof response.data === 'object' && 'value' in response.data && Array.isArray(response.data.value)) {
+      response.data = response.data.value;
+    }
+    return response;
+  },
   (error) => {
     if (error.response?.status === 401 && typeof window !== "undefined") {
       const hadToken = Boolean(localStorage.getItem("access_token"));
