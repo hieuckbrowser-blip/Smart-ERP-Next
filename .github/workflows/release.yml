@@ -222,11 +222,14 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
 
-      - name: Apply database migrations
+      - name: Apply database migrations + seed
         working-directory: packages/database
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/smart_erp_test
-        run: pnpm exec drizzle-kit migrate
+        run: |
+          pnpm exec drizzle-kit migrate
+          cd ../..
+          node apps/api/dist/apps/api/src/common/seeds/main.seed.js
 
       - name: Build web
         run: pnpm --filter @smart-erp/web build
