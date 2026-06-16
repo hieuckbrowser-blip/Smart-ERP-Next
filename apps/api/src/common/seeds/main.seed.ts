@@ -341,7 +341,7 @@ async function main() {
         const ot = Math.random() > 0.7 ? Math.floor(Math.random() * 3) + 1 : 0;
         await exec(`
           INSERT INTO attendance_records (id, tenant_id, employee_id, shift_id, work_date, check_in_at, check_out_at, status, overtime_hours, late_minutes)
-          VALUES (gen_random_uuid(), '${tenant.id}', '${usr.id}', '${shiftRows.rows[0].id}', '${dateStr}', '08:00', '17:00', '${status}', ${ot}, ${status === 'late' ? Math.floor(Math.random() * 30) + 5 : 0})
+          VALUES (gen_random_uuid(), '${tenant.id}', '${usr.id}', '${shiftRows.rows[0].id}', '${dateStr}', '${dateStr}T08:00:00Z', '${dateStr}T17:00:00Z', '${status}', ${ot}, ${status === 'late' ? Math.floor(Math.random() * 30) + 5 : 0})
         `);
       }
     }
