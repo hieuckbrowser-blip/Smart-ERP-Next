@@ -3,9 +3,7 @@
     "@headlessui/react": "2.2.10",
     "@smart-erp/hooks": "workspace:*",
     "@smart-erp/shared": "workspace:*",
-    "@smart-erp/socket-types": "workspace:*",
     "@smart-erp/sync": "workspace:*",
-    "@smart-erp/sync-status": "workspace:*",
     "@smart-erp/types": "workspace:*",
 
     "@smart-erp/utils": "workspace:*",

@@ -11,8 +11,18 @@ import { Server, Socket } from 'socket.io';
 import { UnauthorizedException, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-// @ts-ignore
-import { ActivityPayload, SOCKET_NAMESPACE } from '@smart-erp/socket-types';
+interface ActivityPayload {
+  id: string;
+  tenantId: string;
+  userId: string;
+  action: 'created' | 'updated' | 'deleted' | 'approved' | 'rejected' | 'stock_adjusted';
+  entityType: 'order' | 'product' | 'customer' | 'supplier' | 'inventory';
+  entityId: string;
+  details?: Record<string, unknown>;
+  createdAt: Date;
+}
+
+const SOCKET_NAMESPACE = '/activities';
 
 @WebSocketGateway({
   namespace: SOCKET_NAMESPACE,

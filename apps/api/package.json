@@ -18,7 +18,7 @@
     "@nestjs/websockets": "^10.4.22",
     "@smart-erp/database": "workspace:*",
     "@smart-erp/shared": "workspace:*",
-    "@smart-erp/socket-types": "workspace:*",
+
     "@smart-erp/types": "workspace:*",
     "@smart-erp/utils": "workspace:*",
     "@smart-erp/validation": "workspace:*",

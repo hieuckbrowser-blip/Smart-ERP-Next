@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext } from 'react';
-import { useNotifications, type NotificationVariant } from '@smart-erp/hooks';
+import { useNotifications, type ToastNotification, type NotificationVariant } from '@smart-erp/hooks';
 import { ToastContainer } from '@smart-erp/shared';
 
 interface ToastContextValue {
@@ -25,7 +25,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     <ToastContext.Provider value={{ success, error, warning, info }}>
       {children}
       <ToastContainer
-        toasts={toasts.map((t) => ({ id: t.id, message: t.message, variant: t.variant }))}
+        toasts={toasts.map((t: ToastNotification) => ({ id: t.id, message: t.message, variant: t.variant }))}
         onDismiss={dismiss}
       />
     </ToastContext.Provider>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useSyncStore, emitSyncEvent } from '@smart-erp/sync-status';
+import { useSyncStore, emitSyncEvent } from '@/hooks/useSyncStatus';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@smart-erp/shared';
 import { Wifi, WifiOff, RefreshCw, AlertCircle } from 'lucide-react';

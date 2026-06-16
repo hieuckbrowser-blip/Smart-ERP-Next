@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DrizzleService } from '../../drizzle/drizzle.service';
 import { salaryBoards, payslips, attendanceRecords, users } from '@smart-erp/database';

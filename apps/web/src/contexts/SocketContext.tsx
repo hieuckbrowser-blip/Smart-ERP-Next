@@ -3,7 +3,16 @@
 import { createContext, useContext, useEffect, useRef, ReactNode } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { getSocket, disconnectSocket } from '@/lib/socket';
-import { ActivityPayload } from '@smart-erp/socket-types';
+interface ActivityPayload {
+  id: string;
+  tenantId: string;
+  userId: string;
+  action: 'created' | 'updated' | 'deleted' | 'approved' | 'rejected' | 'stock_adjusted';
+  entityType: 'order' | 'product' | 'customer' | 'supplier' | 'inventory';
+  entityId: string;
+  details?: Record<string, unknown>;
+  createdAt: Date;
+}
 import { useToast } from '@/components/providers/ToastProvider';
 import { useTranslation } from 'react-i18next';
 

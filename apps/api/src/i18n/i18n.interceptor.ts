@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler, BadRequestException } from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -17,7 +16,7 @@ export class I18nInterceptor implements NestInterceptor {
         if (err instanceof BadRequestException) {
           const response = err.getResponse() as any;
           if (response.message && Array.isArray(response.message)) {
-            const translated = response.message.map(msg => this.i18n.t(msg, locale));
+            const translated = response.message.map((msg: string) => this.i18n.t(msg, locale));
             return throwError(() => new BadRequestException(translated));
           }
         }
