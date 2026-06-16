@@ -35,9 +35,16 @@ COPY --from=build /app/apps /app/apps
 COPY --from=build /app/scripts /app/scripts
 COPY apps/api/docker-entrypoint.sh /app/docker-entrypoint.sh
 
-# Production install (includes reflect-metadata, sets up workspace links)
+# Production install + workspace link (pnpm --prod strips workspace: links)
 RUN set -eux; \
     pnpm install --frozen-lockfile --prod; \
+    for d in /app/packages/*/; do \
+      name="$(basename "$d")"; \
+      link="/app/node_modules/@smart-erp/${name}"; \
+      mkdir -p "$(dirname "$link")"; \
+      rm -rf "$link"; \
+      ln -sf "$d" "$link"; \
+    done; \
     chmod +x /app/docker-entrypoint.sh
 
 EXPOSE 3456 3457
