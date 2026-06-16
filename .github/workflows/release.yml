@@ -224,16 +224,13 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
 
-      - name: Build API + Apply database migrations + seed
+      - name: Build web + Apply database migrations + seed
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/smart_erp_test
         run: |
-          pnpm --filter @smart-erp/api build
+          pnpm --filter @smart-erp/web build
           cd packages/database && pnpm exec drizzle-kit migrate
-          cd ../.. && node apps/api/dist/apps/api/src/common/seeds/main.seed.js
-
-      - name: Build web
-        run: pnpm --filter @smart-erp/web build
+          cd ../.. && npx tsx apps/api/src/common/seeds/main.seed.ts
 
       - name: Run Playwright E2E tests
         env:
