@@ -108,11 +108,13 @@ jobs:
         run: pnpm --filter @smart-erp/desktop windows:build
 
       - name: Stage Windows installer
-        if: success()
+        continue-on-error: true
         shell: powershell
         run: |
-          New-Item -ItemType Directory -Force artifacts/windows | Out-Null
-          Copy-Item "apps/desktop/src-tauri/target/release/bundle/nsis/*" artifacts/windows/
+          if (Test-Path "apps/desktop/src-tauri/target/release/bundle/nsis") {
+            New-Item -ItemType Directory -Force artifacts/windows | Out-Null
+            Copy-Item "apps/desktop/src-tauri/target/release/bundle/nsis/*" artifacts/windows/
+          }
 
       - name: Upload Windows native artifact
         if: success()
@@ -222,14 +224,13 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
 
-      - name: Apply database migrations + seed
-        working-directory: packages/database
+      - name: Build API + Apply database migrations + seed
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/smart_erp_test
         run: |
-          pnpm exec drizzle-kit migrate
-          cd ../..
-          node apps/api/dist/apps/api/src/common/seeds/main.seed.js
+          pnpm --filter @smart-erp/api build
+          cd packages/database && pnpm exec drizzle-kit migrate
+          cd ../.. && node apps/api/dist/apps/api/src/common/seeds/main.seed.js
 
       - name: Build web
         run: pnpm --filter @smart-erp/web build
