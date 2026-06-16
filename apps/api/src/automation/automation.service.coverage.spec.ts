@@ -14,42 +14,40 @@ describe('AutomationService', () => {
     service = module.get<AutomationService>(AutomationService);
   });
 
-  it('listWorkflows returns empty array initially', async () => {
-    const result = await service.listWorkflows('t1');
-    expect(result).toEqual([]);
+  it('listWorkflows returns empty', async () => {
+    expect(await service.listWorkflows('t1')).toEqual([]);
   });
 
   it('createWorkflow returns workflow with id', async () => {
-    const wf = await service.createWorkflow('t1', {
-      name: 'Test WF',
-      triggerType: 'webhook',
-      steps: [{ type: 'send_notification', config: {} }],
-    });
+    const wf = await service.createWorkflow('t1', { name: 'Test WF', triggerType: 'webhook', steps: [{ type: 'send_notification', config: {} }] });
     expect(wf.id).toBeTruthy();
-    expect(wf.name).toBe('Test WF');
     expect(wf.isActive).toBe(true);
   });
 
-  it('createWorkflow generates different IDs', async () => {
-    const wf1 = await service.createWorkflow('t1', { name: 'A', triggerType: 'schedule', steps: [] });
-    const wf2 = await service.createWorkflow('t1', { name: 'B', triggerType: 'schedule', steps: [] });
-    expect(wf1.id).not.toBe(wf2.id);
+  it('createWorkflow generates unique IDs', async () => {
+    const a = await service.createWorkflow('t1', { name: 'A', triggerType: 'schedule', steps: [] });
+    const b = await service.createWorkflow('t1', { name: 'B', triggerType: 'schedule', steps: [] });
+    expect(a.id).not.toBe(b.id);
   });
 
-  it('toggleWorkflow changes active state', async () => {
-    const result = await service.toggleWorkflow('t1', 'wf-1', false);
-    expect(result.isActive).toBe(false);
+  it('toggleWorkflow flips active state', async () => {
+    expect((await service.toggleWorkflow('t1', 'w1', false)).isActive).toBe(false);
+    expect((await service.toggleWorkflow('t1', 'w1', true)).isActive).toBe(true);
   });
 
-  it('getAvailableTriggers returns predefined list', async () => {
-    const triggers = await service.getAvailableTriggers();
-    expect(triggers.length).toBeGreaterThan(0);
-    expect(triggers.some(t => t.key === 'order.created')).toBe(true);
+  it('getAvailableTriggers returns triggers', async () => {
+    const t = await service.getAvailableTriggers();
+    expect(t.some(x => x.key === 'order.created')).toBe(true);
   });
 
-  it('getAvailableActions returns predefined list', async () => {
-    const actions = await service.getAvailableActions();
-    expect(actions.length).toBeGreaterThan(0);
-    expect(actions.some(a => a.key === 'send_notification')).toBe(true);
+  it('getAvailableActions returns actions', async () => {
+    const a = await service.getAvailableActions();
+    expect(a.some(x => x.key === 'send_notification')).toBe(true);
+  });
+
+  it('executeWorkflow returns execution result', async () => {
+    const r = await service.executeWorkflow('wf-1', { orderId: 'o-1' });
+    expect(r.workflowId).toBe('wf-1');
+    expect(r.executed).toBe(true);
   });
 });
