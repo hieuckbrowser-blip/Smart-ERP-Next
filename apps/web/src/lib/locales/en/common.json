@@ -1183,6 +1183,7 @@
     "workflow": "Workflow",
     "trigger": "Trigger",
     "action": "Action",
+    "step": "Step",
     "addStep": "Add Step",
     "saveWorkflow": "Save Workflow",
     "enable": "Enable",

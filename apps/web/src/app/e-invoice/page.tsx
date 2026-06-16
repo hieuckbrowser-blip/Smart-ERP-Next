@@ -37,12 +37,12 @@ interface Stats {
 }
 
 const STATUS_CONFIG = {
-  draft:     { variant: 'secondary' as const, label: 'NhÃ¡p',        icon: <Clock /> },
-  signed:    { variant: 'primary' as const,   label: 'ÄÃ£ kÃ½',       icon: <CheckCircle /> },
-  issued:    { variant: 'success' as const,   label: 'ÄÃ£ phÃ¡t hÃ nh', icon: <Send /> },
-  cancelled: { variant: 'danger' as const,    label: 'ÄÃ£ há»§y',      icon: <XCircle /> },
-  replaced:  { variant: 'secondary' as const, label: 'ÄÃ£ thay tháº¿', icon: <FileText /> },
-  adjusted:  { variant: 'warning' as const,   label: 'Äiá»u chá»‰nh',  icon: <FileText /> },
+  draft:     { variant: 'secondary' as const, label: 'Nháp',        icon: <Clock /> },
+  signed:    { variant: 'primary' as const,   label: 'Đã ký',       icon: <CheckCircle /> },
+  issued:    { variant: 'success' as const,   label: 'Đã phát hành', icon: <Send /> },
+  cancelled: { variant: 'danger' as const,    label: 'Đã hủy',      icon: <XCircle /> },
+  replaced:  { variant: 'secondary' as const, label: 'Đã thay thế', icon: <FileText /> },
+  adjusted:  { variant: 'warning' as const,   label: 'Điều chỉnh',  icon: <FileText /> },
 };
 
 const PROVIDER_LABELS: Record<string, string> = {

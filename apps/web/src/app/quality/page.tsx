@@ -151,7 +151,7 @@ export default function QualityPage() {
               <XCircle className="w-5 h-5 text-red-500" />
             </div>
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{t('qms.fail') || 'KhÃ´ng Ä‘áº¡t'}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{t('qms.fail') || 'Không đạt'}</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">{report?.failed || 0}</p>
             </div>
           </div>
@@ -160,7 +160,7 @@ export default function QualityPage() {
               <Shield className="w-5 h-5 text-purple-500" />
             </div>
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{t('qms.passRate') || 'Tá»· lá»‡ Ä‘áº¡t'}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{t('qms.passRate') || 'Tỷ lệ đạt'}</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">{report?.passRate?.toFixed(1) || 0}%</p>
             </div>
           </div>
@@ -169,9 +169,9 @@ export default function QualityPage() {
         {/* Tabs */}
         <div className="flex gap-2 border-b border-gray-200 dark:border-gray-800">
           {[
-            { id: 'scorecard', label: t('qms.supplierScore') || 'Äiá»ƒm nhÃ  cung cáº¥p' },
-            { id: 'ncrs', label: t('qms.ncrs') || 'BÃ¡o cÃ¡o lá»—i (NCR)' },
-            { id: 'inspections', label: t('qms.inspections') || 'Lá»‹ch sá»­ kiá»ƒm tra' },
+            { id: 'scorecard', label: t('qms.supplierScore') || 'Điểm nhà cung cấp' },
+            { id: 'ncrs', label: t('qms.ncrs') || 'Báo cáo lỗi (NCR)' },
+            { id: 'inspections', label: t('qms.inspections') || 'Lịch sử kiểm tra' },
           ].map((tab) => (
             <button
               key={tab.id}
