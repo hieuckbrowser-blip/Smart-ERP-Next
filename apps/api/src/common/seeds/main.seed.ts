@@ -324,6 +324,41 @@ async function main() {
   `);
   console.log('  ✅ 2 KPI definitions + targets created');
 
+  // 21. Create Attendance Records (last 30 days for each employee)
+  const today21 = new Date();
+  const empRows = await exec(`SELECT id FROM employees WHERE tenant_id = '${tenant.id}'`);
+  const shiftRows = await exec(`SELECT id FROM work_shifts WHERE tenant_id = '${tenant.id}'`);
+  if (empRows.rows.length > 0 && shiftRows.rows.length > 0) {
+    for (let d = 30; d >= 0; d--) {
+      const date = new Date(today21);
+      date.setDate(date.getDate() - d);
+      const dateStr = date.toISOString().split('T')[0];
+      const dayOfWeek = date.getDay();
+      if (dayOfWeek === 0) continue; // skip Sunday
+      for (const emp of empRows.rows) {
+        const status = dayOfWeek === 6 ? 'present' : (Math.random() > 0.1 ? 'present' : 'late');
+        const ot = Math.random() > 0.7 ? Math.floor(Math.random() * 3) + 1 : 0;
+        await exec(`
+          INSERT INTO attendance_records (id, tenant_id, employee_id, shift_id, work_date, check_in, check_out, status, overtime_hours, late_minutes)
+          VALUES (gen_random_uuid(), '${tenant.id}', '${emp.id}', '${shiftRows.rows[0].id}', '${dateStr}', '08:00', '17:00', '${status}', ${ot}, ${status === 'late' ? Math.floor(Math.random() * 30) + 5 : 0})
+        `);
+      }
+    }
+    console.log('  ✅ Attendance records created (~80 records for 30 days)');
+  }
+
+  // 22. Create Leave Requests
+  if (empRows.rows.length >= 2) {
+    const futureDate = new Date(today21.getTime() + 14 * 86400000).toISOString().split('T')[0];
+    await exec(`
+      INSERT INTO leave_requests (id, tenant_id, employee_id, leave_type, start_date, end_date, reason, status)
+      VALUES
+        (gen_random_uuid(), '${tenant.id}', '${empRows.rows[0].id}', 'annual', '${futureDate}', '${futureDate}', 'Nghỉ phép năm', 'pending'),
+        (gen_random_uuid(), '${tenant.id}', '${empRows.rows[1].id}', 'sick', '${futureDate}', '${futureDate}', 'Khám sức khỏe', 'approved')
+    `);
+    console.log('  ✅ 2 leave requests created');
+  }
+
   console.log('');
   console.log('✅ Golden Seed completed! Data is ready for end-users.');
   console.log('');
