@@ -13,7 +13,7 @@ COPY apps/api/ ./apps/api/
 COPY scripts/ ./scripts/
 COPY apps/web/public/ ./apps/web/public/
 RUN set -eux; \
-    pnpm install --frozen-lockfile; \
+    pnpm install --no-frozen-lockfile; \
     pnpm -r run build
 
 FROM node:22-alpine

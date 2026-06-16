@@ -14,7 +14,7 @@ COPY scripts/ ./scripts/
 COPY apps/web/public/ ./apps/web/public/
 
 RUN set -eux; \
-    pnpm install --frozen-lockfile; \
+    pnpm install --no-frozen-lockfile; \
     pnpm -r run build
 
 # Runtime stage: only source + built artifacts, then clean prod install + manual workspace links
@@ -32,7 +32,7 @@ COPY --from=build /app/apps /app/apps
 COPY --from=build /app/scripts /app/scripts
 
 RUN set -eux; \
-    pnpm install --frozen-lockfile --prod; \
+    pnpm install --no-frozen-lockfile --prod; \
     if [ -d /app/packages ]; then \
       cd /app/packages; \
       for d in */ ; do \

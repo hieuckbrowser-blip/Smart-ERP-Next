@@ -16,7 +16,7 @@ COPY apps/api/ ./apps/api/
 COPY scripts/ ./scripts/
 COPY apps/web/public/ ./apps/web/public/
 
-RUN pnpm install --frozen-lockfile && pnpm -r run build
+RUN pnpm install --no-frozen-lockfile && pnpm -r run build
 
 # Runtime stage
 FROM node:22-alpine
@@ -42,7 +42,7 @@ COPY apps/api/docker-entrypoint.sh /app/docker-entrypoint.sh
 
 # Production install + workspace link (pnpm --prod strips workspace: links)
 RUN set -eux; \
-    pnpm install --frozen-lockfile --prod; \
+    pnpm install --no-frozen-lockfile --prod; \
     for d in /app/packages/*/; do \
       name="$(basename "$d")"; \
       link="/app/node_modules/@smart-erp/${name}"; \
