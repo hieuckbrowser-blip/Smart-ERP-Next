@@ -102,7 +102,7 @@ export class ActivityService {
       .insert(activityLogs)
       .values({
         tenantId,
-        userId,
+        userId: userId || undefined as any,
         action,
         entityType,
         entityId,

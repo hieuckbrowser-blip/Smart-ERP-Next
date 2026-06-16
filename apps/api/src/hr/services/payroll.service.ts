@@ -60,7 +60,8 @@ export class PayrollService {
     let totalEmployees = 0;
     let totalNetSalary = 0;
 
-    for (const stat of attendanceStats as any[]) {
+    const stats = (attendanceStats as any)?.rows || [];
+    for (const stat of stats) {
       // Trong thực tế, baseSalary lấy từ Hợp đồng nhân sự.
       // Ở đây ta gán giả định 10.000.000đ cho demo, hoặc lấy từ bảng users nếu có.
       const baseSalary = 10000000;
