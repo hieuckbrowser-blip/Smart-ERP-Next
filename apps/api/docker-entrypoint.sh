@@ -40,7 +40,8 @@ node apps/api/dist/apps/api/src/main.js &
 # Start Web server if present
 if [ -f "apps/web/node_modules/.bin/next" ] && [ -d "apps/web/.next" ]; then
   echo "Starting Web server on port ${WEB_PORT:-3457}..."
-  PORT="${WEB_PORT:-3457}" node apps/web/node_modules/.bin/next start apps/web &
+  cd apps/web && PORT="${WEB_PORT:-3457}" node_modules/.bin/next start &
+  cd /app
 fi
 
 echo "============================================"
