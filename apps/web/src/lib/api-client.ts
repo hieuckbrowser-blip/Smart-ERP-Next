@@ -35,6 +35,7 @@ apiClient.interceptors.response.use(
       if (!["/login", "/register"].includes(window.location.pathname)) {
         window.location.href = "/login";
       }
+      return Promise.reject(error);
     }
     return Promise.reject(error);
   },

@@ -281,7 +281,7 @@ export default function OrderDetailPage() {
                 <div className="flex justify-between">
                   <span className="text-gray-500">{t('payment.paymentMethod')}</span>
                   <span className="text-gray-900 dark:text-white">
-                    {t(`payment.method.${order.paymentMethod}`) ?? order.paymentMethod ?? '—'}
+                    {t(`payment.method.${order.paymentMethod ?? 'unknown'}`)}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -290,7 +290,7 @@ export default function OrderDetailPage() {
                     order.paymentStatus === 'paid' ? 'text-green-600' :
                     order.paymentStatus === 'partial' ? 'text-yellow-600' : 'text-red-600'
                   }`}>
-                    {t(`payment.status.${order.paymentStatus}`) ?? order.paymentStatus}
+                    {t(`payment.status.${order.paymentStatus ?? 'unknown'}`)}
                   </span>
                 </div>
               </div>

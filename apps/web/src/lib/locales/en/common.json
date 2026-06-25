@@ -325,7 +325,8 @@
     "avgDailyOutflow": "Avg daily outflow",
     "pendingApprovals": "Pending approvals",
     "quickActions": "Quick actions",
-    "revenueTrend": "Revenue trend"
+    "revenueTrend": "Revenue trend",
+    "apiFailed": "Could not load live data. Showing cached values."
   },
   "products": {
     "title": "Products",
@@ -788,6 +789,7 @@
     "setAsDefault": "Set as default warehouse",
     "saveFailed": "Save failed",
     "deleteFailed": "Delete failed",
+    "refreshFailed": "Failed to refresh warehouse list",
     "actionFailed": "Failed",
     "defaultLabel": "Default",
     "editWarehouse": "Edit Warehouse",

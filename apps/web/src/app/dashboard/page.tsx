@@ -95,14 +95,17 @@ export default function DashboardPage() {
   const { t } = useTranslation('common');
   const [stats, setStats] = useState<DashboardStats>(mockStats);
   const [loading, setLoading] = useState(false);
+  const [apiFailed, setApiFailed] = useState(false);
 
   useEffect(() => {
     const fetchStats = async () => {
+      setLoading(true);
+      setApiFailed(false);
       try {
         const res = await apiClient.get('/insights/dashboard');
         if (res.data) setStats(res.data);
       } catch {
-        // Use mock data if API not ready
+        setApiFailed(true);
       } finally {
         setLoading(false);
       }
@@ -121,6 +124,12 @@ export default function DashboardPage() {
             {new Date().toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
         </div>
+
+        {apiFailed && (
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 text-sm text-red-700 dark:text-red-400">
+            {t('dashboard.apiFailed', 'Could not load live data. Showing cached values.')}
+          </div>
+        )}
 
         {/* Stat cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">

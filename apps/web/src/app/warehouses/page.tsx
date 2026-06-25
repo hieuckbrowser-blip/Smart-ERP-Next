@@ -38,6 +38,7 @@ export default function WarehousesPage() {
       setWarehouses(res.data);
     } catch (err) {
       console.error(err);
+      throw err;
     } finally {
       setLoading(false);
     }
@@ -82,9 +83,14 @@ export default function WarehousesPage() {
     try {
       await apiClient.delete(`/warehouses/${id}`);
       success(t('warehouses.deleted'));
-      fetchWarehouses();
     } catch (err: any) {
       showError(err.response?.data?.message ?? t('warehouses.deleteFailed'));
+      return;
+    }
+    try {
+      await fetchWarehouses();
+    } catch {
+      showError(t('warehouses.refreshFailed', 'Failed to refresh warehouse list'));
     }
   };
 

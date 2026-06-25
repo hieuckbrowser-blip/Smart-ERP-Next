@@ -50,11 +50,12 @@ export default function CrmPage() {
   };
 
   const updateLeadStatus = async (leadId: string, newStatus: string) => {
+    const prev = leads;
     setLeads(prev => prev.map(l => l.id === leadId ? { ...l, status: newStatus as any } : l));
     try {
       await apiClient.patch(`/crm/leads/${leadId}`, { status: newStatus });
     } catch {
-        await fetchLeads();
+      try { await fetchLeads(); } catch { setLeads(prev); }
     }
   };
 

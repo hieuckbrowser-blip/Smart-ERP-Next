@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '@/lib/api-client';
 import { productsApi, type Product } from '@/lib/api-products';
@@ -70,6 +70,8 @@ export default function InventoryPage() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
+  const pageRef = useRef(page);
+  pageRef.current = page;
   const [activeTab, setActiveTab] = useState<'transactions' | 'lowstock' | 'reorder' | 'lots' | 'transfers' | 'omnichannel'>('transactions');
   const [reorderSuggestions, setReorderSuggestions] = useState<any[]>([]);
   const [stores, setStores] = useState<any[]>([]);
@@ -120,11 +122,12 @@ export default function InventoryPage() {
   const [reorderPoItems, setReorderPoItems] = useState<{ productId: string; name: string; sku: string; quantity: number; included: boolean }[]>([]);
 
   const fetchData = useCallback(async () => {
+    const currentPage = pageRef.current;
     setLoading(true);
     try {
       const [summaryRes, txRes, lowRes, reorderRes, lotsRes, transfersRes, whRes, storesRes] = await Promise.allSettled([
         apiClient.get('/inventory/summary'),
-        apiClient.get('/inventory/transactions', { params: { page, limit: 30 } }),
+        apiClient.get('/inventory/transactions', { params: { page: currentPage, limit: 30 } }),
         apiClient.get('/inventory/low-stock'),
         apiClient.get('/inventory/reorder-suggestions'),
         apiClient.get('/inventory/lots'),
@@ -132,6 +135,7 @@ export default function InventoryPage() {
         apiClient.get('/warehouses'),
         apiClient.get('/ecommerce/stores'),
       ]);
+      if (pageRef.current !== currentPage) return;
       if (summaryRes.status === 'fulfilled') setSummary(summaryRes.value.data);
       if (txRes.status === 'fulfilled') {
         setTransactions(txRes.value.data.items ?? []);
@@ -145,9 +149,9 @@ export default function InventoryPage() {
       if (whRes.status === 'fulfilled') setWarehouses(whRes.value.data ?? []);
       if (storesRes.status === 'fulfilled') setStores(storesRes.value.data ?? []);
     } finally {
-      setLoading(false);
+      if (pageRef.current === currentPage) setLoading(false);
     }
-  }, [page]);
+  }, []);
 
   useEffect(() => { fetchData(); }, [fetchData]);
 

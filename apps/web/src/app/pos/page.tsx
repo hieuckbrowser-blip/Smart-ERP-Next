@@ -86,14 +86,16 @@ export default function POSPage() {
       return;
     }
     const timer = setTimeout(async () => {
+      const term = productSearch;
       setLoadingProducts(true);
       try {
-        const res = await productsApi.getAll({ search: productSearch, limit: 12, isActive: true });
+        const res = await productsApi.getAll({ search: term, limit: 12, isActive: true });
+        if (term !== productSearch) return;
         setProducts(res.items ?? []);
       } catch {
-        setProducts([]);
+        if (term === productSearch) setProducts([]);
       } finally {
-        setLoadingProducts(false);
+        if (term === productSearch) setLoadingProducts(false);
       }
     }, 250);
     return () => clearTimeout(timer);
@@ -106,12 +108,14 @@ export default function POSPage() {
       return;
     }
     const timer = setTimeout(async () => {
+      const term = customerSearch;
       try {
-        const res = await customersApi.getAll({ search: customerSearch, limit: 6 });
+        const res = await customersApi.getAll({ search: term, limit: 6 });
+        if (term !== customerSearch) return;
         setCustomers(res.data.items);
         setShowCustomerDropdown(true);
       } catch {
-        setCustomers([]);
+        if (term === customerSearch) setCustomers([]);
       }
     }, 250);
     return () => clearTimeout(timer);
@@ -119,13 +123,13 @@ export default function POSPage() {
 
   // ── Cart helpers ────────────────────────────────────────────────────────────
   const addToCart = useCallback((product: Product) => {
-    const price = parseFloat(product.price);
+    const price = Math.round(parseFloat(product.price));
     setCart((prev) => {
       const existing = prev.find((i) => i.productId === product.id);
       if (existing) {
         return prev.map((i) =>
           i.productId === product.id
-            ? { ...i, quantity: i.quantity + 1, lineTotal: (i.quantity + 1) * i.price - i.discount }
+            ? { ...i, quantity: i.quantity + 1, lineTotal: Math.round((i.quantity + 1) * i.price) - i.discount }
             : i
         );
       }
@@ -154,7 +158,7 @@ export default function POSPage() {
         .map((i) => {
           if (i.productId !== productId) return i;
           const qty = Math.max(1, i.quantity + delta);
-          return { ...i, quantity: qty, lineTotal: qty * i.price - i.discount };
+          return { ...i, quantity: qty, lineTotal: Math.round(qty * i.price) - i.discount };
         })
         .filter((i) => i.quantity > 0)
     );
@@ -168,8 +172,8 @@ export default function POSPage() {
     setCart((prev) =>
       prev.map((i) => {
         if (i.productId !== productId) return i;
-        const d = Math.min(Math.max(0, discount), i.price * i.quantity);
-        return { ...i, discount: d, lineTotal: i.quantity * i.price - d };
+        const d = Math.min(Math.max(0, discount), Math.round(i.price * i.quantity));
+        return { ...i, discount: d, lineTotal: Math.round(i.quantity * i.price) - d };
       })
     );
   };

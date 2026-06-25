@@ -36,7 +36,8 @@
     "avgDailyOutflow": "Chi trung bình/ngày",
     "pendingApprovals": "Ph? duy?t ?ang ch?",
     "quickActions": "Thao t?c nhanh",
-    "revenueTrend": "Xu h??ng doanh thu"
+    "revenueTrend": "Xu hướng doanh thu",
+    "apiFailed": "Không thể tải dữ liệu trực tiếp. Đang hiển thị dữ liệu cũ."
   },
   "forecast": {
     "demand": "Nhu cầu dự báo",
@@ -1371,6 +1372,7 @@
     "setAsDefault": "Đã đặt làm kho mặc định",
     "saveFailed": "Lưu thất bại",
     "deleteFailed": "Xóa thất bại",
+    "refreshFailed": "Không thể làm mới danh sách kho",
     "actionFailed": "Thất bại",
     "defaultLabel": "Mặc định",
     "editWarehouse": "Sửa kho",
