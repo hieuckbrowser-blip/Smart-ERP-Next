@@ -63,38 +63,38 @@ export default function WarehousesPage() {
     try {
       if (editId) {
         await apiClient.patch(`/warehouses/${editId}`, form);
-        success('Đã cập nhật kho');
+        success(t('warehouses.updated'));
       } else {
         await apiClient.post('/warehouses', form);
-        success('Đã tạo kho mới');
+        success(t('warehouses.created'));
       }
       setShowModal(false);
       fetchWarehouses();
     } catch (err: any) {
-      showError(err.response?.data?.message ?? 'Lưu thất bại');
+      showError(err.response?.data?.message ?? t('warehouses.saveFailed'));
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Bạn có chắc muốn xóa kho này?')) return;
+    if (!confirm(t('warehouses.confirmDelete'))) return;
     try {
       await apiClient.delete(`/warehouses/${id}`);
-      success('Đã xóa kho');
+      success(t('warehouses.deleted'));
       fetchWarehouses();
     } catch (err: any) {
-      showError(err.response?.data?.message ?? 'Xóa thất bại');
+      showError(err.response?.data?.message ?? t('warehouses.deleteFailed'));
     }
   };
 
   const handleSetDefault = async (id: string) => {
     try {
       await apiClient.patch(`/warehouses/${id}`, { isDefault: true });
-      success('Đã đặt làm kho mặc định');
+      success(t('warehouses.setAsDefault'));
       fetchWarehouses();
     } catch (err: any) {
-      showError(err.response?.data?.message ?? 'Thất bại');
+      showError(err.response?.data?.message ?? t('warehouses.actionFailed'));
     }
   };
 
@@ -103,7 +103,7 @@ export default function WarehousesPage() {
       <div className="p-6 space-y-6">
         <PageHeader
           title={t('warehouses.title')}
-          description={`${warehouses.length} kho`}
+          description={t('warehouses.subtitle')}
           icon={<Warehouse className="w-5 h-5" />}
           iconColor="orange"
           actions={
@@ -155,7 +155,7 @@ export default function WarehousesPage() {
                   {w.isDefault && (
                     <span className="flex items-center gap-1 px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-semibold rounded-full">
                       <Star className="w-3 h-3" />
-                      Mặc định
+                      {t('warehouses.defaultLabel')}
                     </span>
                   )}
                 </div>
@@ -169,24 +169,24 @@ export default function WarehousesPage() {
                     <button
                       onClick={() => handleSetDefault(w.id)}
                       className="flex items-center gap-1 px-2 py-1 text-xs text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition"
-                      title="Đặt làm mặc định"
+                      title={t('warehouses.setDefault')}
                     >
                       <Check className="w-3.5 h-3.5" />
-                      Mặc định
+                      {t('warehouses.defaultLabel')}
                     </button>
                   )}
                   <div className="flex-1" />
                   <button
                     onClick={() => openEdit(w)}
                     className="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition"
-                    title="Sửa"
+                    title={t('warehouses.edit')}
                   >
                     <Edit className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDelete(w.id)}
                     className="p-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition"
-                    title="Xóa"
+                    title={t('warehouses.delete')}
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -202,7 +202,7 @@ export default function WarehousesPage() {
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md p-6">
             <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
-              {editId ? 'Sửa kho' : t('warehouses.add')}
+              {editId ? t('warehouses.editWarehouse') : t('warehouses.add')}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -214,7 +214,7 @@ export default function WarehousesPage() {
                   value={form.code}
                   onChange={(e) => setForm((f) => ({ ...f, code: e.target.value }))}
                   required
-                  placeholder="KHO-001"
+                  placeholder={t('warehouses.codePlaceholder')}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 />
               </div>
@@ -227,7 +227,7 @@ export default function WarehousesPage() {
                   value={form.name}
                   onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                   required
-                  placeholder="Kho chính"
+                  placeholder={t('warehouses.namePlaceholder')}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 />
               </div>
@@ -239,7 +239,7 @@ export default function WarehousesPage() {
                   type="text"
                   value={form.address}
                   onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
-                  placeholder="Địa chỉ kho..."
+                  placeholder={t('warehouses.addressPlaceholder')}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 />
               </div>

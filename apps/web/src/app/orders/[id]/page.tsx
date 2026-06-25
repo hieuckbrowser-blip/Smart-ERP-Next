@@ -26,22 +26,22 @@ const STATUS_COLORS: Record<string, { color: string; bg: string }> = {
 const formatVND = (v: string | null | undefined) =>
   new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(parseFloat(v ?? '0'));
 
-const NEXT_STATUS: Record<string, { status: string; label: string; icon: React.ReactNode }[]> = {
+const NEXT_STATUS: Record<string, { status: string; icon: React.ReactNode }[]> = {
   draft: [
-    { status: 'confirmed', label: 'Xác nhận', icon: <CheckCircle className="w-4 h-4" /> },
-    { status: 'cancelled', label: 'Hủy đơn', icon: <XCircle className="w-4 h-4" /> },
+    { status: 'confirmed', icon: <CheckCircle className="w-4 h-4" /> },
+    { status: 'cancelled', icon: <XCircle className="w-4 h-4" /> },
   ],
   confirmed: [
-    { status: 'processing', label: 'Xử lý', icon: <Package className="w-4 h-4" /> },
-    { status: 'cancelled', label: 'Hủy đơn', icon: <XCircle className="w-4 h-4" /> },
+    { status: 'processing', icon: <Package className="w-4 h-4" /> },
+    { status: 'cancelled', icon: <XCircle className="w-4 h-4" /> },
   ],
   processing: [
-    { status: 'shipped', label: 'Giao vận', icon: <Truck className="w-4 h-4" /> },
-    { status: 'cancelled', label: 'Hủy đơn', icon: <XCircle className="w-4 h-4" /> },
+    { status: 'shipped', icon: <Truck className="w-4 h-4" /> },
+    { status: 'cancelled', icon: <XCircle className="w-4 h-4" /> },
   ],
   shipped: [
-    { status: 'delivered', label: 'Đã giao', icon: <CheckCircle className="w-4 h-4" /> },
-    { status: 'returned', label: 'Trả hàng', icon: <XCircle className="w-4 h-4" /> },
+    { status: 'delivered', icon: <CheckCircle className="w-4 h-4" /> },
+    { status: 'returned', icon: <XCircle className="w-4 h-4" /> },
   ],
 };
 
@@ -65,7 +65,7 @@ export default function OrderDetailPage() {
   const handleStatusChange = async (status: string) => {
     if (!order) return;
     const cancelReason = status === 'cancelled'
-      ? prompt('Lý do hủy đơn (tùy chọn):') ?? undefined
+      ? prompt(t('orders.cancelReasonPrompt')) ?? undefined
       : undefined;
     setUpdating(true);
     try {

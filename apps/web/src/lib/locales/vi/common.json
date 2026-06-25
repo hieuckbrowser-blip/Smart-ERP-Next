@@ -279,7 +279,19 @@
       "delivered": "Giao hàng",
       "cancel": "Hủy đơn"
     },
-    "createdAt": "Ngày tạo"
+    "createdAt": "Ngày tạo",
+    "item": "Mặt hàng",
+    "qty": "SL",
+    "unitPrice": "Đơn giá",
+    "lineTotal": "Thành tiền",
+    "invoiceTitle": "HÓA ĐƠN BÁN HÀNG",
+    "invoiceDate": "Ngày:",
+    "invoiceNumberLabel": "Số hóa đơn:",
+    "customerLabel": "Khách hàng:",
+    "retailCustomer": "Khách lẻ",
+    "backToOrder": "Quay lại đơn hàng",
+    "printSavePdf": "In / Lưu PDF",
+    "thankYou": "Cảm ơn quý khách"
   },
   "nav": {
     "dashboard": "Tổng quan",
@@ -1282,7 +1294,19 @@
     "subtitle": "Qu?n l? kho h?ng v? ??a ?i?m l?u tr?",
     "setDefault": "Đặt làm mặc định",
     "edit": "Sửa",
-    "delete": "Xóa"
+    "delete": "Xóa",
+    "updated": "Đã cập nhật kho",
+    "created": "Đã tạo kho mới",
+    "deleted": "Đã xóa kho",
+    "setAsDefault": "Đã đặt làm kho mặc định",
+    "saveFailed": "Lưu thất bại",
+    "deleteFailed": "Xóa thất bại",
+    "actionFailed": "Thất bại",
+    "defaultLabel": "Mặc định",
+    "editWarehouse": "Sửa kho",
+    "codePlaceholder": "KHO-001",
+    "namePlaceholder": "Kho chính",
+    "addressPlaceholder": "Địa chỉ kho..."
   },
   "reports": {
     "title": "Báo cáo",

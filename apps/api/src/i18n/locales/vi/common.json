@@ -1277,7 +1277,19 @@
     "subtitle": "Quản lý kho hàng và địa điểm lưu trữ",
     "setDefault": "Đặt làm mặc định",
     "edit": "Sửa",
-    "delete": "Xóa"
+    "delete": "Xóa",
+    "updated": "Đã cập nhật kho",
+    "created": "Đã tạo kho mới",
+    "deleted": "Đã xóa kho",
+    "setAsDefault": "Đã đặt làm kho mặc định",
+    "saveFailed": "Lưu thất bại",
+    "deleteFailed": "Xóa thất bại",
+    "actionFailed": "Thất bại",
+    "defaultLabel": "Mặc định",
+    "editWarehouse": "Sửa kho",
+    "codePlaceholder": "KHO-001",
+    "namePlaceholder": "Kho chính",
+    "addressPlaceholder": "Địa chỉ kho..."
   },
   "reports": {
     "title": "Báo cáo",

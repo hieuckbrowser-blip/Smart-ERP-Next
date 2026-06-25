@@ -166,6 +166,40 @@
       "online": "Online",
       "phone": "Phone",
       "wholesale": "Wholesale"
+    },
+    "channel": {
+      "pos": "In-store",
+      "online": "Online",
+      "phone": "Phone",
+      "wholesale": "Wholesale"
+    },
+    "products": "Products",
+    "history": "History",
+    "cancelReason": "Cancellation Reason",
+    "invoiceTitle": "Sales Invoice",
+    "backToOrder": "Back to Order",
+    "printSavePdf": "Print / Save PDF",
+    "customerLabel": "Customer:",
+    "retailCustomer": "Retail Customer",
+    "invoiceDate": "Date:",
+    "invoiceNumberLabel": "Invoice No.:",
+    "item": "Item",
+    "qty": "Qty",
+    "unitPrice": "Unit Price",
+    "lineTotal": "Line Total",
+    "thankYou": "Thank you for your business",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "process": "Process",
+    "ship": "Ship",
+    "return": "Return",
+    "cancelReasonPrompt": "Cancellation reason (optional):",
+    "timeline": {
+      "createOrder": "Create Order",
+      "confirm": "Confirmed",
+      "ship": "Shipped",
+      "delivered": "Delivered",
+      "cancel": "Cancelled"
     }
   },
   "nav": {
@@ -705,7 +739,19 @@
     "subtitle": "Manage warehouses and storage locations",
     "setDefault": "Set as default",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "updated": "Warehouse updated",
+    "created": "Warehouse created",
+    "deleted": "Warehouse deleted",
+    "setAsDefault": "Set as default warehouse",
+    "saveFailed": "Save failed",
+    "deleteFailed": "Delete failed",
+    "actionFailed": "Failed",
+    "defaultLabel": "Default",
+    "editWarehouse": "Edit Warehouse",
+    "codePlaceholder": "WHO-001",
+    "namePlaceholder": "Main Warehouse",
+    "addressPlaceholder": "Warehouse address..."
   },
   "analytics": {
     "title": "Analytics Dashboard",
