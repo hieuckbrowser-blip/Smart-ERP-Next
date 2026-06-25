@@ -26,7 +26,7 @@ services:
     image: ghcr.io/hieuck/smart-erp-next:latest
     container_name: smart-erp-app
     ports:
-      - "${API_PORT:-3456}:3000"
+      - "${API_PORT:-3456}:3456"
       - "${WEB_PORT:-3457}:3457"
     environment:
       DATABASE_URL: postgresql://${DB_USER:-smart_erp}:${DB_PASSWORD:-smart_erp}@postgres:5432/smart_erp
