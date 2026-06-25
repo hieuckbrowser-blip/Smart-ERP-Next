@@ -77,6 +77,8 @@
     "complete": "Complete",
     "process": "Process",
     "syncNow": "Sync Now",
+    "change": "Change",
+    "notes": "Notes",
     "grantPermission": "Grant permission"
   },
   "status": {
@@ -351,6 +353,17 @@
     "deleteSuccess": "Product deleted",
     "createSuccess": "Product created",
     "updateSuccess": "Product updated",
+    "basicInfo": "Basic Information",
+    "image": "Product Image",
+    "pricingStock": "Pricing & Stock",
+    "initialStock": "Initial Stock",
+    "placeholders": {
+      "name": "Product name",
+      "sku": "Auto-generated if empty",
+      "skuHelper": "Leave empty to auto-generate SKU.",
+      "category": "Category",
+      "description": "Product description..."
+    },
     "translations": "Translations",
     "units": {
       "piece": "Piece",
@@ -637,7 +650,25 @@
     "confirmed": "Confirmed",
     "partial": "Partially Received",
     "received": "Received",
-    "cancelled": "Cancelled"
+    "cancelled": "Cancelled",
+    "addProduct": "Add Product",
+    "productSearchPlaceholder": "Search by name, SKU...",
+    "searchStock": "Stock: ",
+    "itemsTitle": "Products ({count})",
+    "itemsEmpty": "No products yet. Search and add products above.",
+    "error": {
+      "minOneItem": "Please add at least 1 product"
+    },
+    "table": {
+      "product": "Product",
+      "orderedQty": "Order Qty",
+      "unitCost": "Unit Cost",
+      "lineTotal": "Line Total"
+    },
+    "supplierSearchPlaceholder": "Search supplier...",
+    "changeSupplier": "Change",
+    "notesPlaceholder": "Purchase order notes...",
+    "productCount": "Products"
   },
   "pos": {
     "createOrderFailed": "Create order failed. Please try again.",
@@ -679,7 +710,18 @@
     "offlineMode": "Offline Mode",
     "offlineModeActive": "Offline mode active",
     "printReceipt": "Print Receipt",
-    "cashDrawer": "Cash Drawer"
+    "cashDrawer": "Cash Drawer",
+    "searchPlaceholderDetailed": "Search by name, SKU, barcode... (F2)",
+    "searching": "Searching...",
+    "stockLabel": "Stock: {{stock}}",
+    "customerSearchPlaceholder": "Retail customer (search customer...)",
+    "cartEmptyHint": "Search and select products to add",
+    "itemDiscount": "Discount:",
+    "orderDiscount": "Order discount:",
+    "exactCash": "Exact amount",
+    "itemCount": "Items",
+    "orderCodeLabel": "Order code:",
+    "newOrder": "New order"
   },
   "payments": {
     "title": "Payments",

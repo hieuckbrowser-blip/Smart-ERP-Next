@@ -121,7 +121,7 @@ export default function CreatePurchaseOrderPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (items.length === 0) { setError('Vui lòng thêm ít nhất 1 sản phẩm'); return; }
+    if (items.length === 0) { setError(t('purchasing.error.minOneItem')); return; }
     setError('');
     setSaving(true);
     try {
@@ -172,7 +172,7 @@ export default function CreatePurchaseOrderPage() {
               {/* Product search */}
               <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
                 <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-                  Thêm sản phẩm
+                  {t('purchasing.addProduct')}
                 </h2>
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -180,7 +180,7 @@ export default function CreatePurchaseOrderPage() {
                     type="text"
                     value={productSearch}
                     onChange={(e) => setProductSearch(e.target.value)}
-                    placeholder="Tìm sản phẩm theo tên, SKU..."
+                    placeholder={t('purchasing.productSearchPlaceholder')}
                     className="w-full pl-9 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                   />
                   {showProductDrop && productResults.length > 0 && (
@@ -196,7 +196,7 @@ export default function CreatePurchaseOrderPage() {
                             <span className="font-medium text-gray-900 dark:text-white">{p.name}</span>
                             <span className="text-gray-400 ml-2 text-xs font-mono">{p.sku}</span>
                           </div>
-                          <span className="text-gray-500 text-xs">Tồn: {p.stock}</span>
+                          <span className="text-gray-500 text-xs">{t('purchasing.searchStock')}{p.stock}</span>
                         </button>
                       ))}
                     </div>
@@ -208,22 +208,22 @@ export default function CreatePurchaseOrderPage() {
               <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <div className="px-5 py-3 border-b border-gray-200 dark:border-gray-700">
                   <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
-                    Danh sách sản phẩm ({items.length})
+                    {t('purchasing.itemsTitle', { count: items.length })}
                   </h2>
                 </div>
                 {items.length === 0 ? (
                   <div className="px-5 py-10 text-center text-gray-400 text-sm">
-                    Chưa có sản phẩm nào. Tìm và thêm sản phẩm ở trên.
+                    {t('purchasing.itemsEmpty')}
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead className="bg-gray-50 dark:bg-gray-700">
                         <tr>
-                          <th className="px-4 py-2 text-left text-xs font-semibold text-gray-500 uppercase">Sản phẩm</th>
-                          <th className="px-4 py-2 text-right text-xs font-semibold text-gray-500 uppercase">SL đặt</th>
-                          <th className="px-4 py-2 text-right text-xs font-semibold text-gray-500 uppercase">Giá nhập</th>
-                          <th className="px-4 py-2 text-right text-xs font-semibold text-gray-500 uppercase">Thành tiền</th>
+                          <th className="px-4 py-2 text-left text-xs font-semibold text-gray-500 uppercase">{t('purchasing.table.product')}</th>
+                          <th className="px-4 py-2 text-right text-xs font-semibold text-gray-500 uppercase">{t('purchasing.table.orderedQty')}</th>
+                          <th className="px-4 py-2 text-right text-xs font-semibold text-gray-500 uppercase">{t('purchasing.table.unitCost')}</th>
+                          <th className="px-4 py-2 text-right text-xs font-semibold text-gray-500 uppercase">{t('purchasing.table.lineTotal')}</th>
                           <th className="px-4 py-2 w-10"></th>
                         </tr>
                       </thead>
@@ -285,7 +285,7 @@ export default function CreatePurchaseOrderPage() {
                         {selectedSupplier.name}
                       </span>
                       <button type="button" onClick={() => { setSelectedSupplier(null); setSupplierId(''); setSupplierSearch(''); }}
-                        className="text-indigo-400 hover:text-indigo-600 text-xs">Đổi</button>
+                        className="text-indigo-400 hover:text-indigo-600 text-xs">{t('purchasing.changeSupplier')}</button>
                     </div>
                   ) : (
                     <>
@@ -294,7 +294,7 @@ export default function CreatePurchaseOrderPage() {
                         type="text"
                         value={supplierSearch}
                         onChange={(e) => setSupplierSearch(e.target.value)}
-                        placeholder="Tìm nhà cung cấp..."
+                        placeholder={t('purchasing.supplierSearchPlaceholder')}
                         className="w-full pl-9 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                       />
                       {showSupplierDrop && suppliers.length > 0 && (
@@ -324,20 +324,20 @@ export default function CreatePurchaseOrderPage() {
                     className={inputClass} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Ghi chú</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('purchasing.notes')}</label>
                   <textarea value={notes} onChange={(e) => setNotes(e.target.value)}
-                    rows={3} placeholder="Ghi chú đơn nhập..." className={inputClass} />
+                    rows={3} placeholder={t('purchasing.notesPlaceholder')} className={inputClass} />
                 </div>
               </div>
 
               {/* Summary */}
               <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
                 <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400 mb-2">
-                  <span>Số sản phẩm</span>
+                  <span>{t('purchasing.productCount')}</span>
                   <span>{items.length}</span>
                 </div>
                 <div className="flex justify-between font-bold text-base text-gray-900 dark:text-white pt-2 border-t border-gray-100 dark:border-gray-700">
-                  <span>Tổng tiền</span>
+                  <span>{t('purchasing.total')}</span>
                   <span className="text-indigo-600">{formatVND(subtotal)}</span>
                 </div>
               </div>
@@ -345,7 +345,7 @@ export default function CreatePurchaseOrderPage() {
               <button type="submit" disabled={saving || items.length === 0}
                 className="w-full flex items-center justify-center gap-2 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white font-bold rounded-xl transition">
                 <Save className="w-4 h-4" />
-                {saving ? 'Đang lưu...' : 'Tạo đơn nhập'}
+                {saving ? t('common.saving') : t('purchasing.add')}
               </button>
             </div>
           </div>

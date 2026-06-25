@@ -38,13 +38,13 @@ interface CartItem {
 
 type PaymentMethod = 'cash' | 'bank_transfer' | 'card' | 'momo' | 'vnpay' | 'zalopay';
 
-const PAYMENT_METHODS: { key: PaymentMethod; label: string; icon: React.ReactNode }[] = [
-  { key: 'cash', label: 'Tiền mặt', icon: <Banknote className="w-4 h-4" /> },
-  { key: 'bank_transfer', label: 'Chuyển khoản', icon: <CreditCard className="w-4 h-4" /> },
-  { key: 'card', label: 'Thẻ', icon: <CreditCard className="w-4 h-4" /> },
-  { key: 'momo', label: 'MoMo', icon: <Smartphone className="w-4 h-4" /> },
-  { key: 'vnpay', label: 'VNPay', icon: <Smartphone className="w-4 h-4" /> },
-  { key: 'zalopay', label: 'ZaloPay', icon: <Smartphone className="w-4 h-4" /> },
+const PAYMENT_METHODS: { key: PaymentMethod; labelKey: string; icon: React.ReactNode }[] = [
+  { key: 'cash', labelKey: 'payment.method.cash', icon: <Banknote className="w-4 h-4" /> },
+  { key: 'bank_transfer', labelKey: 'payment.method.bank_transfer', icon: <CreditCard className="w-4 h-4" /> },
+  { key: 'card', labelKey: 'payment.method.card', icon: <CreditCard className="w-4 h-4" /> },
+  { key: 'momo', labelKey: 'payment.method.momo', icon: <Smartphone className="w-4 h-4" /> },
+  { key: 'vnpay', labelKey: 'payment.method.vnpay', icon: <Smartphone className="w-4 h-4" /> },
+  { key: 'zalopay', labelKey: 'payment.method.zalopay', icon: <Smartphone className="w-4 h-4" /> },
 ];
 
 const formatVND = (n: number) =>
@@ -237,7 +237,7 @@ export default function POSPage() {
                 type="text"
                 value={productSearch}
                 onChange={(e) => setProductSearch(e.target.value)}
-                placeholder="Tìm sản phẩm theo tên, SKU, mã vạch... (F2)"
+                placeholder={t('pos.searchPlaceholderDetailed')}
                 className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 autoFocus
               />
@@ -248,7 +248,7 @@ export default function POSPage() {
           <div className="flex-1 overflow-y-auto p-3">
             {loadingProducts ? (
               <div className="flex items-center justify-center py-12 text-gray-400 text-sm">
-                Đang tìm...
+                {t('actions.search.searching')}
               </div>
             ) : products.length > 0 ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
@@ -273,7 +273,7 @@ export default function POSPage() {
                       {formatVND(parseFloat(product.price))}
                     </p>
                     <p className={`text-xs mt-0.5 ${product.stock <= (product.minStock ?? 0) ? 'text-red-500' : 'text-gray-400'}`}>
-                      Tồn: {product.stock}
+                      {t('pos.stockLabel', { stock: product.stock })}
                     </p>
                   </button>
                 ))}
@@ -305,7 +305,7 @@ export default function POSPage() {
                   setSelectedCustomer(null);
                   setCustomerSearch(e.target.value);
                 }}
-                placeholder="Khách lẻ (tìm khách hàng...)"
+                placeholder={t('pos.customerSearchPlaceholder')}
                 className="w-full pl-9 pr-8 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
               />
               {selectedCustomer && (
@@ -342,8 +342,8 @@ export default function POSPage() {
             {cart.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-gray-400 py-12">
                 <ShoppingCart className="w-12 h-12 mb-3 opacity-30" />
-                <p className="text-sm">Giỏ hàng trống</p>
-                <p className="text-xs mt-1">Tìm và chọn sản phẩm để thêm</p>
+                <p className="text-sm">{t('pos.cartEmpty')}</p>
+                <p className="text-xs mt-1">{t('pos.cartEmptyHint')}</p>
               </div>
             ) : (
               <div className="divide-y divide-gray-100 dark:divide-gray-700">
@@ -392,7 +392,7 @@ export default function POSPage() {
                     </div>
                     {/* Item discount */}
                     <div className="mt-1.5 flex items-center gap-2">
-                      <span className="text-xs text-gray-400">Giảm:</span>
+                      <span className="text-xs text-gray-400">{t('pos.itemDiscount')}</span>
                       <input
                         type="number"
                         value={item.discount }
@@ -412,7 +412,7 @@ export default function POSPage() {
           <div className="flex-shrink-0 border-t border-gray-200 dark:border-gray-700 p-3 space-y-2">
             {/* Order discount */}
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500 dark:text-gray-400 flex-shrink-0">Giảm đơn:</span>
+              <span className="text-sm text-gray-500 dark:text-gray-400 flex-shrink-0">{t('pos.orderDiscount')}</span>
               <input
                 type="number"
                 value={orderDiscount }
@@ -432,17 +432,17 @@ export default function POSPage() {
             {/* Totals */}
             <div className="space-y-1 text-sm">
               <div className="flex justify-between text-gray-500 dark:text-gray-400">
-                <span>Tạm tính</span>
+                <span>{t('pos.subtotal')}</span>
                 <span>{formatVND(subtotal)}</span>
               </div>
               {discountAmount > 0 && (
                 <div className="flex justify-between text-green-600">
-                  <span>Giảm giá</span>
+                  <span>{t('pos.discount')}</span>
                   <span>-{formatVND(discountAmount)}</span>
                 </div>
               )}
               <div className="flex justify-between font-bold text-base text-gray-900 dark:text-white pt-1 border-t border-gray-100 dark:border-gray-700">
-                <span>Tổng cộng</span>
+                <span>{t('pos.total')}</span>
                 <span className="text-blue-600">{formatVND(total)}</span>
               </div>
             </div>
@@ -460,7 +460,7 @@ export default function POSPage() {
                   }`}
                 >
                   {m.icon}
-                  <span className="truncate w-full text-center">{m.label}</span>
+                  <span className="truncate w-full text-center">{t(m.labelKey)}</span>
                 </button>
               ))}
             </div>
@@ -468,7 +468,7 @@ export default function POSPage() {
             {/* Cash received */}
             {paymentMethod === 'cash' && (
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-500 dark:text-gray-400 flex-shrink-0">Tiền nhận:</span>
+                <span className="text-sm text-gray-500 dark:text-gray-400 flex-shrink-0">{t('pos.cashReceived')}</span>
                 <input
                   type="number"
                   value={cashReceived }
@@ -482,7 +482,7 @@ export default function POSPage() {
             )}
             {paymentMethod === 'cash' && cashReceived > 0 && (
               <div className="flex justify-between text-sm font-medium text-green-600">
-                <span>Tiền thừa</span>
+                <span>{t('pos.change')}</span>
                 <span>{formatVND(change)}</span>
               </div>
             )}
@@ -503,7 +503,7 @@ export default function POSPage() {
                   onClick={() => setCashReceived(total)}
                   className="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded hover:bg-blue-200 transition"
                 >
-                  Đủ tiền
+                  {t('pos.exactCash')}
                 </button>
               </div>
             )}
@@ -515,7 +515,7 @@ export default function POSPage() {
               className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white font-bold rounded-xl transition text-base flex items-center justify-center gap-2"
             >
               <Check className="w-5 h-5" />
-              Thanh toán {cart.length > 0 && `(${cart.length} SP)`}
+              {t('pos.checkout')}{cart.length > 0 && ` (${cart.length})`}
             </button>
           </div>
         </div>
@@ -525,27 +525,27 @@ export default function POSPage() {
       {showPaymentModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-sm p-6">
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Xác nhận thanh toán</h2>
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">{t('pos.confirmPayment')}</h2>
             <div className="space-y-2 text-sm mb-6">
               <div className="flex justify-between">
-                <span className="text-gray-500">Khách hàng</span>
-                <span className="font-medium">{selectedCustomer?.name ?? 'Khách lẻ'}</span>
+                <span className="text-gray-500">{t('orders.customer')}</span>
+                <span className="font-medium">{selectedCustomer?.name ?? t('orders.retailCustomer')}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Số sản phẩm</span>
+                <span className="text-gray-500">{t('pos.itemCount')}</span>
                 <span className="font-medium">{cart.reduce((s, i) => s + i.quantity, 0)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Phương thức</span>
-                <span className="font-medium">{PAYMENT_METHODS.find((m) => m.key === paymentMethod)?.label}</span>
+                <span className="text-gray-500">{t('payment.paymentMethod')}</span>
+                <span className="font-medium">{t(PAYMENT_METHODS.find((m) => m.key === paymentMethod)?.labelKey ?? '')}</span>
               </div>
               <div className="flex justify-between text-base font-bold text-blue-600 pt-2 border-t border-gray-100 dark:border-gray-700">
-                <span>Tổng cộng</span>
+                <span>{t('pos.total')}</span>
                 <span>{formatVND(total)}</span>
               </div>
               {paymentMethod === 'cash' && cashReceived > 0 && (
                 <div className="flex justify-between text-green-600">
-                  <span>Tiền thừa</span>
+                  <span>{t('pos.change')}</span>
                   <span>{formatVND(change)}</span>
                 </div>
               )}
@@ -555,14 +555,14 @@ export default function POSPage() {
                 onClick={() => setShowPaymentModal(false)}
                 className="flex-1 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
               >
-                Hủy
+                {t('common.cancel')}
               </button>
               <button
                 onClick={handleSubmit}
                 disabled={submitting}
                 className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition disabled:opacity-50"
               >
-                {submitting ? 'Đang xử lý...' : 'Xác nhận'}
+                {submitting ? t('common.processing') : t('common.confirm')}
               </button>
             </div>
           </div>
@@ -576,8 +576,8 @@ export default function POSPage() {
             <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
               <Check className="w-8 h-8 text-green-600" />
             </div>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Thanh toán thành công</h2>
-            <p className="text-gray-500 text-sm mb-1">Mã đơn: <span className="font-mono font-bold text-blue-600">{lastOrder.code}</span></p>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">{t('pos.success')}</h2>
+            <p className="text-gray-500 text-sm mb-1">{t('pos.orderCodeLabel')} <span className="font-mono font-bold text-blue-600">{lastOrder.code}</span></p>
             <p className="text-2xl font-bold text-blue-600 mb-6">{formatVND(parseFloat(lastOrder.total))}</p>
             <div className="flex gap-3">
               <button
@@ -585,13 +585,13 @@ export default function POSPage() {
                 className="flex-1 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition flex items-center justify-center gap-2"
               >
                 <Printer className="w-4 h-4" />
-                In hóa đơn
+                {t('pos.printReceipt')}
               </button>
               <button
                 onClick={() => setShowSuccessModal(false)}
                 className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition"
               >
-                Đơn mới
+                {t('pos.newOrder')}
               </button>
             </div>
           </div>

@@ -60,15 +60,6 @@ const statusColors: Record<string, string> = {
   cancelled: 'bg-red-100 text-red-700',
 };
 
-const statusLabels: Record<string, string> = {
-  draft: 'Draft',
-  confirmed: 'Confirmed',
-  processing: 'Processing',
-  shipped: 'Shipped',
-  delivered: 'Delivered',
-  cancelled: 'Cancelled',
-};
-
 // Mock data for when API is not ready
 const mockStats: DashboardStats = {
   todayRevenue: 12_500_000,
@@ -322,7 +313,7 @@ export default function DashboardPage() {
                       </td>
                       <td className="px-5 py-3 text-center">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[order.status] }`}>
-                          {statusLabels[order.status] || order.status}
+                          {t(`orders.status.${order.status}`, { defaultValue: order.status })}
                         </span>
                       </td>
                       <td className="px-5 py-3 text-right text-gray-400 text-xs">

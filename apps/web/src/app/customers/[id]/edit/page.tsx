@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 import { customersApi, type Customer } from '@/lib/api-customers';
 import AuthGuard from '@/components/layout/AuthGuard';
 import CustomerForm from '@/components/forms/CustomerForm';
 
 export default function EditCustomerPage() {
+  const { t } = useTranslation('common');
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
@@ -28,7 +30,7 @@ export default function EditCustomerPage() {
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
-          Đang tải...
+          {t('common.loading')}
         </div>
       </AuthGuard>
     );

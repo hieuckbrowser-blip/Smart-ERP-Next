@@ -9,18 +9,18 @@ import { ProductImageInput } from '@/components/ProductImageInput';
 import { ArrowLeft, Save, Package } from 'lucide-react';
 
 const UNITS = [
-  { value: 'piece', label: 'Cái' },
-  { value: 'kg', label: 'Kg' },
-  { value: 'gram', label: 'Gram' },
-  { value: 'liter', label: 'Lít' },
-  { value: 'box', label: 'Hộp' },
-  { value: 'pack', label: 'Gói' },
-  { value: 'bottle', label: 'Chai' },
-  { value: 'bag', label: 'Túi' },
-  { value: 'roll', label: 'Cuộn' },
-  { value: 'meter', label: 'Mét' },
-  { value: 'pair', label: 'Đôi' },
-  { value: 'set', label: 'Bộ' },
+  { value: 'piece', labelKey: 'products.units.piece' },
+  { value: 'kg', labelKey: 'products.units.kg' },
+  { value: 'gram', labelKey: 'products.units.gram' },
+  { value: 'liter', labelKey: 'products.units.liter' },
+  { value: 'box', labelKey: 'products.units.box' },
+  { value: 'pack', labelKey: 'products.units.pack' },
+  { value: 'bottle', labelKey: 'products.units.bottle' },
+  { value: 'bag', labelKey: 'products.units.bag' },
+  { value: 'roll', labelKey: 'products.units.roll' },
+  { value: 'meter', labelKey: 'products.units.meter' },
+  { value: 'pair', labelKey: 'products.units.pair' },
+  { value: 'set', labelKey: 'products.units.set' },
 ];
 
 const inputClass =
@@ -101,29 +101,29 @@ export default function CreateProductPage() {
 
           {/* Basic info */}
           <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
-            <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">Thông tin cơ bản</h2>
+            <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">{t('products.basicInfo')}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {t('products.name')} <span className="text-red-500">*</span>
                 </label>
                 <input type="text" name="name" value={form.name} onChange={handleChange}
-                  required placeholder="Tên sản phẩm" className={inputClass} />
+                  required placeholder={t('products.placeholders.name')} className={inputClass} />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {t('products.sku')}
                 </label>
                 <input type="text" name="sku" value={form.sku} onChange={handleChange}
-                  placeholder="Tự tạo nếu để trống" className={inputClass} />
-                <p className="mt-1 text-xs text-gray-400">Để trống để hệ thống tự sinh SKU.</p>
+                  placeholder={t('products.placeholders.sku')} className={inputClass} />
+                <p className="mt-1 text-xs text-gray-400">{t('products.placeholders.skuHelper')}</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {t('products.category')}
                 </label>
                 <input type="text" name="category" value={form.category} onChange={handleChange}
-                  placeholder="Danh mục" className={inputClass} />
+                  placeholder={t('products.placeholders.category')} className={inputClass} />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -131,13 +131,13 @@ export default function CreateProductPage() {
                 </label>
                 <select name="unit" value={form.unit} onChange={handleChange} className={inputClass}>
                   {UNITS.map((u) => (
-                    <option key={u.value} value={u.value}>{u.label}</option>
+                    <option key={u.value} value={u.value}>{t(u.labelKey)}</option>
                   ))}
                 </select>
               </div>
               <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Ảnh sản phẩm
+                  {t('products.image')}
                 </label>
                 <ProductImageInput
                   value={form.imageUrl}
@@ -150,14 +150,14 @@ export default function CreateProductPage() {
                   {t('products.description')}
                 </label>
                 <textarea name="description" value={form.description} onChange={handleChange}
-                  rows={3} placeholder="Mô tả sản phẩm..." className={inputClass} />
+                  rows={3} placeholder={t('products.placeholders.description')} className={inputClass} />
               </div>
             </div>
           </div>
 
           {/* Pricing & stock */}
           <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
-            <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">Giá & Tồn kho</h2>
+            <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">{t('products.pricingStock')}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -175,7 +175,7 @@ export default function CreateProductPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Tồn kho ban đầu
+                  {t('products.initialStock')}
                 </label>
                 <input type="number" name="stock" value={form.stock} onChange={handleChange}
                   min="0" className={inputClass} />
