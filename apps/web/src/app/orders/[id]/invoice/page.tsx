@@ -88,7 +88,7 @@ export default function OrderInvoicePage() {
               </tr>
             </thead>
             <tbody>
-              {order.items.map((item, idx) => (
+              {(order.items ?? []).map((item, idx) => (
                 <tr key={idx} className="border-b border-gray-100">
                   <td className="py-2">{item.productName}</td>
                   <td className="py-2 text-right">{item.quantity}</td>
