@@ -1,10 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Standalone output bundles only the necessary files for production Docker image
   output: 'standalone',
-  // NOTE: Remove `output: 'export'` — it breaks API routes and server components.
-  // Tauri desktop uses the dev server (localhost:3001) in dev mode and
-  // a separate static build via `next export` only when packaging.
   transpilePackages: [
     '@smart-erp/i18n',
     '@smart-erp/types',
@@ -15,17 +11,15 @@ const nextConfig = {
     '@smart-erp/ui',
   ],
   eslint: { ignoreDuringBuilds: true },
-  output: 'standalone',
   typescript: { ignoreBuildErrors: true },
-  images: {
-    remotePatterns: [],
-  },
-  // Strict mode for better React error detection
+  images: { remotePatterns: [] },
   reactStrictMode: true,
-  // Compress responses
   compress: true,
-  // Power header
   poweredByHeader: false,
+  rewrites: process.env.NODE_ENV === 'development' ? async () => [
+    { source: '/api/:path*', destination: 'http://localhost:3456/api/:path*' },
+    { source: '/socket.io/:path*', destination: 'http://localhost:3456/socket.io/:path*' },
+  ] : undefined,
 };
 
 export default nextConfig;
