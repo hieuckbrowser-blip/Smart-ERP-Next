@@ -672,7 +672,7 @@
     "productCount": "Products"
   },
   "pos": {
-    "createOrderFailed": "Create order failed. Please try again.",
+    "createOrderFailed": "Create order failed",
     "title": "Point of Sale",
     "searchPlaceholder": "Search products...",
     "cart": "Cart",
@@ -712,16 +712,16 @@
     "offlineModeActive": "Offline mode active",
     "printReceipt": "Print Receipt",
     "cashDrawer": "Cash Drawer",
-    "searchPlaceholderDetailed": "Search by name, SKU, barcode... (F2)",
+    "searchPlaceholderDetailed": "Search products by name, SKU, barcode... (F2)",
     "searching": "Searching...",
     "stockLabel": "Stock: {{stock}}",
     "customerSearchPlaceholder": "Retail customer (search customer...)",
     "cartEmptyHint": "Search and select products to add",
-    "itemDiscount": "Discount:",
-    "orderDiscount": "Order discount:",
-    "exactCash": "Exact amount",
-    "itemCount": "Items",
-    "orderCodeLabel": "Order code:",
+    "itemDiscount": "Item discount",
+    "orderDiscount": "Order discount",
+    "exactCash": "Exact cash",
+    "itemCount": "{{count}} item(s)",
+    "orderCodeLabel": "Order code",
     "newOrder": "New order"
   },
   "payments": {
