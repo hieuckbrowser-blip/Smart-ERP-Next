@@ -672,6 +672,9 @@
     "productCount": "Products"
   },
   "pos": {
+    "barcodePlaceholder": "Scan barcode...",
+    "scan": "Scan",
+    "barcodeNotFound": "Product not found",
     "createOrderFailed": "Create order failed",
     "title": "Point of Sale",
     "searchPlaceholder": "Search products...",

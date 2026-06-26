@@ -23,6 +23,7 @@ import {
   Package,
   ChevronDown,
   Printer,
+  Barcode,
 } from 'lucide-react';
 
 interface CartItem {
@@ -78,6 +79,12 @@ export default function POSPage() {
   const [submitting, setSubmitting] = useState(false);
   const [lastOrder, setLastOrder] = useState<any>(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  // ── Barcode scan state ──────────────────────────────────────────────────────
+  const [barcodeInput, setBarcodeInput] = useState('');
+  const [scanning, setScanning] = useState(false);
+  const [barcodeMsg, setBarcodeMsg] = useState('');
+  const barcodeRef = useRef<HTMLInputElement>(null);
 
   // ── Product search ──────────────────────────────────────────────────────────
   useEffect(() => {
@@ -151,6 +158,27 @@ export default function POSPage() {
     setProducts([]);
     searchRef.current?.focus();
   }, []);
+
+  // ── Barcode scan handler (after addToCart) ──────────────────────────────────
+  const handleBarcodeScan = useCallback(async () => {
+    const code = barcodeInput.trim();
+    if (!code) return;
+    setScanning(true);
+    setBarcodeMsg('');
+    try {
+      const product = await productsApi.getByBarcode(code);
+      addToCart(product);
+      setBarcodeInput('');
+      setBarcodeMsg(`✓ ${product.name}`);
+      setTimeout(() => setBarcodeMsg(''), 2000);
+      barcodeRef.current?.focus();
+    } catch {
+      setBarcodeMsg(t('pos.barcodeNotFound'));
+      setTimeout(() => setBarcodeMsg(''), 2000);
+    } finally {
+      setScanning(false);
+    }
+  }, [barcodeInput, addToCart, t]);
 
   const updateQty = (productId: string, delta: number) => {
     setCart((prev) =>
@@ -233,7 +261,7 @@ export default function POSPage() {
         {/* ── Left: Product search + grid ─────────────────────────────────── */}
         <div className="flex flex-col flex-1 overflow-hidden border-r border-gray-200 dark:border-gray-700">
           {/* Search bar */}
-          <div className="flex-shrink-0 bg-white dark:bg-gray-800 p-3 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex-shrink-0 bg-white dark:bg-gray-800 p-3 border-b border-gray-200 dark:border-gray-700 space-y-2">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
@@ -246,6 +274,31 @@ export default function POSPage() {
                 autoFocus
               />
             </div>
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <Barcode className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  ref={barcodeRef}
+                  type="text"
+                  value={barcodeInput}
+                  onChange={(e) => setBarcodeInput(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') handleBarcodeScan(); }}
+                  placeholder={t('pos.barcodePlaceholder')}
+                  className="w-full pl-9 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+                />
+              </div>
+              <button
+                onClick={handleBarcodeScan}
+                disabled={scanning || !barcodeInput.trim()}
+                className="px-3 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white rounded-lg text-sm font-medium transition flex items-center gap-1"
+              >
+                <Barcode className="w-4 h-4" />
+                {t('pos.scan')}
+              </button>
+            </div>
+            {barcodeMsg && (
+              <p className="text-xs text-green-600 dark:text-green-400">{barcodeMsg}</p>
+            )}
           </div>
 
           {/* Product grid */}

@@ -165,6 +165,10 @@ export class ProductsService {
     return product;
   }
 
+  async findByBarcode(tenantId: string, barcode: string) {
+    return this.findBySku(tenantId, barcode);
+  }
+
   async update(tenantId: string, id: string, dto: UpdateProductDto, userId?: string) {
     const { sku, categoryId, category: categoryName, imageUrl, ...rest } = dto;
     const category =

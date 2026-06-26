@@ -70,6 +70,11 @@ export const productsApi = {
     return res.data;
   },
 
+  getByBarcode: async (code: string): Promise<Product> => {
+    const res = await apiClient.get<Product>(`/products/by-barcode/${encodeURIComponent(code)}`);
+    return res.data;
+  },
+
   create: async (data: Record<string, any>): Promise<Product> => {
     const res = await apiClient.post<Product>('/products', data);
     return res.data;

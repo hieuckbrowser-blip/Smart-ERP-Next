@@ -18,4 +18,8 @@ export default {
   confirm: 'Xác nhận',
   yes: 'Có',
   no: 'Không',
+  // POS
+  'pos.barcodePlaceholder': 'Quét mã vạch...',
+  'pos.scan': 'Quét',
+  'pos.barcodeNotFound': 'Không tìm thấy sản phẩm',
 } as const;

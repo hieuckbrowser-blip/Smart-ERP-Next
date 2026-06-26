@@ -78,6 +78,11 @@ export class ProductsController {
     return this.productsService.findBySku(req.user.tenantId, sku);
   }
 
+  @Get('by-barcode/:code')
+  findByBarcode(@Request() req: any, @Param('code') code: string) {
+    return this.productsService.findByBarcode(req.user.tenantId, code);
+  }
+
   @Get('export')
   async exportProducts(@Request() req: any, @Query() query: QueryProductDto) {
     const items = await this.productsService.findAllForExport(req.user.tenantId, query);

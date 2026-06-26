@@ -1149,7 +1149,10 @@
     "offlineModeActive": "Đang hoạt động ngoại tuyến",
     "printReceipt": "In hóa đơn",
     "cashDrawer": "Ngăn kéo tiền",
-    "createOrderFailed": "Không thể tạo đơn hàng"
+    "createOrderFailed": "Không thể tạo đơn hàng",
+    "barcodePlaceholder": "Quét mã vạch...",
+    "scan": "Quét",
+    "barcodeNotFound": "Không tìm thấy sản phẩm"
   },
   "brandColor": "Màu thương hiệu",
   "brandColorBlue": "Xanh dương",
