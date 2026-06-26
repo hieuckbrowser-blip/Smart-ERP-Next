@@ -12,7 +12,7 @@ import { LocalStrategy } from '../common/strategies/local.strategy';
 
 @Module({
   imports: [
-    ThrottlerModule.forRoot([{ name: 'short', ttl: 60000, limit: 5 }]),
+    ThrottlerModule.forRoot([{ name: 'short', ttl: 60000, limit: parseInt(process.env.LOGIN_RATE_LIMIT || '100', 10) }]),
     UsersModule,
     PassportModule,
     NotificationsModule,
