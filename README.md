@@ -13,28 +13,18 @@
 
 **Yêu cầu:** Docker & Docker Compose
 
-### Cách 1: Nhanh nhất (dùng image có sẵn, không cần build)
-
-```bash
-docker compose -f docker-compose.quickstart.yml up -d
-# Mở http://localhost:3457
-# Email: admin@smarterp.vn / Mật khẩu: admin123
-```
-
-Image được tải sẵn từ GitHub Container Registry, không cần build.
-
-> Hệ thống tự động migrate database + seed dữ liệu demo ngay lần chạy đầu tiên.
-
-### Cách 2: Tự build (khi cần custom)
-
 ```bash
 git clone https://github.com/hieuck/Smart-ERP-Next.git
 cd Smart-ERP-Next
 docker compose up -d
 # Mở http://localhost:3457
+# Email: admin@smarterp.vn / Mật khẩu: admin123
 ```
 
-Build từ source, mất ~20 phút lần đầu. Phù hợp khi bạn muốn chỉnh sửa code.
+Image được tải sẵn từ GitHub Container Registry (không cần build).
+Hệ thống tự động migrate database + seed dữ liệu demo.
+
+> Cần tự build? Dùng `docker compose -f docker-compose.dev.yml up -d`
 
 ---
 

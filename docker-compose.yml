@@ -1,3 +1,7 @@
+# Smart ERP Next — Quick start
+# Usage: docker compose up -d
+# Pulls pre-built image from GHCR (no build required)
+
 services:
   postgres:
     image: postgres:16-alpine
@@ -16,72 +20,36 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
-    restart: unless-stopped
     networks:
       - smart-erp-network
 
-  api:
-    build:
-      context: .
-      dockerfile: apps/api/Dockerfile
-    container_name: smart-erp-api
+  app:
+    image: ghcr.io/hieuck/smart-erp-next:latest
+    container_name: smart-erp-app
     ports:
-      - "${API_PORT:-3456}:3000"
+      - "${API_PORT:-3456}:3456"
+      - "${WEB_PORT:-3457}:3457"
     environment:
       DATABASE_URL: postgresql://${DB_USER:-smart_erp}:${DB_PASSWORD:-smart_erp}@postgres:5432/smart_erp
-      JWT_SECRET: ${JWT_SECRET:-dev-secret-do-not-use-in-production}
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-in-production}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
-      NODE_ENV: production
-      PORT: 3000
-      AI_FORECAST_URL: http://ai-forecast:8000
+      NEXT_PUBLIC_API_URL: http://localhost:3456
+      NEXT_PUBLIC_SITE_URL: http://localhost:3457
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3457,http://localhost:3456}
-    volumes:
-      - api_uploads:/app/uploads
     depends_on:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://127.0.0.1:3000/health"]
+      test: ["CMD-SHELL", "curl -f http://127.0.0.1:3456/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 30s
-    restart: unless-stopped
-    networks:
-      - smart-erp-network
-
-  web:
-    build:
-      context: .
-      dockerfile: apps/web/Dockerfile
-      args:
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3456}
-        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3457}
-        NODE_ENV: production
-    container_name: smart-erp-web
-    ports:
-      - "${WEB_PORT:-3457}:3000"
-    environment:
-      NODE_ENV: production
-      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3456}
-      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3457}
-    depends_on:
-      api:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://127.0.0.1:3000 || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
-    restart: unless-stopped
+      start_period: 60s
     networks:
       - smart-erp-network
 
 networks:
   smart-erp-network:
-    driver: bridge
 
 volumes:
   postgres_data:
-  api_uploads:

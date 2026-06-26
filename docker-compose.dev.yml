@@ -1,5 +1,5 @@
-# Quick start — uses pre-built Docker image from GHCR (no build required)
-# Usage: docker compose -f docker-compose.quickstart.yml up -d
+# Build from source (for development / customization)
+# Usage: docker compose -f docker-compose.dev.yml up -d
 
 services:
   postgres:
@@ -15,25 +15,20 @@ services:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-smart_erp} -d smart_erp"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
     networks:
       - smart-erp-network
 
   app:
-    image: ghcr.io/hieuck/smart-erp-next:latest
+    build: .
     container_name: smart-erp-app
     ports:
       - "${API_PORT:-3456}:3456"
       - "${WEB_PORT:-3457}:3457"
     environment:
       DATABASE_URL: postgresql://${DB_USER:-smart_erp}:${DB_PASSWORD:-smart_erp}@postgres:5432/smart_erp
-      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-in-production}
-      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
-      NODE_ENV: production
-      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3457,http://localhost:3456}
+      JWT_SECRET: ${JWT_SECRET:-dev-secret}
+      NEXT_PUBLIC_API_URL: http://localhost:3456
+      NEXT_PUBLIC_SITE_URL: http://localhost:3457
     depends_on:
       postgres:
         condition: service_healthy
