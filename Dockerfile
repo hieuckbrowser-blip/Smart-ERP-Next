@@ -1,5 +1,4 @@
-# ──────────────────────────────────────────────────────────────
-# Smart ERP Next — Self-contained Docker Image
+# ─── Smart ERP Next — Self-contained Docker Image ─────────────
 # Postgres + API + Web in one container for zero-config demo
 # Usage: docker run -p 3456:3456 -p 3457:3457 ghcr.io/hieuck/smart-erp-next
 # ──────────────────────────────────────────────────────────────
@@ -29,7 +28,7 @@ ENV WEB_PORT=3457
 ENV NEXT_PUBLIC_API_URL=http://localhost:3456
 
 LABEL org.opencontainers.image.title="Smart ERP Next"
-LABEL org.opencontainers.image.description="Hệ thống quản trị doanh nghiệp toàn diện: POS, Kho, CRM, Kế toán, HR"
+LABEL org.opencontainers.image.description="Smart ERP Next - POS, Kho, CRM, Ke toan, HR"
 LABEL org.opencontainers.image.source="https://github.com/hieuck/Smart-ERP-Next"
 LABEL org.opencontainers.image.licenses="MIT"
 
