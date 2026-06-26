@@ -72,8 +72,7 @@ describe('backoffice controller delegation coverage', () => {
     expect(usersService.updateProfile).toHaveBeenCalledWith('tenant-1', 'user-1', { name: 'Me' });
 
     const exportService = {
-      createExportJob: jest.fn(),
-      getExportFile: jest.fn().mockResolvedValue(Buffer.from('{}')),
+      exportData: jest.fn().mockResolvedValue({ data: '{}', format: 'json', filename: 'export-1.json', mimeType: 'application/json', entityCount: 0 }),
       getExportStatus: jest.fn(),
       getExportableEntities: jest.fn(),
     };
@@ -82,8 +81,8 @@ describe('backoffice controller delegation coverage', () => {
     exportsController.getExportableEntities();
     exportsController.createExport(req, { entities: ['orders'], format: ExportFormat.JSON });
     exportsController.getExportStatus(req, 'job-1');
-    await exportsController.downloadExport(req, 'job-1', res as any);
-    expect(res.setHeader).toHaveBeenCalledWith('Content-Disposition', 'attachment; filename="export-job-1.json"');
+    await exportsController.downloadExport(req, 'customers', ExportFormat.JSON, res as any);
+    expect(res.setHeader).toHaveBeenCalledWith('Content-Disposition', 'attachment; filename="export-1.json"');
     expect(res.send).toHaveBeenCalledWith(Buffer.from('{}'));
   });
 

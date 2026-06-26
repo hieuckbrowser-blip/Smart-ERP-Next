@@ -7,9 +7,8 @@ describe('ExportController', () => {
   beforeEach(() => {
     svc = {
       getExportableEntities: jest.fn(),
-      createExportJob: jest.fn(),
+      exportData: jest.fn(),
       getExportStatus: jest.fn(),
-      getExportFile: jest.fn(),
     };
     ctrl = new ExportController(svc);
   });
@@ -24,11 +23,12 @@ describe('ExportController', () => {
   });
 
   it('createExport delegates to service', async () => {
-    svc.createExportJob.mockResolvedValue({ id: 'exp1' });
+    const result = { data: '{}', format: 'json', filename: 'export.json', mimeType: 'application/json', entityCount: 0 };
+    svc.exportData.mockResolvedValue(result);
     const body = { format: 'json' as const, entities: ['customers', 'products'], dateFrom: '2024-01-01' };
     const r = await ctrl.createExport(req, body);
-    expect(svc.createExportJob).toHaveBeenCalledWith('t1', 'json', ['customers', 'products']);
-    expect(r).toEqual({ id: 'exp1' });
+    expect(svc.exportData).toHaveBeenCalledWith('t1', 'json', ['customers', 'products']);
+    expect(r).toEqual(result);
   });
 
   it('getExportStatus delegates to service', async () => {
@@ -39,13 +39,13 @@ describe('ExportController', () => {
   });
 
   it('downloadExport delegates to service and streams response', async () => {
-    const buffer = Buffer.from('test data');
-    svc.getExportFile.mockResolvedValue(buffer);
+    const exportResult = { data: 'col1,col2\nv1,v2', format: 'csv', filename: 'export.csv', mimeType: 'text/csv', entityCount: 1 };
+    svc.exportData.mockResolvedValue(exportResult);
     const res = { setHeader: jest.fn(), send: jest.fn() };
-    await ctrl.downloadExport(req, 'exp1', res as any);
-    expect(svc.getExportFile).toHaveBeenCalledWith('t1', 'exp1');
-    expect(res.setHeader).toHaveBeenCalledWith('Content-Type', 'application/json');
-    expect(res.setHeader).toHaveBeenCalledWith('Content-Disposition', 'attachment; filename="export-exp1.json"');
-    expect(res.send).toHaveBeenCalledWith(buffer);
+    await ctrl.downloadExport(req, 'customers', 'csv' as any, res as any);
+    expect(svc.exportData).toHaveBeenCalledWith('t1', 'csv', ['customers']);
+    expect(res.setHeader).toHaveBeenCalledWith('Content-Type', 'text/csv');
+    expect(res.setHeader).toHaveBeenCalledWith('Content-Disposition', 'attachment; filename="export.csv"');
+    expect(res.send).toHaveBeenCalledWith(Buffer.from('col1,col2\nv1,v2'));
   });
 });

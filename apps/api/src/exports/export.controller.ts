@@ -15,11 +15,11 @@ export class ExportController {
   }
 
   @Post()
-  createExport(
+  async createExport(
     @Request() req: any,
     @Body() body: { format: ExportFormat; entities: string[]; dateFrom?: string; dateTo?: string },
   ) {
-    return this.service.createExportJob(req.user.tenantId, body.format, body.entities);
+    return this.service.exportData(req.user.tenantId, body.format, body.entities);
   }
 
   @Get(':id/status')
@@ -28,10 +28,16 @@ export class ExportController {
   }
 
   @Get(':id/download')
-  async downloadExport(@Request() req: any, @Param('id') id: string, @Res() res: Response) {
-    const buffer = await this.service.getExportFile(req.user.tenantId, id);
-    res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Content-Disposition', `attachment; filename="export-${id}.json"`);
-    res.send(buffer);
+  async downloadExport(
+    @Request() req: any,
+    @Param('id') id: string,
+    @Query('format') format: ExportFormat,
+    @Res() res: Response,
+  ) {
+    const fmt = format || ExportFormat.JSON;
+    const result = await this.service.exportData(req.user.tenantId, fmt, [id]);
+    res.setHeader('Content-Type', result.mimeType);
+    res.setHeader('Content-Disposition', `attachment; filename="${result.filename}"`);
+    res.send(Buffer.from(result.data));
   }
 }
