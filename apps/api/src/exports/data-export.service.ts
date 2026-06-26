@@ -25,7 +25,7 @@ export class DataExportService {
     orders: schema.orders,
     inventory: schema.inventoryTransactions,
     payments: schema.payments,
-    accounting: schema.accountingEntries,
+    accounting: schema.journalEntries,
     suppliers: schema.suppliers,
     crm: schema.crmLeads,
   };
