@@ -52,6 +52,7 @@ import { SocketModule } from './socket/socket.module';
 import { EcommerceModule } from './ecommerce/ecommerce.module';
 import { AiCopilotModule } from './ai-copilot/ai-copilot.module';
 import { PrintModule } from './print/print.module';
+import { ExportPdfModule } from './export-pdf/export-pdf.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { db } from '@smart-erp/database';
 import { DRIZZLE } from './common/drizzle.decorator';
@@ -111,6 +112,7 @@ import { I18nModule } from './i18n/i18n.module';
     EcommerceModule,
     AiCopilotModule,
     PrintModule,
+    ExportPdfModule,
   ],
   controllers: [AppController],
   providers: [
