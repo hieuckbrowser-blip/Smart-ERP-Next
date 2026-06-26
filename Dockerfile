@@ -3,20 +3,39 @@
 # Usage: docker run -p 3456:3456 -p 3457:3457 ghcr.io/hieuck/smart-erp-next
 # ──────────────────────────────────────────────────────────────
 
-# Build stage
+# Build stage — optimized for Docker layer caching
 FROM node:22-alpine AS build
 WORKDIR /app
 ENV NODE_ENV=production
 RUN npm install -g pnpm@10.33.0 && apk add --no-cache curl
 
+# Step 1: Copy only package manifests (rarely change → cached install)
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY packages/database/package.json packages/database/package.json
+COPY packages/common/package.json packages/common/package.json
+COPY packages/shared/package.json packages/shared/package.json
+COPY packages/utils/package.json packages/utils/package.json
+COPY packages/validation/package.json packages/validation/package.json
+COPY packages/hooks/package.json packages/hooks/package.json
+COPY packages/types/package.json packages/types/package.json
+COPY packages/sync/package.json packages/sync/package.json
+COPY packages/accounting/package.json packages/accounting/package.json
+COPY packages/config-eslint/package.json packages/config-eslint/package.json
+COPY packages/config-typescript/package.json packages/config-typescript/package.json
+COPY apps/api/package.json apps/api/package.json
+COPY apps/web/package.json apps/web/package.json
+
+# Step 2: Install deps (cached unless any package.json changes)
+RUN pnpm install --no-frozen-lockfile
+
+# Step 3: Copy source code (frequently changes, but install is cached)
 COPY packages/ ./packages/
-COPY apps/web/ ./apps/web/
-COPY apps/api/ ./apps/api/
+COPY apps/ ./apps/
 COPY scripts/ ./scripts/
 COPY apps/web/public/ ./apps/web/public/
 
-RUN pnpm install --no-frozen-lockfile && pnpm -r run build
+# Step 4: Build
+RUN pnpm -r run build
 
 # Runtime stage — based on postgres for embedded database
 FROM postgres:16-alpine

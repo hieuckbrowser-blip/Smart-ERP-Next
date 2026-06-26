@@ -12,21 +12,26 @@ jest.mock('@nestjs/swagger', () => ({
   },
 }));
 
-const ORIGINAL_NODE_ENV = process.env.NODE_ENV;
+function setNodeEnv(value: string | undefined) {
+  (process.env as Record<string, string | undefined>).NODE_ENV = value;
+}
 
 import { setupSwagger } from '../swagger-setup';
 
 describe('Swagger production gate', () => {
   afterEach(() => {
-    process.env.NODE_ENV = ORIGINAL_NODE_ENV;
     jest.clearAllMocks();
   });
 
+  afterAll(() => {
+    setNodeEnv(undefined);
+  });
+
   it('does not set up Swagger when NODE_ENV is production', () => {
-    process.env.NODE_ENV = 'production';
+    setNodeEnv('production');
 
     const { SwaggerModule } = require('@nestjs/swagger');
-    const app = { /* minimal mock Nest app */ get: jest.fn() } as any;
+    const app = { get: jest.fn() } as any;
 
     setupSwagger(app, '1.0.0');
 
@@ -34,7 +39,7 @@ describe('Swagger production gate', () => {
   });
 
   it('sets up Swagger when NODE_ENV is development', () => {
-    process.env.NODE_ENV = 'development';
+    setNodeEnv('development');
 
     const { SwaggerModule, DocumentBuilder } = require('@nestjs/swagger');
     const app = { get: jest.fn() } as any;
@@ -46,7 +51,7 @@ describe('Swagger production gate', () => {
   });
 
   it('sets up Swagger when NODE_ENV is unset', () => {
-    delete process.env.NODE_ENV;
+    setNodeEnv(undefined);
 
     const { SwaggerModule } = require('@nestjs/swagger');
     const app = { get: jest.fn() } as any;

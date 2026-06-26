@@ -20,7 +20,7 @@ describe('ChartOfAccountsController', () => {
   const req = { user: { tenantId: 't1' } };
 
   it('create delegates to service', () => {
-    const dto = { code: '1000', name: 'Cash', type: 'asset' };
+    const dto: any = { accountCode: '1000', accountName: 'Cash', accountType: 'asset' };
     svc.create.mockReturnValue({ id: 'a1' });
     const r = ctrl.create(req, dto);
     expect(svc.create).toHaveBeenCalledWith('t1', dto);
