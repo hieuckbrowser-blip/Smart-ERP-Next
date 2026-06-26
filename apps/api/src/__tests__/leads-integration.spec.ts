@@ -23,7 +23,7 @@ function queryBuilder(result: any) {
   chain.limit = jest.fn();
   chain.offset = jest.fn();
   chain.groupBy = jest.fn();
-  chain.then = (resolve: Function) => resolve(result);
+    chain.then = (resolve: (...args: any[]) => any) => resolve(result);
   chain.from.mockReturnValue(chain);
   chain.where.mockReturnValue(chain);
   chain.orderBy.mockReturnValue(chain);

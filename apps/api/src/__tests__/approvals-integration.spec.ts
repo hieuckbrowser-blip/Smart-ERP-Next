@@ -51,7 +51,7 @@ describe('ApprovalsService', () => {
     chain.orderBy = jest.fn().mockImplementation(function (this: any) { return this; });
     chain.limit = jest.fn().mockReturnThis();
     chain.groupBy = jest.fn().mockReturnThis();
-    chain.then = (resolve: Function) => resolve(result);
+    chain.then = (resolve: (...args: any[]) => any) => resolve(result);
     chain.from.mockReturnValue(chain);
     chain.where.mockReturnValue(chain);
     chain.innerJoin.mockReturnValue(chain);
@@ -313,7 +313,7 @@ describe('ApprovalRulesService', () => {
     chain.where = jest.fn().mockReturnThis();
     chain.orderBy = jest.fn().mockImplementation(function (this: any) { return this; });
     chain.limit = jest.fn().mockReturnThis();
-    chain.then = (resolve: Function) => resolve(result);
+    chain.then = (resolve: (...args: any[]) => any) => resolve(result);
     chain.from.mockReturnValue(chain);
     chain.where.mockReturnValue(chain);
     chain.orderBy.mockReturnValue(chain);
