@@ -22,6 +22,13 @@
       "when": 1779608960000,
       "tag": "0002_product_catalog_mvp",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1782545746785,
+      "tag": "0003_serious_synch",
+      "breakpoints": true
     }
   ]
 }
