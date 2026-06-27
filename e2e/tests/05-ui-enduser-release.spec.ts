@@ -51,8 +51,8 @@ test.describe('UI/UX end-user release audit', () => {
     await expect(page.locator(emailSelector)).toBeVisible();
     await expect(page.locator(passwordSelector)).toBeVisible();
     await page.getByRole('button', { name: /demo/i }).click();
-    await expect(page.locator(emailSelector)).toHaveValue('admin@demo.vn');
-    await expect(page.locator(passwordSelector)).toHaveValue('admin123');
+    await expect(page.locator(emailSelector)).toHaveValue('admin@demo.vn', { timeout: 5000 });
+    await expect(page.locator(passwordSelector)).toHaveValue('admin123', { timeout: 5000 });
     await expectNoFrameworkOverlay(page);
     await expectNoHorizontalOverflow(page);
   });
