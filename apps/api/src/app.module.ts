@@ -57,6 +57,7 @@ import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { db } from '@smart-erp/database';
 import { DRIZZLE } from './common/drizzle.decorator';
 import { I18nModule } from './i18n/i18n.module';
+import { ImportModule } from './import/import.module';
 
 @Module({
   imports: [
@@ -113,6 +114,7 @@ import { I18nModule } from './i18n/i18n.module';
     AiCopilotModule,
     PrintModule,
     ExportPdfModule,
+    ImportModule,
   ],
   controllers: [AppController],
   providers: [

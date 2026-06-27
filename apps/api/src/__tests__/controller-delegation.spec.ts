@@ -2,6 +2,7 @@ import { CurrenciesController } from '../currencies/currencies.controller';
 import { CustomersController } from '../customers/customers.controller';
 import { OrdersController } from '../orders/orders.controller';
 import { ProductsController } from '../products/products.controller';
+import { ImportController } from '../import/import.controller';
 import { existsSync, rmSync } from 'fs';
 import { join } from 'path';
 
@@ -261,6 +262,63 @@ describe('controller delegation', () => {
       expect(service.getExchangeRate).toHaveBeenCalledWith('tenant-1', 'USD', 'VND', '2026-05-20');
       expect(service.updateExchangeRate).toHaveBeenCalledWith('tenant-1', 'rate-1', { rate: 24600 });
       expect(service.removeExchangeRate).toHaveBeenCalledWith('tenant-1', 'rate-1');
+    });
+  });
+
+  describe('ImportController', () => {
+    const service = {
+      previewProducts: jest.fn(),
+      confirmImport: jest.fn(),
+      getPreview: jest.fn(),
+    };
+    const controller = new ImportController(service as any);
+    const req = { user: { tenantId: 'tenant-1', sub: 'user-1' } };
+
+    beforeEach(() => jest.clearAllMocks());
+
+    it('preview delegates to service with tenant and file buffer', async () => {
+      const file = { buffer: Buffer.from('fake-xlsx'), originalname: 'test.xlsx' } as Express.Multer.File;
+      service.previewProducts.mockResolvedValue({ batchId: 'b-1' });
+
+      const result = await controller.previewProducts(req, file);
+
+      expect(service.previewProducts).toHaveBeenCalledWith('tenant-1', file.buffer, 'test.xlsx');
+      expect(result).toEqual({ batchId: 'b-1' });
+    });
+
+    it('preview throws when file missing', async () => {
+      await expect(controller.previewProducts(req, undefined as any))
+        .rejects.toThrow('File is required');
+    });
+
+    it('confirm delegates to service with tenant and batchId', async () => {
+      service.confirmImport.mockResolvedValue({ imported: 5, errors: 1 });
+
+      const result = await controller.confirmImport(req, { batchId: 'b-1' });
+
+      expect(service.confirmImport).toHaveBeenCalledWith('tenant-1', 'b-1');
+      expect(result).toEqual({ imported: 5, errors: 1 });
+    });
+
+    it('confirm throws when batchId missing', async () => {
+      await expect(controller.confirmImport(req, { batchId: '' }))
+        .rejects.toThrow('batchId is required');
+    });
+
+    it('getPreview returns preview for existing batch', () => {
+      service.getPreview.mockReturnValue({ batchId: 'b-1' });
+
+      const result = controller.getPreview('b-1');
+
+      expect(service.getPreview).toHaveBeenCalledWith('b-1');
+      expect(result).toEqual({ batchId: 'b-1' });
+    });
+
+    it('getPreview throws when batch not found', () => {
+      service.getPreview.mockReturnValue(undefined);
+
+      expect(() => controller.getPreview('missing'))
+        .toThrow('Batch not found or expired');
     });
   });
 });
