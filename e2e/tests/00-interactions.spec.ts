@@ -210,14 +210,6 @@ test.describe('UI Interactions', () => {
 });
 
 test.describe('API CRUD tests', () => {
-  test.beforeAll(async ({ page }) => {
-    if (!authCookie?.value) {
-      const res = await page.request.post(`${API}/auth/login`, { data: { email: 'admin@demo.vn', password: 'admin123' } });
-      const body = await res.json();
-      const t = body.access_token || (body.data && body.data.access_token) || body.token;
-      if (t) { authCookie = { name: 'access_token', value: t }; }
-    }
-  });
 
   function h(): Record<string, string> { return { Authorization: `Bearer ${authCookie?.value || ''}` }; }
 
