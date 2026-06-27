@@ -14,7 +14,7 @@ async function setupAuth(context: BrowserContext) {
     data: { email: 'admin@smarterp.vn', password: 'admin123' },
   });
   const body = await res.json();
-  const token = body.access_token;
+  const token = body.access_token || body.data?.access_token;
   // Set localStorage for the SPA
   await page.goto('/', { waitUntil: 'domcontentloaded' });
   await page.evaluate((t) => {
@@ -33,7 +33,7 @@ async function login(page: Page) {
     data: { email: 'admin@smarterp.vn', password: 'admin123' },
   });
   const body = await res.json();
-  const token = body.access_token;
+  const token = body.access_token || body.data?.access_token;
   await page.goto('/', { waitUntil: 'domcontentloaded' });
   await page.evaluate((t) => {
     localStorage.setItem('access_token', t);
@@ -213,7 +213,7 @@ test.describe('API CRUD tests', () => {
   test.beforeAll(async ({ request }) => {
     const res = await request.post(`${API}/auth/login`, { data: { email: 'admin@smarterp.vn', password: 'admin123' } });
     const body = await res.json();
-    token = body.access_token;
+    token = body.access_token || body.data?.access_token;
     expect(token).toBeTruthy();
   });
 

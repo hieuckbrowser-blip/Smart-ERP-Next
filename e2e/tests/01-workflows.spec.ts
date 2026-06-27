@@ -12,7 +12,7 @@ test.describe('E2E workflows', () => {
       data: { email: 'admin@smarterp.vn', password: 'admin123' },
     });
     const body = await r.json();
-    token = body.access_token;
+    token = body.access_token || body.data?.access_token;
   });
 
   test.beforeEach(async ({ context }) => {

@@ -19,7 +19,7 @@ test.describe('HR workflows', () => {
       data: { email: 'admin@smarterp.vn', password: 'admin123' },
     });
     const body = await jsonOk<{ access_token: string }>(response, 'POST /auth/login');
-    token = body.access_token;
+    token = body.access_token || body.data?.access_token;
     expect(token).toBeTruthy();
   });
 

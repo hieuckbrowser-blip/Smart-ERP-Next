@@ -13,7 +13,7 @@ test.beforeAll(async ({ request }) => {
   });
   expect(res.ok()).toBeTruthy();
   const body = await res.json();
-  token = body.access_token;
+  token = body.access_token || body.data?.access_token;
   expect(token).toBeTruthy();
 });
 
@@ -45,7 +45,7 @@ test.describe('API: Auth', () => {
     });
     expect(r.ok()).toBeTruthy();
     const b = await r.json();
-    expect(b.access_token).toBeTruthy();
+    expect(b.access_token || b.data?.access_token).toBeTruthy();
     expect(b.user).toBeTruthy();
   });
   test('POST /auth/login wrong password', async ({ request }) => {

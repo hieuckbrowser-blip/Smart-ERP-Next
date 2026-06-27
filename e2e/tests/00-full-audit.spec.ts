@@ -42,7 +42,7 @@ async function loginAndSetup(page: Page) {
     data: { email: 'admin@smarterp.vn', password: 'admin123' },
   });
   const body = await res.json();
-  const token = body.access_token;
+  const token = body.access_token || body.data?.access_token;
   await page.goto('/', { waitUntil: 'domcontentloaded', timeout: 15000 });
   await page.evaluate((t) => {
     localStorage.setItem('access_token', t);

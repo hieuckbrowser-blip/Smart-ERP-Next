@@ -171,7 +171,7 @@ test.describe('API Endpoints', () => {
     });
     if (res.ok()) {
       const body = await res.json();
-      token = body.access_token;
+      token = body.access_token || body.data?.access_token;
     }
   });
 
