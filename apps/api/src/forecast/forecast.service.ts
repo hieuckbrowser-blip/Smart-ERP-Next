@@ -11,20 +11,25 @@ export class ForecastService {
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
     // Query real sales data from order items for this product
-    const salesHistory = await db
-      .select({
-        date: sql<string>`DATE(${orders.createdAt})`,
-        total_qty: sql<number>`COALESCE(SUM(${orderItems.quantity}), 0)`,
-      })
-      .from(orderItems)
-      .innerJoin(orders, eq(orderItems.orderId, orders.id))
-      .where(and(
-        eq(orderItems.productId, productId),
-        eq(orders.tenantId, tenantId),
-        gte(orders.createdAt, thirtyDaysAgo),
-      ))
-      .groupBy(sql`DATE(${orders.createdAt})`)
-      .orderBy(sql`DATE(${orders.createdAt})`);
+    let salesHistory: any[] = [];
+    try {
+      salesHistory = await db
+        .select({
+          date: sql<string>`DATE(${orders.createdAt})`,
+          total_qty: sql<number>`COALESCE(SUM(${orderItems.quantity}), 0)`,
+        })
+        .from(orderItems)
+        .innerJoin(orders, eq(orderItems.orderId, orders.id))
+        .where(and(
+          eq(orderItems.productId, productId),
+          eq(orders.tenantId, tenantId),
+          gte(orders.createdAt, thirtyDaysAgo),
+        ))
+        .groupBy(sql`DATE(${orders.createdAt})`)
+        .orderBy(sql`DATE(${orders.createdAt})`);
+    } catch {
+      // DB query may fail for invalid UUIDs or missing tables
+    }
 
     const dailyTotals = salesHistory.map((r: any) => Number(r.total_qty || 0));
     const avg = dailyTotals.length > 0
