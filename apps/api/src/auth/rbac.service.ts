@@ -1,19 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { DrizzleService } from '../drizzle/drizzle.service';
-import { eq, and } from 'drizzle-orm';
+import { Permission, PERMISSIONS, DEFAULT_ROLES } from './permissions';
 
-export type Permission =
-  | 'customers.read' | 'customers.create' | 'customers.update' | 'customers.delete'
-  | 'products.read' | 'products.create' | 'products.update' | 'products.delete'
-  | 'orders.read' | 'orders.create' | 'orders.update' | 'orders.delete' | 'orders.approve'
-  | 'inventory.read' | 'inventory.adjust' | 'inventory.transfer'
-  | 'suppliers.read' | 'suppliers.create' | 'suppliers.update' | 'suppliers.delete'
-  | 'payments.read' | 'payments.create' | 'payments.update'
-  | 'reports.read' | 'reports.export'
-  | 'settings.read' | 'settings.update'
-  | 'users.read' | 'users.create' | 'users.update' | 'users.delete'
-  | 'manufacturing.read' | 'manufacturing.create' | 'manufacturing.update'
-  | 'analytics.read' | 'automation.read' | 'automation.manage';
+export type { Permission } from './permissions';
 
 export interface Role {
   id: string;
@@ -23,52 +12,77 @@ export interface Role {
   isSystem: boolean;
 }
 
-const ALL_PERMISSIONS: Permission[] = [
-  'customers.read', 'customers.create', 'customers.update', 'customers.delete',
-  'products.read', 'products.create', 'products.update', 'products.delete',
-  'orders.read', 'orders.create', 'orders.update', 'orders.delete', 'orders.approve',
-  'inventory.read', 'inventory.adjust', 'inventory.transfer',
-  'suppliers.read', 'suppliers.create', 'suppliers.update', 'suppliers.delete',
-  'payments.read', 'payments.create', 'payments.update',
-  'reports.read', 'reports.export',
-  'settings.read', 'settings.update',
-  'users.read', 'users.create', 'users.update', 'users.delete',
-  'manufacturing.read', 'manufacturing.create', 'manufacturing.update',
-  'analytics.read', 'automation.read', 'automation.manage',
-];
-
-const DEFAULT_ROLES: Record<string, Permission[]> = {
-  admin: ALL_PERMISSIONS,
-  manager: [
-    'customers.read', 'customers.create', 'customers.update',
-    'products.read', 'products.create', 'products.update',
-    'orders.read', 'orders.create', 'orders.update', 'orders.approve',
-    'inventory.read', 'inventory.adjust', 'inventory.transfer',
-    'suppliers.read', 'suppliers.create', 'suppliers.update',
-    'payments.read', 'payments.create', 'payments.update',
-    'reports.read', 'reports.export',
-    'settings.read',
-    'manufacturing.read', 'manufacturing.create', 'manufacturing.update',
-    'analytics.read', 'automation.read', 'automation.manage',
-  ],
-  staff: [
-    'customers.read', 'customers.create',
-    'products.read',
-    'orders.read', 'orders.create', 'orders.update',
-    'inventory.read',
-    'suppliers.read',
-    'payments.read', 'payments.create',
-  ],
-  viewer: [
-    'customers.read', 'products.read', 'orders.read',
-    'inventory.read', 'suppliers.read', 'payments.read',
-    'reports.read',
-  ],
-};
-
 @Injectable()
 export class RbacService {
+  private tenantRoles = new Map<string, Role[]>();
+
   constructor(private readonly drizzle: DrizzleService) {}
+
+  /** Get all roles for a tenant (defaults + custom) */
+  async getRoles(tenantId: string): Promise<Role[]> {
+    if (!this.tenantRoles.has(tenantId)) {
+      return this.seedDefaultRoles(tenantId);
+    }
+    return this.tenantRoles.get(tenantId)!;
+  }
+
+  /** Create a custom role */
+  async createRole(tenantId: string, data: { name: string; permissions: string[]; description?: string }): Promise<Role> {
+    await this.getRoles(tenantId);
+    const role: Role = {
+      id: crypto.randomUUID(),
+      name: data.name,
+      permissions: data.permissions as Permission[],
+      description: data.description,
+      isSystem: false,
+    };
+    this.tenantRoles.get(tenantId)!.push(role);
+    return role;
+  }
+
+  /** Update a custom role (name, permissions, description) */
+  async updateRole(tenantId: string, roleId: string, data: { name?: string; permissions?: string[]; description?: string }): Promise<Role> {
+    const roles = this.tenantRoles.get(tenantId) || await this.seedDefaultRoles(tenantId);
+    const index = roles.findIndex((r) => r.id === roleId);
+    if (index === -1) throw new NotFoundException('Role not found');
+    if (roles[index].isSystem) throw new ForbiddenException('Cannot modify system roles');
+    roles[index] = {
+      ...roles[index],
+      ...(data.name !== undefined ? { name: data.name } : {}),
+      ...(data.description !== undefined ? { description: data.description } : {}),
+      ...(data.permissions !== undefined ? { permissions: data.permissions as Permission[] } : {}),
+    };
+    return roles[index];
+  }
+
+  /** Delete a custom role */
+  async deleteRole(tenantId: string, roleId: string): Promise<void> {
+    const roles = this.tenantRoles.get(tenantId) || await this.seedDefaultRoles(tenantId);
+    const role = roles.find((r) => r.id === roleId);
+    if (!role) throw new NotFoundException('Role not found');
+    if (role.isSystem) throw new ForbiddenException('Cannot delete system roles');
+    this.tenantRoles.set(tenantId, roles.filter((r) => r.id !== roleId));
+  }
+
+  /** Seed the three default roles (admin, manager, staff) for a tenant */
+  async seedDefaultRoles(tenantId: string): Promise<Role[]> {
+    const roles: Role[] = Object.entries(DEFAULT_ROLES).map(([name, permissions]) => ({
+      id: crypto.randomUUID(),
+      name,
+      permissions: permissions as Permission[],
+      isSystem: true,
+    }));
+    this.tenantRoles.set(tenantId, roles);
+    return roles;
+  }
+
+  /** Get all available permissions grouped by module */
+  getPermissions(): { module: string; permissions: string[] }[] {
+    return Object.entries(PERMISSIONS).map(([module, perms]) => ({
+      module,
+      permissions: perms.map((p) => `${module}:${p}`),
+    }));
+  }
 
   /** Check if a user has a specific permission */
   async hasPermission(tenantId: string, userId: string, permission: Permission): Promise<boolean> {
@@ -93,23 +107,19 @@ export class RbacService {
 
   /** Get user roles */
   async getUserRoles(tenantId: string, userId: string): Promise<Role[]> {
-    // In production, this would query a roles table
-    // For now, return default roles based on user role field
     const userRole = await this.getUserRole(tenantId, userId);
-    const permissions = DEFAULT_ROLES[userRole] || DEFAULT_ROLES['viewer'];
+    const defaultPerms = DEFAULT_ROLES[userRole] || DEFAULT_ROLES.manager;
     return [{
       id: `role-${userRole}`,
       name: userRole,
-      permissions,
+      permissions: defaultPerms as Permission[],
       isSystem: true,
     }];
   }
 
-  /** Create custom role */
-  async createRole(tenantId: string, name: string, permissions: Permission[], description?: string): Promise<Role> {
-    const id = crypto.randomUUID();
-    // In production, save to database
-    return { id, name, description, permissions, isSystem: false };
+  /** Create custom role (legacy signature) */
+  async createRoleLegacy(tenantId: string, name: string, permissions: Permission[], description?: string): Promise<Role> {
+    return this.createRole(tenantId, { name, permissions, description });
   }
 
   /** Assign role to user */
@@ -122,50 +132,50 @@ export class RbacService {
     // In production, remove from user_roles table
   }
 
-  /** Get all available permissions */
+  /** Get all available permissions (legacy grouped format) */
   getAllPermissions(): { module: string; permissions: { key: Permission; label: string }[] }[] {
     return [
       {
         module: 'Customers',
         permissions: [
-          { key: 'customers.read', label: 'View Customers' },
-          { key: 'customers.create', label: 'Create Customers' },
-          { key: 'customers.update', label: 'Edit Customers' },
-          { key: 'customers.delete', label: 'Delete Customers' },
+          { key: 'customers.read' as Permission, label: 'View Customers' },
+          { key: 'customers.create' as Permission, label: 'Create Customers' },
+          { key: 'customers.update' as Permission, label: 'Edit Customers' },
+          { key: 'customers.delete' as Permission, label: 'Delete Customers' },
         ],
       },
       {
         module: 'Products',
         permissions: [
-          { key: 'products.read', label: 'View Products' },
-          { key: 'products.create', label: 'Create Products' },
-          { key: 'products.update', label: 'Edit Products' },
-          { key: 'products.delete', label: 'Delete Products' },
+          { key: 'products.read' as Permission, label: 'View Products' },
+          { key: 'products.create' as Permission, label: 'Create Products' },
+          { key: 'products.update' as Permission, label: 'Edit Products' },
+          { key: 'products.delete' as Permission, label: 'Delete Products' },
         ],
       },
       {
         module: 'Orders',
         permissions: [
-          { key: 'orders.read', label: 'View Orders' },
-          { key: 'orders.create', label: 'Create Orders' },
-          { key: 'orders.update', label: 'Edit Orders' },
-          { key: 'orders.delete', label: 'Delete Orders' },
-          { key: 'orders.approve', label: 'Approve Orders' },
+          { key: 'orders.read' as Permission, label: 'View Orders' },
+          { key: 'orders.create' as Permission, label: 'Create Orders' },
+          { key: 'orders.update' as Permission, label: 'Edit Orders' },
+          { key: 'orders.delete' as Permission, label: 'Delete Orders' },
+          { key: 'orders.approve' as Permission, label: 'Approve Orders' },
         ],
       },
       {
         module: 'Inventory',
         permissions: [
-          { key: 'inventory.read', label: 'View Inventory' },
-          { key: 'inventory.adjust', label: 'Adjust Stock' },
-          { key: 'inventory.transfer', label: 'Transfer Stock' },
+          { key: 'inventory.read' as Permission, label: 'View Inventory' },
+          { key: 'inventory.adjust' as Permission, label: 'Adjust Stock' },
+          { key: 'inventory.transfer' as Permission, label: 'Transfer Stock' },
         ],
       },
       {
         module: 'Reports',
         permissions: [
-          { key: 'reports.read', label: 'View Reports' },
-          { key: 'reports.export', label: 'Export Reports' },
+          { key: 'reports.read' as Permission, label: 'View Reports' },
+          { key: 'reports.export' as Permission, label: 'Export Reports' },
         ],
       },
     ];

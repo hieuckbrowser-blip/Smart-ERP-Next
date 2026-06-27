@@ -4,14 +4,14 @@ describe('RbacService', () => {
   const service = new RbacService({} as any);
 
   it('grants permissions assigned to the default staff role', async () => {
-    await expect(service.hasPermission('tenant-1', 'user-1', 'orders.create')).resolves.toBe(true);
-    await expect(service.hasPermission('tenant-1', 'user-1', 'reports.export')).resolves.toBe(false);
+    await expect(service.hasPermission('tenant-1', 'user-1', 'orders:create')).resolves.toBe(true);
+    await expect(service.hasPermission('tenant-1', 'user-1', 'reports:export')).resolves.toBe(false);
   });
 
   it('deduplicates permissions across user roles', async () => {
     const permissions = await service.getUserPermissions('tenant-1', 'user-1');
 
-    expect(permissions).toEqual(expect.arrayContaining(['customers.read', 'orders.create', 'payments.create']));
+    expect(permissions).toEqual(expect.arrayContaining(['customers:view', 'orders:create', 'inventory:view']));
     expect(new Set(permissions).size).toBe(permissions.length);
   });
 
@@ -27,7 +27,7 @@ describe('RbacService', () => {
     ]);
   });
 
-  it('falls back to viewer permissions for unknown user roles', async () => {
+  it('falls back to manager permissions for unknown user roles', async () => {
     const roleSpy = jest.spyOn(service as any, 'getUserRole').mockResolvedValueOnce('contractor');
 
     const roles = await service.getUserRoles('tenant-1', 'user-1');
@@ -36,21 +36,25 @@ describe('RbacService', () => {
       expect.objectContaining({
         id: 'role-contractor',
         name: 'contractor',
-        permissions: expect.arrayContaining(['customers.read', 'reports.read']),
+        permissions: expect.arrayContaining(['customers:view', 'products:create']),
       }),
     ]);
-    expect(roles[0].permissions).not.toContain('orders.create');
+    expect(roles[0].permissions).not.toContain('inventory:adjust');
     roleSpy.mockRestore();
   });
 
   it('creates custom roles without persisting to the database placeholder', async () => {
-    const role = await service.createRole('tenant-1', 'Store Auditor', ['reports.read'], 'Read-only audit role');
+    const role = await service.createRole('tenant-1', {
+      name: 'Store Auditor',
+      permissions: ['reports:view'],
+      description: 'Read-only audit role',
+    });
 
     expect(role.id).toEqual(expect.any(String));
     expect(role).toMatchObject({
       name: 'Store Auditor',
       description: 'Read-only audit role',
-      permissions: ['reports.read'],
+      permissions: ['reports:view'],
       isSystem: false,
     });
   });

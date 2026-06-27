@@ -211,16 +211,16 @@ describe('Remaining Services Integration', () => {
     });
 
     it('hasPermission returns true for staff read', async () => {
-      expect(await service.hasPermission('t1', 'u1', 'customers.read')).toBe(true);
+      expect(await service.hasPermission('t1', 'u1', 'customers:view')).toBe(true);
     });
 
     it('hasPermission returns false for missing permission', async () => {
-      expect(await service.hasPermission('t1', 'u1', 'orders.approve' as any)).toBe(false);
+      expect(await service.hasPermission('t1', 'u1', 'customers:edit' as any)).toBe(false);
     });
 
     it('getUserPermissions returns user permissions', async () => {
       const perms = await service.getUserPermissions('t1', 'u1');
-      expect(perms).toContain('customers.read');
+      expect(perms).toContain('customers:view');
     });
 
     it('getUserRoles returns default roles', async () => {
@@ -230,7 +230,7 @@ describe('Remaining Services Integration', () => {
     });
 
     it('createRole returns new role', async () => {
-      const role = await service.createRole('t1', 'custom', ['customers.read']);
+      const role = await service.createRole('t1', { name: 'custom', permissions: ['customers:view'] });
       expect(role.name).toBe('custom');
     });
 

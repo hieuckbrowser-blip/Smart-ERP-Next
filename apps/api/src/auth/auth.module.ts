@@ -5,6 +5,8 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
+import { RbacService } from './rbac.service';
+import { RbacController } from './rbac.controller';
 import { UsersModule } from '../users/users.module';
 import { NotificationsModule } from '../notifications/notifications.module';
 import { JwtStrategy } from '../common/strategies/jwt.strategy';
@@ -24,8 +26,8 @@ import { LocalStrategy } from '../common/strategies/local.strategy';
       inject: [ConfigService],
     }),
   ],
-  controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
-  exports: [AuthService],
+  controllers: [AuthController, RbacController],
+  providers: [AuthService, RbacService, LocalStrategy, JwtStrategy],
+  exports: [AuthService, RbacService],
 })
 export class AuthModule {}

@@ -29,7 +29,7 @@ describe('RbacService', () => {
   });
 
   it('createRole returns role with ID', async () => {
-    const role = await service.createRole('t1', 'Custom', ['products.read']);
+    const role = await service.createRole('t1', { name: 'Custom', permissions: ['products:view'] });
     expect(role.id).toBeTruthy();
     expect(role.name).toBe('Custom');
     expect(role.isSystem).toBe(false);
