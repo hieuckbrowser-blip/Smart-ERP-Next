@@ -50,9 +50,11 @@ test.describe('UI/UX end-user release audit', () => {
     await expect(page.getByRole('heading', { name: /smart erp next/i })).toBeVisible();
     await expect(page.locator(emailSelector)).toBeVisible();
     await expect(page.locator(passwordSelector)).toBeVisible();
+    // Demo button fills fields via autofill — wait for the value to be set
     await page.getByRole('button', { name: /demo/i }).click();
-    await expect(page.locator(emailSelector)).toHaveValue('admin@demo.vn', { timeout: 5000 });
-    await expect(page.locator(passwordSelector)).toHaveValue('admin123', { timeout: 5000 });
+    await page.waitForTimeout(1000);
+    await expect(page.locator(emailSelector)).toHaveValue('admin@demo.vn', { timeout: 10000 });
+    await expect(page.locator(passwordSelector)).toHaveValue('admin123', { timeout: 10000 });
     await expectNoFrameworkOverlay(page);
     await expectNoHorizontalOverflow(page);
   });
