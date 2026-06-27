@@ -211,7 +211,12 @@ test.describe('UI Interactions', () => {
 
 test.describe('API CRUD tests', () => {
 
-  function h(): Record<string, string> { return { Authorization: `Bearer ${authCookie?.value || ''}` }; }
+  let token = '';
+  test.beforeAll(async ({ request }) => {
+    const res = await request.post(`${API}/auth/login`, { data: { email: 'admin@demo.vn', password: 'admin123' } });
+    if (res.ok()) { const b = await res.json(); token = b.access_token || (b.data && b.data.access_token) || ''; }
+  });
+  function h(): Record<string, string> { return { Authorization: `Bearer ${token}` }; }
 
   test('Product CRUD: create → read → update → search', async ({ request }) => {
     const marker = `INT-${Date.now().toString(36)}`;
