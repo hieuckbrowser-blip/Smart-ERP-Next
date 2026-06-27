@@ -210,58 +210,49 @@ test.describe('UI Interactions', () => {
 });
 
 test.describe('API CRUD tests', () => {
-  let token: string;
-
-  test.beforeAll(async ({ request }) => {
-    const res = await request.post(`${API}/auth/login`, { data: { email: 'admin@demo.vn', password: 'admin123' } });
-    if (res.status() !== 200) throw new Error(`Login failed: ${res.status()} ${await res.text()}`);
-    const body = await res.json();
-    token = body.access_token || (body.data && body.data.access_token) || body.token;
-    if (!token) throw new Error(`No token in response: ${JSON.stringify(body)}`);
+  test.beforeAll(async ({ page }) => {
+    if (!authCookie?.value) {
+      const res = await page.request.post(`${API}/auth/login`, { data: { email: 'admin@demo.vn', password: 'admin123' } });
+      const body = await res.json();
+      const t = body.access_token || (body.data && body.data.access_token) || body.token;
+      if (t) { authCookie = { name: 'access_token', value: t }; }
+    }
   });
+
+  function h(): Record<string, string> { return { Authorization: `Bearer ${authCookie?.value || ''}` }; }
 
   test('Product CRUD: create → read → update → search', async ({ request }) => {
     const marker = `INT-${Date.now().toString(36)}`;
-    const headers = { Authorization: `Bearer ${token}` };
-
-    const created = await (await request.post(`${API}/products`, { headers, data: { name: `Test ${marker}`, price: 50000, cost: 30000, stock: 10, category: 'E2E' } })).json();
+    const created = await (await request.post(`${API}/products`, { headers: h(), data: { name: `Test ${marker}`, price: 50000, cost: 30000, stock: 10, category: 'E2E' } })).json();
     expect(created.id).toBeTruthy();
-    const read = await (await request.get(`${API}/products/${created.id}`, { headers })).json();
+    const read = await (await request.get(`${API}/products/${created.id}`, { headers: h() })).json();
     expect(read.name).toBe(`Test ${marker}`);
-    const updated = await (await request.patch(`${API}/products/${created.id}`, { headers, data: { price: 55000 } })).json();
+    const updated = await (await request.patch(`${API}/products/${created.id}`, { headers: h(), data: { price: 55000 } })).json();
     expect(Number(updated.price)).toBe(55000);
-    const search = await (await request.get(`${API}/products?search=${encodeURIComponent(marker)}`, { headers })).json();
+    const search = await (await request.get(`${API}/products?search=${encodeURIComponent(marker)}`, { headers: h() })).json();
     const items = Array.isArray(search) ? search : search.data || search.items || [];
     expect(items.some((i: any) => i.id === created.id)).toBeTruthy();
-    console.log(`  ✅ Product CRUD: ${created.id}`);
   });
 
   test('Customer CRUD: create → read → update', async ({ request }) => {
     const marker = `INT-${Date.now().toString(36)}`;
-    const headers = { Authorization: `Bearer ${token}` };
-
-    const created = await (await request.post(`${API}/customers`, { headers, data: { code: marker, name: `Customer ${marker}`, phone: `09${Date.now().toString().slice(-8)}`, email: `${marker}@test.com` } })).json();
+    const created = await (await request.post(`${API}/customers`, { headers: h(), data: { code: marker, name: `Customer ${marker}`, phone: `09${Date.now().toString().slice(-8)}`, email: `${marker}@test.com` } })).json();
     expect(created.id).toBeTruthy();
-    const read = await (await request.get(`${API}/customers/${created.id}`, { headers })).json();
+    const read = await (await request.get(`${API}/customers/${created.id}`, { headers: h() })).json();
     expect(read.id).toBe(created.id);
-    const updated = await (await request.patch(`${API}/customers/${created.id}`, { headers, data: { debtLimit: 2000000 } })).json();
+    const updated = await (await request.patch(`${API}/customers/${created.id}`, { headers: h(), data: { debtLimit: 2000000 } })).json();
     expect(Number(updated.debtLimit)).toBe(2000000);
-    console.log(`  ✅ Customer CRUD: ${created.id}`);
   });
 
   test('Purchase Order CRUD: create → read → update', async ({ request }) => {
     const marker = `PO-${Date.now().toString(36)}`;
-    const headers = { Authorization: `Bearer ${token}` };
-
-    // Get real IDs from the API
-    const suppliersResp = await request.get(`${API}/suppliers?limit=1`, { headers });
+    const suppliersResp = await request.get(`${API}/suppliers?limit=1`, { headers: h() });
     expect(suppliersResp.ok()).toBeTruthy();
     const suppliersBody = await suppliersResp.json();
     const supplierList = Array.isArray(suppliersBody) ? suppliersBody : (suppliersBody.items || suppliersBody.data || []);
     const supplierId = supplierList[0]?.id;
     expect(supplierId, 'No supplier found').toBeTruthy();
-
-    const productsResp = await request.get(`${API}/products?limit=1`, { headers });
+    const productsResp = await request.get(`${API}/products?limit=1`, { headers: h() });
     expect(productsResp.ok()).toBeTruthy();
     const productsBody = await productsResp.json();
     const productList = Array.isArray(productsBody) ? productsBody : (productsBody.items || productsBody.data || []);
@@ -288,23 +279,19 @@ test.describe('API CRUD tests', () => {
     expect(po.id).toBeTruthy();
 
     // Read PO
-    const readResp = await request.get(`${API}/purchasing/${po.id}`, { headers });
+    const readResp = await request.get(`${API}/purchasing/${po.id}`, { headers: h() });
     expect(readResp.ok()).toBeTruthy();
     const read = await readResp.json();
     expect(read.id).toBe(po.id);
-
-    console.log(`  ✅ PO CRUD: ${po.id}`);
   });
 
   test('User profile: GET /users/me', async ({ request }) => {
-    const me = await (await request.get(`${API}/users/me`, { headers: { Authorization: `Bearer ${token}` } })).json();
+    const me = await (await request.get(`${API}/users/me`, { headers: h() })).json();
     expect(me.email).toBe('admin@demo.vn');
-    console.log('  ✅ User profile');
   });
 
   test('Search across modules', async ({ request }) => {
-    const res = await request.get(`${API}/search?q=admin`, { headers: { Authorization: `Bearer ${token}` } });
+    const res = await request.get(`${API}/search?q=admin`, { headers: h() });
     expect(res.status()).toBeLessThan(500);
-    console.log('  ✅ Search API');
   });
 });
