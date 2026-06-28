@@ -59,6 +59,7 @@ import { DRIZZLE } from './common/drizzle.decorator';
 import { I18nModule } from './i18n/i18n.module';
 import { ImportModule } from './import/import.module';
 import { OnboardingModule } from './onboarding/onboarding.module';
+import { StatusModule } from './monitor/status.module';
 
 @Module({
   imports: [
@@ -117,6 +118,7 @@ import { OnboardingModule } from './onboarding/onboarding.module';
     ExportPdfModule,
     ImportModule,
     OnboardingModule,
+    StatusModule,
   ],
   controllers: [AppController],
   providers: [

@@ -15,12 +15,13 @@ test.describe('Feature Smoke Tests', () => {
     token = body.access_token || body.data?.access_token || '';
   });
 
-  test('GET /status returns version and uptime', async () => {
-    const res = await fetch(`${API}/status`);
+  test('GET /status returns version and uptime', async ({ request }) => {
+    const res = await request.get(`${API}/status`);
     const body = await res.json();
-    expect(body).toHaveProperty('version');
-    expect(body).toHaveProperty('uptime');
-    expect(body).toHaveProperty('dbStatus');
+    const data = body.success === true ? body.data : body;
+    expect(data).toHaveProperty('version');
+    expect(data).toHaveProperty('uptime');
+    expect(data).toHaveProperty('dbStatus');
   });
 
   test('GET /settings/currency returns default currency', async ({ request }) => {
