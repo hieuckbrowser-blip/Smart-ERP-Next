@@ -55,6 +55,8 @@ jobs:
       - docker-images
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Generate release notes
         env:
