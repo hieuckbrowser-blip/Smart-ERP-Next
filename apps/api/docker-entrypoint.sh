@@ -50,9 +50,10 @@ else
 fi
 
 # ── Migrations ────────────────────────────────────────────
-if command -v npx >/dev/null 2>&1 && [ -f "packages/database/drizzle.config.ts" ]; then
+DRIZZLE_KIT="/app/node_modules/.bin/drizzle-kit"
+if [ -f "$DRIZZLE_KIT" ] && [ -f "packages/database/drizzle.config.ts" ]; then
   echo "Running migrations..."
-  npx drizzle-kit migrate --config=packages/database/drizzle.config.ts || echo "Migration issue (non-fatal)"
+  node "$DRIZZLE_KIT" migrate --config=packages/database/drizzle.config.ts || echo "Migration issue (non-fatal)"
 fi
 
 # ── Seed ──────────────────────────────────────────────────
