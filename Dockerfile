@@ -98,6 +98,9 @@ RUN set -eux; \
       rm -rf "$link"; \
       ln -sf "$d" "$link"; \
     done; \
+    # Replace accounting .ts source with CJS-compatible re-export for runtime
+    rm -f /app/packages/accounting/src/index.ts; \
+    echo 'const m = require("/app/packages/accounting/dist/src/index.js"); Object.keys(m).forEach((k) => { exports[k] = m[k]; });' > /app/packages/accounting/src/index.js; \
     chmod +x /app/docker-entrypoint.sh
 
 EXPOSE 3456 3457
