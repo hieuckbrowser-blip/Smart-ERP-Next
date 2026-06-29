@@ -78,7 +78,7 @@ fi
 
 # ── Start servers ─────────────────────────────────────────
 echo "Starting API server on port ${PORT:-3456}..."
-node apps/api/dist/apps/api/src/main.js &
+node --experimental-require-module apps/api/dist/apps/api/src/main.js &
 
 if [ -f "apps/web/.next/standalone/server.js" ]; then
   echo "Starting Web server on port ${WEB_PORT:-3457}..."

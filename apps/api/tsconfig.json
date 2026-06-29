@@ -11,13 +11,7 @@
       "@smart-erp/database/schema": ["../../packages/database/src/schema/index.ts"],
       "@smart-erp/database/drizzle": ["../../packages/database/src/drizzle.ts"],
       "@smart-erp/database": ["../../packages/database/src/index.ts"],
-      "@smart-erp/accounting": ["../../packages/accounting/dist/src/index.js"],
-      "@smart-erp/validation": ["../../packages/validation/src/index.ts"],
-      "@smart-erp/types": ["../../packages/types/src/index.ts"],
-      "@smart-erp/utils": ["../../packages/utils/src/index.ts"],
-      "@smart-erp/hooks": ["../../packages/hooks/src/index.ts"],
-      "@smart-erp/sync": ["../../packages/sync/src/index.ts"],
-      "@smart-erp/shared": ["../../packages/shared/src/index.ts"]
+      "@smart-erp/*": ["../../packages/*/src/index.ts"]
     }
   },
   "include": ["src"],
