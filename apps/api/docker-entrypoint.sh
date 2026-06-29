@@ -51,10 +51,10 @@ fi
 
 # ── Migrations ────────────────────────────────────────────
 DRIZZLE_KIT="/app/node_modules/.bin/drizzle-kit"
-DRIZZLE_CONFIG="packages/database/drizzle.config.ts"
-if [ -f "$DRIZZLE_KIT" ] && [ -f "$DRIZZLE_CONFIG" ]; then
+DRIZZLE_DIR="/app/packages/database"
+if [ -f "$DRIZZLE_KIT" ] && [ -f "$DRIZZLE_DIR/drizzle.config.ts" ]; then
   echo "Running migrations..."
-  cd /app && node "$DRIZZLE_KIT" migrate --config="$DRIZZLE_CONFIG" || echo "Migration issue (non-fatal)"
+  cd "$DRIZZLE_DIR" && DATABASE_URL="$DATABASE_URL" node "$DRIZZLE_KIT" migrate || echo "Migration issue (non-fatal)"
 fi
 
 # ── Seed ──────────────────────────────────────────────────
