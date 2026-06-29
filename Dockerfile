@@ -99,6 +99,8 @@ RUN set -eux; \
       ln -sf "$d" "$link"; \
     done; \
     # Keep .ts source files — compiled JS in apps/api references them via tsconfig paths
+    # Compile accounting package source to .js alongside .ts for directory resolution
+    cd /app/packages/accounting && node /app/node_modules/.bin/tsc --outDir . --declaration false --strict false --module commonjs --target es2020 --esModuleInterop true --skipLibCheck true src/index.ts src/chart-of-accounts/index.ts src/voucher-types/index.ts src/currency-conversion/index.ts src/depreciation/index.ts src/financial-reports/index.ts src/journal-entry/index.ts src/tax-declaration/index.ts src/vat/index.ts 2>/dev/null || true; \
     chmod +x /app/docker-entrypoint.sh
 
 EXPOSE 3456 3457
