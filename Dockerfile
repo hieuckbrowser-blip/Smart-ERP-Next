@@ -76,7 +76,9 @@ RUN set -eux; \
     for d in /app/packages/*/; do \
       rm -rf "${d}src" "${d}__tests__" 2>/dev/null || true; \
     done; \
-    find /app/packages -type f \( -name '*.ts' -o -name '*.map' -o -name 'tsconfig*' \) -not -path '*/node_modules/*' -not -name 'drizzle.config.ts' -delete; \
+    # Keep .ts source files — compiled JS in apps/api references them via tsconfig paths
+    # Only remove .map and tsconfig files to save space
+    find /app/packages -type f \( -name '*.map' -o -name 'tsconfig*' \) -not -path '*/node_modules/*' -not -name 'drizzle.config.ts' -delete; \
     rm -f /usr/local/bin/pnpm /usr/local/lib/node_modules/pnpm; \
     for d in /app/packages/*/; do \
       name="$(basename "$d")"; \
