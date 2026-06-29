@@ -85,6 +85,10 @@ RUN set -eux; \
     rm -rf /app/apps/web/src /app/apps/api/src /app/packages/*/__tests__; \
     find /app/packages -type f \( -name '*.map' -o -name 'tsconfig*' \) -not -path '*/node_modules/*' -not -name 'drizzle.config.ts' -delete; \
     rm -f /usr/local/bin/pnpm /usr/local/lib/node_modules/pnpm; \
+    # Create symlink for compiled JS path resolution
+    # TypeScript emits paths relative to source, not dist output
+    mkdir -p /app/apps/api/dist; \
+    ln -sf /app/packages /app/apps/api/dist/packages; \
     for d in /app/packages/*/; do \
       name="$(basename "$d")"; \
       link="/app/node_modules/@smart-erp/${name}"; \
