@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 156 | Remaining: 0
+Completed: 160 | Remaining: 0
 
 ## Completed
 
@@ -147,6 +147,8 @@ Completed: 156 | Remaining: 0
 | Makefile | Low | make dev/test/lint/typecheck/build/clean/ci targets |
 | VS Code workspace settings | Low | .vscode/extensions.json + settings.json for team onboarding |
 | API deprecation header pattern | Medium | @Deprecated decorator + Sunset/Deprecation/Link headers (TDD: 3 tests) |
+| SECURITY.md | **Critical** | Security policy with vulnerability reporting, supported versions, disclosure policy |
+| Docker image cleanup | Medium | Removes pnpm-store, .npm, *.d.ts, *.md, /tmp, apk cache in runtime stage (TDD: 6 tests) |
 
 | Item | Impact | Notes |
 |------|--------|-------|

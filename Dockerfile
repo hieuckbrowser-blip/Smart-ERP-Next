@@ -81,6 +81,9 @@ RUN npm_config_node_linker=hoisted pnpm install --no-frozen-lockfile --offline 2
     rm -rf /app/apps/web/src /app/apps/web/.next/cache /app/apps/api/src /app/packages/*/__tests__; \
     find /app/packages -type f \( -name '*.map' -o -name 'tsconfig*' \) -not -path '*/node_modules/*' -not -name 'drizzle.config.ts' -delete; \
     rm -f /usr/local/bin/pnpm /usr/local/lib/node_modules/pnpm; \
+    rm -rf /root/.pnpm-store /root/.npm /tmp/* /var/cache/apk/*; \
+    find /app/node_modules -name "*.d.ts" -delete 2>/dev/null; \
+    find /app/node_modules -name "*.md" -delete 2>/dev/null; \
     chmod +x /app/docker-entrypoint.sh
 
 LABEL org.opencontainers.image.title="Smart ERP Next" \
