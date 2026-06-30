@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 174 | Remaining: 0
+Completed: 177 | Remaining: 0
 
 ## Completed
 
@@ -159,6 +159,9 @@ Completed: 174 | Remaining: 0
 | OpenAPI spec generation script | Low | scripts/generate-api-docs.js exports Swagger spec to JSON |
 | Auth flow integration tests | High | Full register→login→refresh→logout (TDD: 8 tests) |
 | Dependency vulnerability fix | **Critical** | next 15.2.6→15.5.18 (11 vulns), drizzle-orm 0.31.4→0.45.2 (SQL injection) |
+| CodeQL v3→v4 | Medium | github/codeql-action upgraded to v4 for Node 24 compatibility |
+| NestJS Dependabot PR merged | Medium | 14 NestJS dependency updates |
+| Docker Compose healthcheck alignment | Low | Consistent 30s/5s/30s/3 retries across all compose files |
 
 | Item | Impact | Notes |
 |------|--------|-------|
