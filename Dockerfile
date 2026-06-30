@@ -83,6 +83,14 @@ RUN npm_config_node_linker=hoisted pnpm install --no-frozen-lockfile --offline 2
     rm -f /usr/local/bin/pnpm /usr/local/lib/node_modules/pnpm; \
     chmod +x /app/docker-entrypoint.sh
 
+LABEL org.opencontainers.image.title="Smart ERP Next" \
+      org.opencontainers.image.description="ERP system for Vietnamese SMEs — POS, inventory, accounting, manufacturing, CRM" \
+      org.opencontainers.image.url="https://github.com/hieuck/Smart-ERP-Next" \
+      org.opencontainers.image.source="https://github.com/hieuck/Smart-ERP-Next" \
+      org.opencontainers.image.licenses="MIT" \
+      org.opencontainers.image.version="${VERSION:-latest}"
+
 EXPOSE 3456 3457
-HEALTHCHECK CMD curl -f http://127.0.0.1:3456/health || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+  CMD curl -f http://127.0.0.1:3456/health || exit 1
 CMD ["/app/docker-entrypoint.sh"]

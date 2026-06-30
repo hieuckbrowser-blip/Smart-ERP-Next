@@ -13,6 +13,7 @@ import { buildCorsOptions } from './common/config/cors-config';
 import { helmetMiddleware } from './common/config/helmet-config';
 import { GracefulShutdownService } from './common/shutdown/graceful-shutdown.service';
 import { EnvValidatorService } from './common/config/env-validator.service';
+import { SocketGateway } from './socket/socket.gateway';
 let APP_VERSION = '0.0.0';
 try {
   APP_VERSION = JSON.parse(readFileSync(join(__dirname, '../../../package.json'), 'utf-8')).version || '0.0.0';
@@ -40,9 +41,15 @@ async function bootstrap() {
     console.warn(`[EnvValidator] ${issue}`);
   }
 
-  // Graceful shutdown
+  // Graceful shutdown with WebSocket notification
   const shutdownService = new GracefulShutdownService();
   shutdownService.registerShutdown(app.getHttpServer());
+  try {
+    const wsGateway = app.get(SocketGateway);
+    shutdownService.setNotifyClients(() => wsGateway.notifyShutdown());
+  } catch {
+    // SocketGateway may not be available if SocketModule is not loaded
+  }
 
   setupSwagger(app, APP_VERSION);
 

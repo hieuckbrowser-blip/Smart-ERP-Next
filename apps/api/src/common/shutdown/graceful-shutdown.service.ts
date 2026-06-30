@@ -7,6 +7,11 @@ const SHUTDOWN_TIMEOUT = 30000;
 export class GracefulShutdownService {
   private readonly logger = new Logger(GracefulShutdownService.name);
   private server?: Server;
+  private notifyClients?: () => Promise<void>;
+
+  setNotifyClients(fn: () => Promise<void>) {
+    this.notifyClients = fn;
+  }
 
   registerShutdown(server: Server) {
     this.server = server;
@@ -15,8 +20,13 @@ export class GracefulShutdownService {
     process.on('SIGINT', () => this.shutdown('SIGINT'));
   }
 
-  private shutdown(signal: string) {
+  private async shutdown(signal: string) {
     this.logger.log(`Received ${signal}, shutting down gracefully...`);
+
+    // Notify WebSocket clients
+    if (this.notifyClients) {
+      await this.notifyClients();
+    }
 
     const timer = setTimeout(() => {
       this.logger.error('Forced shutdown after timeout');

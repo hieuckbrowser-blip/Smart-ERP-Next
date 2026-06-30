@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 130 | Remaining: 0
+Completed: 134 | Remaining: 0
 
 ## Completed
 
@@ -125,6 +125,10 @@ Completed: 130 | Remaining: 0
 | Graceful shutdown wired | High | GracefulShutdownService + EnvValidatorService in bootstrap |
 | API envelope consistency | Medium | Response format contract tests for success/error shapes |
 | Migration test script | Medium | scripts/test-migration.js — validates drizzle-kit generate + migrate |
+| Request timeout middleware | High | RequestTimeoutMiddleware (30s default, env-configurable) (TDD: 3 tests) |
+| WebSocket shutdown notification | Medium | GracefulShutdownService.setNotifyClients → SocketGateway.notifyShutdown |
+| Docker image labels | Low | org.opencontainers.* labels for metadata |
+| Healthcheck improved | Low | 30s interval, 5s timeout, 30s start-period, 3 retries |
 
 | Item | Impact | Notes |
 |------|--------|-------|
