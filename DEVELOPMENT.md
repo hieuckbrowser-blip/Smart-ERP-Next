@@ -1,6 +1,6 @@
 # Development
 
-## Quick Start — 2 cách
+## Quick Start — 3 cách
 
 ### Cách 1: Docker (không cần setup)
 
@@ -11,9 +11,16 @@ docker compose up -d
 # Mở http://localhost:3457
 ```
 
-### Cách 2: Local dev (nhanh, hot-reload)
+### Cách 2: Make (Linux/Mac/WSL)
 
-**Windows:**
+```bash
+pnpm install
+make dev
+# API: http://localhost:3456 | Web: http://localhost:3457
+```
+
+### Cách 3: Local dev (Windows, hot-reload)
+
 ```bash
 dev.bat
 ```

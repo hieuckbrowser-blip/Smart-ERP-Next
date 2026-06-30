@@ -7,29 +7,36 @@ Cảm ơn bạn đã quan tâm đến Smart ERP Next! Dưới đây là hướng
 ```bash
 git clone https://github.com/hieuck/Smart-ERP-Next.git
 cd Smart-ERP-Next
+pnpm install
 ```
 
-**Windows:** `dev.bat` → mở `http://localhost:3457`
-
-**Mac/Linux:** `./scripts/dev.sh` → mở `http://localhost:3457`
-
-## Prerequisites
-
-| Tool    | Version   | Ghi chú                                  |
-| ------- | --------- | ---------------------------------------- |
-| Docker  | latest    | Cho PostgreSQL (dev.bat tự động start)    |
-| pnpm    | 10.x      | Node.js package manager                  |
-| Node.js | 18+ / 20+ | Khuyên dùng LTS                          |
-
-## Development Workflow
-
-| Platform  | Command             | What it does                                  |
-| --------- | ------------------- | --------------------------------------------- |
-| Windows   | `dev.bat`           | Start PostgreSQL → migrate → API + Web (2 cửa sổ) |
-| Mac/Linux | `scripts/dev.sh`    | Tương tự, chạy trong terminal                 |
+| Platform  | Command            | What it does                                      |
+| --------- | ------------------ | ------------------------------------------------- |
+| All       | `make dev`         | Start API + Web dev servers (hot-reload)          |
+| Windows   | `dev.bat`          | Start PostgreSQL → migrate → API + Web (2 cửa sổ) |
+| Mac/Linux | `scripts/dev.sh`   | Tương tự, chạy trong terminal                     |
 
 - **API:** `http://localhost:3456` (hot-reload)
 - **Web:** `http://localhost:3457` (hot-reload)
+
+## Prerequisites
+
+| Tool    | Version | Ghi chú                                  |
+| ------- | ------- | ---------------------------------------- |
+| Docker  | latest  | Cho PostgreSQL (dev.bat tự động start)    |
+| pnpm    | 10.x    | Node.js package manager                  |
+| Node.js | 20+     | Khuyên dùng LTS                          |
+
+## Common Commands
+
+```bash
+make dev          # Start dev servers
+make test        # Run unit + integration tests
+make lint        # Lint all files
+make typecheck   # TypeScript type checking
+make build       # Build all packages
+make ci          # Full CI pipeline locally
+```
 
 ## TDD Rule: RED → GREEN
 
@@ -39,25 +46,19 @@ cd Smart-ERP-Next
 2. **GREEN** — Viết code tối thiểu để pass
 3. **REFACTOR** — Cải thiện code, đảm bảo test vẫn xanh
 
-Nếu viết code trước, quay lại viết test sau khi xong — nhưng ưu tiên RED→GREEN.
-
 ## Code Style
 
 - **Code & commits:** English
-- **Communication:** Vietnamese (issues, PRs, comments trong team chat)
-- **Comments:** English only
+- **Communication:** Vietnamese
 - **Formatting:** Prettier (`pnpm format`)
 - **No speculative code** — chỉ viết những gì cần thiết
 
-## Quality Gate
+## Quality Gates
 
-Chạy **trước mọi commit**:
-
-```bash
-pnpm qa:commit
-```
-
-Quy trình: lint → i18n audit → type-check → test → build. Nếu fail, fix root cause — không bypass.
+| Gate | Command | What it checks |
+|------|---------|---------------|
+| Commit | `pnpm qa:commit` | lint → i18n → type-check → test → build |
+| Release | `pnpm qa:release` | Commit gate + web build → native artifacts → E2E → assertion audit |
 
 ## Conventional Commits
 
@@ -81,17 +82,14 @@ main          → Production (stable, protected)
        └── refactor/  → Refactoring
 ```
 
-1. Tạo branch từ `dev`
-2. Commit, push, tạo PR vào `dev`
-3. Review → merge → xoá branch
-
 ## Running Tests
 
 ```bash
-pnpm test          # Unit + integration (Jest)
+pnpm test          # Unit + integration (Jest) — 2,000+ tests
+pnpm test:cov      # With coverage (threshold: 89%)
 pnpm test:e2e      # E2E (Playwright) — cần DB + API + Web đang chạy
-pnpm test:cov      # With coverage
-pnpm qa:commit     # Full quality gate (khuyên dùng)
+pnpm test:api:e2e  # API E2E (supertest)
+pnpm qa:commit     # Full quality gate
 ```
 
 ## Project Structure
@@ -99,20 +97,25 @@ pnpm qa:commit     # Full quality gate (khuyên dùng)
 ```
 smart-erp-next/
 ├── apps/
-│   ├── api/          # NestJS API (port 3456)
-│   └── web/          # Next.js web app (port 3457)
+│   ├── api/          # NestJS API (port 3456, ~60 services)
+│   └── web/          # Next.js 15 App Router (port 3457, PWA)
 ├── packages/
-│   ├── shared/       # UI components, hooks, localization
-│   ├── hooks/        # React hooks
-│   ├── database/     # Drizzle schema, migrations, seed
-│   ├── utils/        # Shared utilities
+│   ├── shared/       # UI components (Button, Table, DataTable, Toast)
+│   ├── database/     # Drizzle schema (48+ tables), migrations, seed
+│   ├── hooks/        # React hooks (usePagination, useDebounce, ...)
+│   ├── utils/        # Formatters, sanitization, date/number utils
 │   ├── validation/   # Zod validation schemas
 │   ├── types/        # Shared TypeScript types
-│   ├── sync/         # Offline-first sync engine
-│   └── accounting/   # Accounting engine
-├── e2e/              # Playwright E2E tests
-├── scripts/          # Dev/CI scripts
-└── .github/          # GitHub Actions workflows
+│   ├── sync/         # Offline-first sync engine (IndexedDB/CRDT)
+│   ├── accounting/   # Accounting engine (Chart of Accounts, VAT)
+│   ├── test-utils/   # Test data builders (buildUser, buildProduct, ...)
+│   ├── config-eslint/ # Shared ESLint config
+│   └── config-typescript/ # Shared TSConfig presets
+├── docs/             # Technical docs, architecture, runbooks
+├── e2e/              # Playwright E2E tests (22 files)
+├── scripts/          # Dev/CI/build scripts (20+ scripts)
+├── monitoring/       # Prometheus/Grafana/Loki config
+└── .github/          # GitHub Actions (CI, release, CodeQL, Dependabot)
 ```
 
 ## Need Help?
