@@ -8,8 +8,13 @@
     "playwright": "1.61.1",
     "prettier": "^3.9.4",
     "ts-jest": "^29.4.11",
+<<<<<<< HEAD
     "tsx": "4.22.2",
     "turbo": "^2.10.1",
+=======
+    "tsx": "4.22.4",
+    "turbo": "^2.9.14",
+>>>>>>> origin/dependabot/npm_and_yarn/tsx-4.22.4
     "typescript": "5.9.3",
     "yaml": "2.9.0"
   },
