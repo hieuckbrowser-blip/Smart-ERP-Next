@@ -19,9 +19,9 @@ describe('Staging Deployment Pipeline', () => {
     expect(content).toContain('branches: [ dev ]');
   });
 
-  test('auto-deploy can be disabled by removing STAGING_HOST secret', () => {
+  test('auto-deploy can be disabled via STAGING_ENABLED variable', () => {
     const f = path.join(repoRoot, '.github/workflows/deploy-staging.yml');
     const content = fs.readFileSync(f, 'utf8');
-    expect(content).toContain("secrets.STAGING_HOST != ''");
+    expect(content).toContain('STAGING_ENABLED');
   });
 });
