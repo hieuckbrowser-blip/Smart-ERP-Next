@@ -11,6 +11,7 @@ import { eq, and, ilike, sql, desc, inArray } from '@smart-erp/database/drizzle'
 import { CreateOrderDto } from './dto/create-order.dto';
 import { NotificationsGateway } from '../notifications/notifications.gateway';
 import { ActivityService } from '../modules/activity/activity.service';
+import { TelemetryService } from '../analytics/telemetry.service';
 
 function escapeXml(unsafe: string): string {
   const map: Record<string, string> = {
@@ -28,6 +29,7 @@ export class OrdersService {
   constructor(
     private readonly notifications: NotificationsGateway,
     private readonly activityService: ActivityService,
+    private readonly telemetry?: TelemetryService,
   ) {}
 
   validateOrderData(order: any) {
@@ -136,6 +138,10 @@ export class OrdersService {
       total: order.total,
       channel: order.channel,
       createdAt: order.createdAt,
+    });
+
+    this.telemetry?.track('order.created', tenantId, userId, {
+      orderId: order.id, code: order.code, total: order.total, channel: order.channel,
     });
 
     return { ...order, items: itemsData };

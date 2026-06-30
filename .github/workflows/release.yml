@@ -35,6 +35,15 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Generate SBOM
+        run: node scripts/generate-sbom.js sbom.json
+
+      - name: Upload SBOM as release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.json
+
       - name: Build and push unified image
         uses: docker/build-push-action@v6
         with:

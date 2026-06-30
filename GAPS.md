@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 105 | Remaining: 2
+Completed: 109 | Remaining: 2
 
 ## Completed
 
@@ -106,6 +106,9 @@ Completed: 105 | Remaining: 2
 | Test data factories | Medium | @smart-erp/test-utils with buildUser/buildProduct/buildCustomer/buildOrder (TDD: 7 tests) |
 | loading.tsx for all 19 remaining routes | Medium | loading spinners for approvals/automation/chat/crm/e-invoice/fixed-assets/forecast/hr/manufacturing/payments/pos/purchasing/quality/settings/users/warehouse-transfers/warehouses |
 | Analytics aggregation service | Medium | AggregationService with dailyRevenue/topProducts/orderStats (TDD: 4 tests) |
+| SBOM in release workflow | Low | sbom.json artifact generated during Docker build in release.yml |
+| Telemetry wired to order creation | Medium | TelemetryService injected into OrdersService, tracks order.created event |
+| error.tsx for all 21 remaining routes | Medium | Error boundaries for accounting/approvals/automation/chat/crm/e-invoice/fixed-assets/forecast/hr/inventory/manufacturing/payments/pos/purchasing/quality/reports/settings/suppliers/users/warehouse-transfers/warehouses |
 
 | Item | Impact | Notes |
 |------|--------|-------|
