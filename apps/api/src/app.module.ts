@@ -7,6 +7,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LoggerModule } from './common/logger/logger.module';
 import { RequestLoggingInterceptor } from './common/interceptors/request-logging.interceptor';
+import { RateLimitHeadersInterceptor } from './common/interceptors/rate-limit-headers.interceptor';
+import { SlowQueryLoggerInterceptor } from './common/interceptors/slow-query-logger.interceptor';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { RequestTimeoutMiddleware } from './common/middleware/request-timeout.middleware';
 import { RequestIdMiddleware } from './common/middleware/request-id.middleware';
@@ -54,6 +56,8 @@ import { InventoryRecommendationModule } from './inventory-recommendation/invent
     AppService,
     { provide: DRIZZLE, useValue: db },
     { provide: APP_INTERCEPTOR, useClass: RequestLoggingInterceptor },
+    { provide: APP_INTERCEPTOR, useClass: RateLimitHeadersInterceptor },
+    { provide: APP_INTERCEPTOR, useClass: SlowQueryLoggerInterceptor },
     { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],
 })
