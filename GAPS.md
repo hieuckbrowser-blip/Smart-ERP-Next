@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 151 | Remaining: 0
+Completed: 156 | Remaining: 0
 
 ## Completed
 
@@ -144,6 +144,9 @@ Completed: 151 | Remaining: 0
 | Telemetry service integration tests | High | track + trackPageView + error handling (TDD: 4 tests) |
 | Aggregation service integration tests | Medium | dailyRevenue + topProducts + orderStats (TDD: 4 tests) |
 | Load test with auth endpoints | Medium | products + orders endpoints added to load-test.mjs |
+| Makefile | Low | make dev/test/lint/typecheck/build/clean/ci targets |
+| VS Code workspace settings | Low | .vscode/extensions.json + settings.json for team onboarding |
+| API deprecation header pattern | Medium | @Deprecated decorator + Sunset/Deprecation/Link headers (TDD: 3 tests) |
 
 | Item | Impact | Notes |
 |------|--------|-------|
