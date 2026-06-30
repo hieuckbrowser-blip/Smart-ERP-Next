@@ -10,6 +10,7 @@ import { ChurnPredictionService } from './churn.service';
 import { ChurnController } from './churn.controller';
 import { PredictiveAnalyticsService } from './predictive-analytics.service';
 import { PredictiveAnalyticsController } from './predictive-analytics.controller';
+import { TelemetryService } from './telemetry.service';
 
 @Module({
   providers: [
@@ -19,6 +20,7 @@ import { PredictiveAnalyticsController } from './predictive-analytics.controller
     ClvService,
     ChurnPredictionService,
     PredictiveAnalyticsService,
+    TelemetryService,
   ],
   controllers: [
     AnalyticsController,
@@ -27,6 +29,6 @@ import { PredictiveAnalyticsController } from './predictive-analytics.controller
     ChurnController,
     PredictiveAnalyticsController,
   ],
-  exports: [AnalyticsService],
+  exports: [AnalyticsService, TelemetryService],
 })
 export class AnalyticsModule {}

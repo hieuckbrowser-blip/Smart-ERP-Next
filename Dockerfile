@@ -30,7 +30,7 @@ COPY scripts/ ./scripts/
 COPY apps/web/public/ ./apps/web/public/
 
 # Step 3: Install deps (cached unless package.json or source changes)
-RUN npm_config_node_linker=hoisted pnpm install --frozen-lockfile --ignore-scripts
+RUN npm_config_node_linker=hoisted pnpm install --frozen-lockfile --ignore-scripts --shamefully-hoist
 
 # Step 4: Build (use node_modules/.bin/tsc directly — hoisted linker)
 RUN node node_modules/.bin/tsc -p packages/database/tsconfig.json && \
@@ -55,22 +55,26 @@ ENV NEXT_PUBLIC_API_URL=http://localhost:3456
 # Install Node.js + curl (no pnpm — use node_modules from build stage)
 RUN apk add --no-cache nodejs curl
 
-# Copy built artifacts and package manifests (not node_modules — they cause overlayfs issues)
+# Copy complete node_modules (hoisted, no symlinks) and built artifacts
+COPY --from=build /app/node_modules /app/node_modules
 COPY --from=build /app/package.json /app/pnpm-lock.yaml /app/pnpm-workspace.yaml ./
 COPY --from=build /app/packages /app/packages
 COPY --from=build /app/apps/api/dist /app/apps/api/dist
+COPY --from=build /app/apps/api/package.json /app/apps/api/package.json
 COPY --from=build /app/apps/web/.next /app/apps/web/.next
 COPY --from=build /app/apps/web/public /app/apps/web/public
 COPY --from=build /app/apps/web/package.json /app/apps/web/package.json
 COPY --from=build /app/apps/web/next.config.mjs /app/apps/web/next.config.mjs
-COPY --from=build /app/apps/api/package.json /app/apps/api/package.json
 COPY --from=build /app/scripts /app/scripts
 COPY apps/api/docker-entrypoint.sh /app/docker-entrypoint.sh
 
-# Remove node_modules from copied packages to avoid overlayfs symlink issues
-RUN find /app/packages -name "node_modules" -type d -exec rm -rf {} + 2>/dev/null; \
-    find /app/apps -name "node_modules" -type d -exec rm -rf {} + 2>/dev/null; \
-    pnpm config set node-linker hoisted && pnpm install --frozen-lockfile --offline 2>/dev/null; \
+# Try pnpm rebuild to fix workspace symlinks; if pnpm unavailable, manually link
+RUN npm_config_node_linker=hoisted pnpm rebuild --shamefully-hoist 2>/dev/null || \
+    (mkdir -p /app/node_modules/@smart-erp && \
+     for d in /app/packages/*/; do \
+       name=$(basename "$d"); \
+       ln -sfn "$d" "/app/node_modules/@smart-erp/$name" 2>/dev/null || true; \
+     done); \
     rm -rf /app/apps/web/src /app/apps/web/.next/cache /app/apps/api/src /app/packages/*/__tests__; \
     find /app/packages -type f \( -name '*.map' -o -name 'tsconfig*' \) -not -path '*/node_modules/*' -not -name 'drizzle.config.ts' -delete; \
     rm -f /usr/local/bin/pnpm /usr/local/lib/node_modules/pnpm; \
