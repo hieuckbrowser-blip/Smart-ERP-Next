@@ -4,12 +4,21 @@
   "private": true,
   "dependencies": {
     "@nestjs/axios": "4.0.1",
+<<<<<<< HEAD
     "@nestjs/cache-manager": "^3.1.3",
     "@nestjs/common": "^11.1.27",
     "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.1.27",
     "@nestjs/event-emitter": "^3.1.0",
     "@nestjs/jwt": "^11.0.2",
+=======
+    "@nestjs/cache-manager": "^2.3.0",
+    "@nestjs/common": "^10.4.22",
+    "@nestjs/config": "^3.3.0",
+    "@nestjs/core": "^11.1.18",
+    "@nestjs/event-emitter": "^2.1.1",
+    "@nestjs/jwt": "^10.2.0",
+>>>>>>> origin/dependabot/npm_and_yarn/npm_and_yarn-33e082ea68
     "@nestjs/mapped-types": "^2.1.1",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.1.27",

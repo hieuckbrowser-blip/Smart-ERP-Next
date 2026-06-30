@@ -17,6 +17,7 @@
     "jspdf-autotable": "5.0.8",
     "lucide-react": "^0.394.0",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "next": "15.5.18",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
@@ -25,6 +26,9 @@
     "recharts": "3.8.1",
 =======
     "next": "15.2.6",
+=======
+    "next": "15.5.18",
+>>>>>>> origin/dependabot/npm_and_yarn/npm_and_yarn-33e082ea68
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-i18next": "^14.1.3",
