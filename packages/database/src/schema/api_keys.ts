@@ -9,5 +9,6 @@ export const apiKeys = pgTable('api_keys', {
   isActive: boolean('is_active').notNull().default(true),
   createdBy: uuid('created_by'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
+  lastUsedAt: timestamp('last_used_at'),
   revokedAt: timestamp('revoked_at'),
 });

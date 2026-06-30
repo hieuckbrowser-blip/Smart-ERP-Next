@@ -55,13 +55,31 @@ export class ApiKeyService {
     const [record] = await db.select().from(apiKeys).where(
       and(eq(apiKeys.keyHash, keyHash), eq(apiKeys.isActive, true)),
     );
-    return record ? { tenantId: record.tenantId, keyId: record.id } : null;
+    if (record) {
+      await db.update(apiKeys).set({ lastUsedAt: new Date() }).where(eq(apiKeys.id, record.id));
+      return { tenantId: record.tenantId, keyId: record.id };
+    }
+    return null;
   }
 
   async revokeKey(tenantId: string, keyId: string) {
     await db.update(apiKeys).set({ isActive: false }).where(
       and(eq(apiKeys.id, keyId), eq(apiKeys.tenantId, tenantId)),
     );
+  }
+
+  async getUsageStats(tenantId: string, keyId: string) {
+    const [record] = await db.select().from(apiKeys).where(
+      and(eq(apiKeys.id, keyId), eq(apiKeys.tenantId, tenantId)),
+    );
+    if (!record) return null;
+    return {
+      id: record.id,
+      name: record.name,
+      isActive: record.isActive,
+      createdAt: record.createdAt,
+      lastUsedAt: record.lastUsedAt,
+    };
   }
 }
 

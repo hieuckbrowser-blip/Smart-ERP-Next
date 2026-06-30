@@ -70,6 +70,16 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.logger.log(`Client disconnected: ${client.id}`);
   }
 
+  /** Notify all connected clients that the server is shutting down */
+  async notifyShutdown() {
+    this.server?.emit('server.shutdown', {
+      message: 'Server is shutting down. Reconnect to a different instance.',
+      reconnectIn: 5000,
+    });
+    // Give clients 500ms to process before force disconnect
+    await new Promise((r) => setTimeout(r, 500));
+  }
+
   @SubscribeMessage('ping')
   handlePing(@ConnectedSocket() client: Socket): string {
     return 'pong';

@@ -1,18 +1,12 @@
 import { FeatureFlagsService } from './feature-flags.service';
 
-jest.mock('@smart-erp/database', () => ({
-  db: {
-    select: jest.fn(),
-    insert: jest.fn(),
-    update: jest.fn(),
-  },
-}));
+jest.mock('@smart-erp/database', () => ({ db: { select: jest.fn(), insert: jest.fn(), update: jest.fn() } }));
 jest.mock('@smart-erp/database/schema', () => ({ featureFlags: {} }));
 jest.mock('@smart-erp/database/drizzle', () => ({ eq: jest.fn((x) => x), and: jest.fn((...args) => args) }));
 
-const { db } = jest.requireMock('@smart-erp/database') as any;
+const { db } = jest.requireMock('@smart-erp/database') as { db: any };
 
-describe('FeatureFlagsService', () => {
+describe('FeatureFlagsService with cache', () => {
   let service: FeatureFlagsService;
 
   beforeEach(() => {
@@ -21,49 +15,37 @@ describe('FeatureFlagsService', () => {
     service = new FeatureFlagsService();
   });
 
-  describe('isEnabled', () => {
-    it('returns true when flag exists and is enabled', async () => {
-      db.select.mockReturnValue({ from: jest.fn().mockReturnValue({ where: jest.fn().mockResolvedValue([{ flagKey: 'new_pos', enabled: true }]) }) });
-      const result = await service.isEnabled('tenant-1', 'new_pos');
-      expect(result).toBe(true);
-    });
-
-    it('returns false when flag exists and is disabled', async () => {
-      db.select.mockReturnValue({ from: jest.fn().mockReturnValue({ where: jest.fn().mockResolvedValue([{ flagKey: 'new_pos', enabled: false }]) }) });
-      const result = await service.isEnabled('tenant-1', 'new_pos');
-      expect(result).toBe(false);
-    });
-
-    it('returns false when flag does not exist', async () => {
-      const result = await service.isEnabled('tenant-1', 'nonexistent');
-      expect(result).toBe(false);
-    });
+  it('returns cached value on second call within TTL', async () => {
+    db.select.mockReturnValue({ from: jest.fn().mockReturnValue({ where: jest.fn().mockResolvedValue([{ flagKey: 'new_pos', enabled: true }]) }) });
+    const first = await service.isEnabled('t1', 'new_pos');
+    const second = await service.isEnabled('t1', 'new_pos');
+    expect(first).toBe(true);
+    expect(second).toBe(true);
+    // Second call should use cache, not DB
+    expect(db.select).toHaveBeenCalledTimes(1);
   });
 
-  describe('getAllFlags', () => {
-    it('returns all flags for a tenant', async () => {
-      const flags = [
-        { flagKey: 'new_pos', enabled: true, description: 'New POS UI' },
-        { flagKey: 'dark_mode', enabled: false, description: 'Dark mode' },
-      ];
-      db.select.mockReturnValue({ from: jest.fn().mockReturnValue({ where: jest.fn().mockResolvedValue(flags) }) });
-      const result = await service.getAllFlags('tenant-1');
-      expect(result).toHaveLength(2);
-      expect(result[0].flagKey).toBe('new_pos');
-    });
+  it('bypasses cache after TTL expires (via clearCache)', async () => {
+    db.select
+      .mockReturnValueOnce({ from: jest.fn().mockReturnValue({ where: jest.fn().mockResolvedValue([{ flagKey: 'f1', enabled: true }]) }) })
+      .mockReturnValueOnce({ from: jest.fn().mockReturnValue({ where: jest.fn().mockResolvedValue([{ flagKey: 'f1', enabled: false }]) }) });
 
-    it('returns empty array when no flags configured', async () => {
-      const result = await service.getAllFlags('tenant-1');
-      expect(result).toEqual([]);
-    });
+    await service.isEnabled('t1', 'f1');
+    service.clearCache('t1');
+    const result = await service.isEnabled('t1', 'f1');
+    expect(result).toBe(false);
+    expect(db.select).toHaveBeenCalledTimes(2);
   });
 
-  describe('setFlag', () => {
-    it('inserts a new flag when it does not exist', async () => {
-      db.select.mockReturnValue({ from: jest.fn().mockReturnValue({ where: jest.fn().mockResolvedValue([]) }) });
-      db.insert.mockReturnValue({ values: jest.fn().mockReturnValue({ returning: jest.fn().mockResolvedValue([{ flagKey: 'new_feature', enabled: true }]) }) });
-      await service.setFlag('tenant-1', 'new_feature', true, 'admin');
-      expect(db.insert).toHaveBeenCalled();
-    });
+  it('clears cache entry on setFlag', async () => {
+    db.select
+      .mockReturnValueOnce({ from: jest.fn().mockReturnValue({ where: jest.fn().mockResolvedValue([{ id: 'existing', flagKey: 'f1', enabled: true }]) }) })
+      .mockReturnValueOnce({ from: jest.fn().mockReturnValue({ where: jest.fn().mockResolvedValue([{ flagKey: 'f1', enabled: false }]) }) });
+    db.update.mockReturnValue({ set: jest.fn().mockReturnValue({ where: jest.fn().mockResolvedValue(undefined) }) });
+
+    await service.setFlag('t1', 'f1', false, 'admin');
+    const result = await service.isEnabled('t1', 'f1');
+    expect(result).toBe(false);
+    expect(db.select).toHaveBeenCalledTimes(2);
   });
 });

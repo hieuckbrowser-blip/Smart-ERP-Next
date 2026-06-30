@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 115 | Remaining: 0
+Completed: 120 | Remaining: 0
 
 ## Completed
 
@@ -113,6 +113,10 @@ Completed: 115 | Remaining: 0
 | Environment variable validation | High | EnvValidatorService with required checks + default/dev value detection (TDD: 6 tests) |
 | Dependabot auto-updates | Medium | .github/dependabot.yml with grouped updates for NestJS, React, ESLint, testing |
 | Health check detail | Medium | HealthMonitorService with DB failure detection coverage (TDD: 2 tests) |
+| Feature flag caching | Medium | In-memory TTL cache for isEnabled, auto-invalidate on setFlag (TDD: 3 tests) |
+| API key usage tracking | Medium | lastUsedAt timestamp on validate, getUsageStats endpoint (TDD: 2 tests) |
+| Input sanitization utility | Medium | sanitizeHtml/sanitizeUrl/trimAndClean in @smart-erp/utils (TDD: 8 tests) |
+| WebSocket shutdown notification | Medium | notifyShutdown emits server.shutdown event before force close |
 
 | Item | Impact | Notes |
 |------|--------|-------|
