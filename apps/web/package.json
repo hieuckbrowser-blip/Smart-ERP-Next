@@ -38,7 +38,7 @@
     "eslint-config-next": "15.2.4",
     "jest-environment-jsdom": "30.4.1",
     "postcss": "^8.5.15",
-    "@next/bundle-analyzer": "^15.2.6",
+    "@next/bundle-analyzer": "^16.2.9",
     "tailwindcss": "^3.4.19",
     "typescript": "^5.9.3"
   },
