@@ -66,7 +66,7 @@ describe('database connection bootstrap', () => {
 
     expect(existsSync).not.toHaveBeenCalled();
     expect(config).not.toHaveBeenCalled();
-    expect(Pool).toHaveBeenCalledWith({ connectionString: 'postgres://existing' });
+    expect(Pool).toHaveBeenCalledWith(expect.objectContaining({ connectionString: 'postgres://existing' }));
   });
 
   it('loads the first existing env candidate before creating the pool', () => {
@@ -78,9 +78,9 @@ describe('database connection bootstrap', () => {
 
     expect(existsSync).toHaveBeenCalledWith(smartEnvPath);
     expect(config).toHaveBeenCalledWith({ path: smartEnvPath });
-    expect(Pool).toHaveBeenCalledWith({
+    expect(Pool).toHaveBeenCalledWith(expect.objectContaining({
       connectionString: `postgres://loaded-from-${smartEnvPath}`,
-    });
+    }));
   });
 
   it('continues probing when an env file does not provide DATABASE_URL', () => {
@@ -94,6 +94,6 @@ describe('database connection bootstrap', () => {
     expect(config).toHaveBeenCalledWith({ path: apiEnvPath });
     expect(config).toHaveBeenCalledWith({ path: rootEnvPath });
     expect(existsSync).toHaveBeenCalledWith(resolve(process.cwd(), '../../apps/api/.env'));
-    expect(Pool).toHaveBeenCalledWith({ connectionString: undefined });
+    expect(Pool).toHaveBeenCalledWith(expect.objectContaining({ connectionString: undefined }));
   });
 });

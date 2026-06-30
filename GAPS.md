@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 137 | Remaining: 0
+Completed: 141 | Remaining: 0
 
 ## Completed
 
@@ -132,6 +132,10 @@ Completed: 137 | Remaining: 0
 | RequestIdMiddleware wired | Medium | Applied in AppModule, propagates x-request-id through all requests |
 | Swagger @ApiTags for core routes | Low | Orders, Products tagged — improves API doc navigation |
 | REQUEST_TIMEOUT env var | Low | Configurable request timeout via environment variable |
+| DB pool configuration | High | buildPoolConfig with max/idleTimeout/connectionTimeout, env-configurable (TDD: 5 tests) |
+| Load test baseline output | Low | JSON baseline saved in CI for performance regression tracking |
+| Sentry error tracking config | Medium | sentry-config.ts with DSN/env/tracesSampleRate |
+| DB_POOL_* env vars | High | DB_POOL_MAX, DB_POOL_IDLE_TIMEOUT, DB_POOL_CONNECTION_TIMEOUT |
 
 | Item | Impact | Notes |
 |------|--------|-------|

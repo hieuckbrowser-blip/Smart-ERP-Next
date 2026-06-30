@@ -51,6 +51,15 @@ async function main() {
   console.log(`  ⚡ ${rps} req/s (${totalMs}ms total)`);
   console.log(`  📊 avg: ${avgMs}ms, min: ${minMs}ms, max: ${maxMs}ms\n`);
   console.log(fail > 0 ? '❌ LOAD TEST FAILED' : '✅ LOAD TEST PASSED');
+
+  // JSON output for baseline tracking
+  const baseline = { timestamp: new Date().toISOString(), rps, avgMs, maxMs, minMs, ok, fail, totalMs };
+  if (process.env.CI) {
+    const fs = await import('fs');
+    fs.writeFileSync('load-test-baseline.json', JSON.stringify(baseline, null, 2));
+    console.log(`\nBaseline saved: load-test-baseline.json`);
+  }
+
   process.exit(fail > 0 ? 1 : 0);
 }
 

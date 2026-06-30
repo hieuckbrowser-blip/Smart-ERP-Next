@@ -4,6 +4,7 @@ import { existsSync } from 'fs';
 import { resolve } from 'path';
 import { Pool } from 'pg';
 import * as schema from './schema';
+import { buildPoolConfig } from './pool-config';
 
 if (!process.env.DATABASE_URL) {
   const envCandidates = [
@@ -21,9 +22,7 @@ if (!process.env.DATABASE_URL) {
   }
 }
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+const pool = new Pool(buildPoolConfig());
 
 export const db = drizzle(pool, { schema });
 export type DB = typeof db;
