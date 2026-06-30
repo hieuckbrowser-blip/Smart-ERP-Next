@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 171 | Remaining: 0
+Completed: 174 | Remaining: 0
 
 ## Completed
 
@@ -157,6 +157,8 @@ Completed: 171 | Remaining: 0
 | Compression middleware | Low | Express compression for API response body compression |
 | Auth flow integration tests | High | Full register→login→refresh→logout flow (TDD: 8 tests) |
 | OpenAPI spec generation script | Low | scripts/generate-api-docs.js exports Swagger spec to JSON |
+| Auth flow integration tests | High | Full register→login→refresh→logout (TDD: 8 tests) |
+| Dependency vulnerability fix | **Critical** | next 15.2.6→15.5.18 (11 vulns), drizzle-orm 0.31.4→0.45.2 (SQL injection) |
 
 | Item | Impact | Notes |
 |------|--------|-------|
