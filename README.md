@@ -5,15 +5,17 @@
 [![CI](https://github.com/hieuck/Smart-ERP-Next/actions/workflows/ci.yml/badge.svg)](https://github.com/hieuck/Smart-ERP-Next/actions/workflows/ci.yml)
 [![Release](https://github.com/hieuck/Smart-ERP-Next/actions/workflows/release.yml/badge.svg)](https://github.com/hieuck/Smart-ERP-Next/actions/releases/latest)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker)](https://github.com/hieuck/Smart-ERP-Next/pkgs/container/smart-erp-next)
-[![Tests](https://img.shields.io/badge/Tests-1,887-green)](https://github.com/hieuck/Smart-ERP-Next/actions)
-[![Version](https://img.shields.io/badge/Version-1.0.0-blue)](https://github.com/hieuck/Smart-ERP-Next/releases)
+[![Tests](https://img.shields.io/badge/Tests-2,059-green)](https://github.com/hieuck/Smart-ERP-Next/actions)
+[![Version](https://img.shields.io/badge/Version-0.3.0-blue)](https://github.com/hieuck/Smart-ERP-Next/releases)
 
 ---
 
 ## Quick Start
 
 ```bash
-docker run -p 3456:3456 -p 3457:3457 ghcr.io/hieuck/smart-erp-next:v1.0.0
+docker run -p 3456:3456 -p 3457:3457 \
+  -e DB_PASSWORD=yourpassword -e JWT_SECRET=yoursecret \
+  ghcr.io/hieuck/smart-erp-next:v0.3.0
 # Web: http://localhost:3457
 # API: http://localhost:3456
 # Login: admin@smarterp.vn / admin123
