@@ -97,5 +97,21 @@ echo "  Web: http://localhost:${WEB_PORT:-3457}"
 echo "  Login: admin@smarterp.vn / admin123"
 echo "============================================"
 
-wait -n
-exit $?
+# Wait for ALL background processes. If one crashes, restart it.
+# Prevents container exit when web server has transient issues.
+while true; do
+  wait -n
+  CODE=$?
+  # If the API master process dies, exit container (fatal)
+  if ! kill -0 $(jobs -p) 2>/dev/null; then
+    echo "API process died (code $CODE). Shutting down."
+    exit $CODE
+  fi
+  echo "Web server restarted (code $CODE). Respawn in 2s..."
+  sleep 2
+  # Re-spawn web server
+  if [ -f "apps/web/.next/standalone/apps/web/server.js" ]; then
+    cd apps/web && PORT="${WEB_PORT:-3457}" HOSTNAME="0.0.0.0" node --max-old-space-size=512 .next/standalone/apps/web/server.js &
+    cd /app
+  fi
+done
