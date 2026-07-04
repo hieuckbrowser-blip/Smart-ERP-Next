@@ -28,6 +28,7 @@ import { ProjectsModule } from './projects/projects.module';
 import { CrmModule } from './crm/crm.module';
 import { ForecastModule } from './forecast/forecast.module';
 import { InventoryRecommendationModule } from './inventory-recommendation/inventory-recommendation.module';
+import { ExportModule } from './exports/export.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { InventoryRecommendationModule } from './inventory-recommendation/invent
     CrmModule,
     ForecastModule,
     InventoryRecommendationModule,
+    ExportModule,
   ],
   controllers: [AppController],
   providers: [
