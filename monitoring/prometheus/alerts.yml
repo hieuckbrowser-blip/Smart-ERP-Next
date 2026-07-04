@@ -20,3 +20,30 @@ groups:
         annotations:
           summary: Smart ERP database health is failing
           description: The API status-derived database health metric has reported unhealthy for 5 minutes.
+
+      - alert: SmartErpApiBurnRateFast
+        expr: |
+          (
+            (1 - avg_over_time(up{job="smart-erp-api-status"}[1h])) / 0.001 > 14.4
+          )
+          and
+          (
+            (1 - avg_over_time(up{job="smart-erp-api-status"}[5m])) / 0.001 > 14.4
+          )
+        for: 2m
+        labels:
+          severity: critical
+          service: api
+        annotations:
+          summary: Smart ERP API is burning error budget too fast
+          description: The API availability error rate over 1h and 5m exceeds 14.4x the 99.9% SLO burn rate. Investigate immediately and consider a rollback.
+
+      - alert: SmartErpApiBurnRateSlow
+        expr: (1 - avg_over_time(up{job="smart-erp-api-status"}[3d])) / 0.001 > 2
+        for: 15m
+        labels:
+          severity: warning
+          service: api
+        annotations:
+          summary: Smart ERP API is slowly burning error budget
+          description: The API availability error rate over 3 days exceeds 2x the 99.9% SLO burn rate. Schedule a root-cause review before the 30-day error budget is exhausted.

@@ -1,6 +1,6 @@
-# Smart ERP Next — Gaps & Roadmap (Updated 2026-07-02)
+# Smart ERP Next — Gaps & Roadmap (Updated 2026-07-04)
 
-Completed: 171 | Remaining: 1
+Completed: 177 | Remaining: 1
 
 ## Completed
 
@@ -171,6 +171,12 @@ Completed: 171 | Remaining: 1
 | Flaky test quarantine policy | Medium | `pnpm audit:flaky-tests` blocks committed focused tests and unowned skips/quarantines; policy documented in `docs/qa/flaky-test-policy.md` |
 | Idempotency key route scoping | High | IdempotencyGuard now scopes keys by method + route + key to avoid false conflicts across endpoints; regression test added |
 | Idempotency store TTL and bound | High | IdempotencyGuard now expires old keys and caps in-memory records via IDEMPOTENCY_TTL_MS/IDEMPOTENCY_MAX_RECORDS; TDD regression tests added |
+| ADR process | High | `docs/adr/0001-record-architecture-decisions.md` + `docs/adr/0002-api-versioning-and-domain-boundaries.md` |
+| Release playbook | High | `docs/runbooks/release-playbook.md` with branch, gate, tag, deploy and post-deploy validation steps |
+| Rollback playbook | High | `docs/runbooks/rollback-playbook.md` with decision tree and immediate/data-fix/after-rollback sections |
+| Incident runbook | High | `docs/runbooks/incident-runbook.md` with severity levels, roles, response steps and post-mortem template |
+| Support triage SOP | Medium | `docs/runbooks/support-triage-sop.md` with channels, SLA, classification and escalation |
+| SLO burn-rate alerts | High | `monitoring/prometheus/alerts.yml` extended with fast/slow burn-rate alerts against 99.9% availability SLO + `scripts/__tests__/prometheus-alerts.spec.js` |
 
 | Item | Impact | Notes |
 |------|--------|-------|
@@ -191,18 +197,18 @@ Completed: 171 | Remaining: 1
 
 ## Team Role Assessment Addendum (2026-07-02)
 
-A role-based review has been added in `docs/team-role-gap-assessment.md` to translate the roadmap into a real dev-team operating model. The highest-priority gaps are now staging infrastructure, endpoint-level API governance, SLO burn-rate alert tuning, security program automation, PWA conflict UX, release rollback drills, and data governance for forecast/analytics. Product/test traceability now has a baseline PRD template, matrix, and audit gate; real-team role readiness now has a RACI/checklist matrix and audit gate; flaky-test quarantine ownership now has a documented policy and audit gate.
+A role-based review has been added in `docs/team-role-gap-assessment.md` to translate the roadmap into a real dev-team operating model. The highest-priority gaps are now staging infrastructure, endpoint-level API governance, security program automation, PWA conflict UX, and data governance for forecast/analytics. SLO burn-rate alerts, release/rollback playbooks and incident response runbooks have been added. Product/test traceability now has a baseline PRD template, matrix, and audit gate; real-team role readiness now has a RACI/checklist matrix and audit gate; flaky-test quarantine ownership now has a documented policy and audit gate.
 
 | Role area | New gap | Priority | Tracking |
 |-----------|---------|----------|----------|
 | Product + QA | ✅ PRD template + product-to-test matrix + audit gate added; continue expanding per module PRD rows | Medium | GAP-ROLE-01 |
 | Engineering management | ✅ Real-team RACI/checklist/evidence cadence matrix added; continue using it in PR reviews | Medium | ROLE-OPS |
-| Architecture + Backend | API versioning baseline and error catalog shipped; ADR/domain-boundary work remains | High | GAP-ROLE-02/03 |
-| SRE + DevOps | Observability stack baseline and alert rules shipped; staging/rollback drill and SLO burn-rate alerts remain | High | GAP-ROLE-04/08 |
+| Architecture + Backend | API versioning baseline and error catalog shipped; ADR 0001/0002 added; domain-boundary work remains | High | GAP-ROLE-02/03 |
+| SRE + DevOps | Observability stack baseline and alert rules shipped; release/rollback playbooks, incident runbook and SLO burn-rate alerts added; staging/rollback drill remains | High | GAP-ROLE-04/08 |
 | Security | Secret scanning now gates commits/CI; dependency/container scans and ASVS matrix remain | High | GAP-ROLE-05 |
 | Frontend/PWA | Production PWA manifest, service worker, offline fallback, and asset tests shipped; conflict UX matrix remains | High | GAP-ROLE-06 |
 | Data/AI | Data contracts, PII classification, forecast accuracy monitoring | Medium | GAP-ROLE-09 |
-| Support/Docs | Incident runbook, support triage SOP, troubleshooting matrix | Medium | GAP-ROLE-10 |
+| Support/Docs | Incident runbook and support triage SOP added; troubleshooting matrix remains | Medium | GAP-ROLE-10 |
 
 ## Closed (Won't Fix)
 

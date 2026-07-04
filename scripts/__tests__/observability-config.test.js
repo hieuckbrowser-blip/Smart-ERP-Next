@@ -33,6 +33,8 @@ describe('observability configuration', () => {
     expect(alerts.groups[0].rules.map((rule) => rule.alert)).toEqual([
       'SmartErpApiStatusDown',
       'SmartErpApiDatabaseUnhealthy',
+      'SmartErpApiBurnRateFast',
+      'SmartErpApiBurnRateSlow',
     ]);
     expect(datasources.datasources.map((datasource) => datasource.name)).toEqual(['Prometheus', 'Loki']);
     expect(dashboards.providers[0].options.path).toBe('/var/lib/grafana/dashboards');
